@@ -1,29 +1,30 @@
 package schema
 
 import (
-	"github.com/facebook/ent"
-	"github.com/facebook/ent/schema/edge"
-	"github.com/facebook/ent/schema/field"
+	"github.com/facebookincubator/ent"
+	"github.com/facebookincubator/ent/schema/edge"
+	"github.com/facebookincubator/ent/schema/field"
 )
 
-// RoomType holds the schema definition for the RoomType entity.
-type RoomType struct {
+// Roomtype holds the schema definition for the Roomtype entity.
+type Roomtype struct {
 	ent.Schema
 }
 
-// Fields of the RoomType.
-func (RoomType) Fields() []ent.Field {
+// Fields of the Roomtype.
+func (Roomtype) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").NotEmpty(),
-		field.Int("bathroom").Positive(),
+		field.Int("bathroom"),
+		field.Int("toilets"),
 		field.Float("areasize").Positive(),
 		field.String("etc").NotEmpty(),
 	}
 }
 
-// Edges of the RoomType.
-func (RoomType) Edges() []ent.Edge {
+// Edges of the Roomtype.
+func (Roomtype) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("room", Room.Type).StorageKey(edge.Column("roomtype_id")),
+		edge.To("rooms", Room.Type).StorageKey(edge.Column("roomtype_id")),
 	}
 }
