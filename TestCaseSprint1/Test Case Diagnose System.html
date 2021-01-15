@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Test Case Diagnose System</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test Ok</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=email<datalist><option>id=email</option><option>name=email</option><option>//input[@id='email']</option><option>//div[@id='root']/main/div/div[2]/div/input</option><option>//input</option><option>css=#email</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=email<datalist><option>id=email</option><option>name=email</option><option>//input[@id='email']</option><option>//div[@id='root']/main/div/div[2]/div/input</option><option>//input</option><option>css=#email</option></datalist></td><td>James@gmail.com</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div/div[3]/div/input</option><option>//div[3]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div/div[3]/div/input</option><option>//div[3]/div/input</option><option>css=#password</option></datalist></td><td>James</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div/button/span<datalist><option>//div[@id='root']/main/div/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>link=Logout<datalist><option>link=Logout</option><option>//a[contains(text(),'Logout')]</option><option>//div[@id='root']/div/header/div[2]/a</option><option>//a[contains(@href, '/')]</option><option>//a</option><option>css=a.MuiTypography-root.MuiLink-root.MuiLink-underlineHover.MuiTypography-colorPrimary</option></datalist></td><td>Logout</td>
+</tr>
+<tr><td>click</td><td>//a[@id='scrollable-force-tab-0']/span<datalist><option>//a[@id='scrollable-force-tab-0']/span</option><option>//a/span</option><option>css=span.MuiTab-wrapper</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-patient<datalist><option>//body</option><option>css=body</option><option>id=mui-component-select-pateint</option><option>id=mui-component-select-patient</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-patient']/div[3]/ul/li<datalist><option>//div[@id='menu-patient']/div[3]/ul/li</option><option>//li</option><option>css=li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-gutters.MuiListItem-button</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-doctor<datalist><option>//body</option><option>css=body</option><option>id=mui-component-select-doctor</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-doctor']/div[3]/ul/li[3]<datalist><option>//div[@id='menu-doctor']/div[3]/ul/li[3]</option><option>//li[3]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-disease<datalist><option>//body</option><option>css=body</option><option>id=mui-component-select-disease</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-disease']/div[3]/ul/li[2]<datalist><option>//div[@id='menu-disease']/div[3]/ul/li[2]</option><option>//li[2]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=mui-component-select-department<datalist><option>//body</option><option>css=body</option><option>id=mui-component-select-department</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='menu-department']/div[3]/ul/li[8]<datalist><option>//div[@id='menu-department']/div[3]/ul/li[8]</option><option>//li[8]</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/div/article/div/div/div[11]/button/span<datalist><option>//div[@id='root']/div/article/div/div/div[11]/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>//div[2]/div/div<datalist><option>//div[2]/div/div</option><option>css=div.swal2-header</option></datalist></td><td>บันทึกข้อมูลสำเร็จ</td>
+</tr>
+<tr><td>click</td><td>link=Logout<datalist><option>link=Logout</option><option>//a[contains(text(),'Logout')]</option><option>//div[@id='root']/div/header/div[2]/a</option><option>//a[contains(@href, '/')]</option><option>//a</option><option>css=a.MuiTypography-root.MuiLink-root.MuiLink-underlineHover.MuiTypography-colorPrimary</option></datalist></td><td></td>
+</tr>
+</tbody></table>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test Failure</td></tr>
+</thead>
+<tbody>
+<tr><td>open</td><td>http://localhost:3000/<datalist><option>http://localhost:3000/</option></datalist></td><td></td>
+</tr>
+<tr><td>click</td><td>id=email<datalist><option>id=email</option><option>name=email</option><option>//input[@id='email']</option><option>//div[@id='root']/main/div/div[2]/div/input</option><option>//input</option><option>css=#email</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=email<datalist><option>id=email</option><option>name=email</option><option>//input[@id='email']</option><option>//div[@id='root']/main/div/div[2]/div/input</option><option>//input</option><option>css=#email</option></datalist></td><td>James@gmail.com</td>
+</tr>
+<tr><td>click</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div/div[3]/div/input</option><option>//div[3]/div/input</option><option>css=#password</option></datalist></td><td></td>
+</tr>
+<tr><td>type</td><td>id=password<datalist><option>id=password</option><option>name=password</option><option>//input[@id='password']</option><option>//div[@id='root']/main/div/div[3]/div/input</option><option>//div[3]/div/input</option><option>css=#password</option></datalist></td><td>1234</td>
+</tr>
+<tr><td>click</td><td>//div[@id='root']/main/div/button/span<datalist><option>//div[@id='root']/main/div/button/span</option><option>//button/span</option><option>css=span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//h2</option><option>css=#swal2-title</option></datalist></td><td>username หรือ password ไม่ถูกต้อง</td>
+</tr>
+</tbody></table>
+</body>
+</html>
