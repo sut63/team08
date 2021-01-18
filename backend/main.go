@@ -225,7 +225,7 @@ func main() {
 	}
 
 	v1 := router.Group("/api/v1")
-	// --------------------------------- gop & kao controller ----------------------------------------
+	// ---------------------------------  kao controller ----------------------------------------
 	controllers.NewBloodtypeController(v1, client)
 	controllers.NewGenderController(v1, client)
 	controllers.NewNurseController(v1, client)
@@ -253,7 +253,7 @@ func main() {
 	controllers.NewToolController(v1, client)
 	controllers.NewOperativeController(v1, client)
 	controllers.NewOperativerecordController(v1, client)
-	// --------------------------------- gop & kao Set Data ----------------------------------------
+	// --------------------------------- kao Set Data ----------------------------------------
 	// Set Nuses Data
 	nurses := Nurses{
 		Nurse: []Nurse{
