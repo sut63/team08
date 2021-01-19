@@ -31,6 +31,24 @@ func (ru *RentUpdate) Where(ps ...predicate.Rent) *RentUpdate {
 	return ru
 }
 
+// SetRentID sets the rent_id field.
+func (ru *RentUpdate) SetRentID(s string) *RentUpdate {
+	ru.mutation.SetRentID(s)
+	return ru
+}
+
+// SetKinTel sets the kin_tel field.
+func (ru *RentUpdate) SetKinTel(s string) *RentUpdate {
+	ru.mutation.SetKinTel(s)
+	return ru
+}
+
+// SetKinName sets the kin_name field.
+func (ru *RentUpdate) SetKinName(s string) *RentUpdate {
+	ru.mutation.SetKinName(s)
+	return ru
+}
+
 // SetAddedTime sets the added_time field.
 func (ru *RentUpdate) SetAddedTime(t time.Time) *RentUpdate {
 	ru.mutation.SetAddedTime(t)
@@ -119,6 +137,21 @@ func (ru *RentUpdate) ClearNurse() *RentUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (ru *RentUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := ru.mutation.RentID(); ok {
+		if err := rent.RentIDValidator(v); err != nil {
+			return 0, &ValidationError{Name: "rent_id", err: fmt.Errorf("ent: validator failed for field \"rent_id\": %w", err)}
+		}
+	}
+	if v, ok := ru.mutation.KinTel(); ok {
+		if err := rent.KinTelValidator(v); err != nil {
+			return 0, &ValidationError{Name: "kin_tel", err: fmt.Errorf("ent: validator failed for field \"kin_tel\": %w", err)}
+		}
+	}
+	if v, ok := ru.mutation.KinName(); ok {
+		if err := rent.KinNameValidator(v); err != nil {
+			return 0, &ValidationError{Name: "kin_name", err: fmt.Errorf("ent: validator failed for field \"kin_name\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -186,6 +219,27 @@ func (ru *RentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ru.mutation.RentID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldRentID,
+		})
+	}
+	if value, ok := ru.mutation.KinTel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldKinTel,
+		})
+	}
+	if value, ok := ru.mutation.KinName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldKinName,
+		})
 	}
 	if value, ok := ru.mutation.AddedTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -317,6 +371,24 @@ type RentUpdateOne struct {
 	mutation *RentMutation
 }
 
+// SetRentID sets the rent_id field.
+func (ruo *RentUpdateOne) SetRentID(s string) *RentUpdateOne {
+	ruo.mutation.SetRentID(s)
+	return ruo
+}
+
+// SetKinTel sets the kin_tel field.
+func (ruo *RentUpdateOne) SetKinTel(s string) *RentUpdateOne {
+	ruo.mutation.SetKinTel(s)
+	return ruo
+}
+
+// SetKinName sets the kin_name field.
+func (ruo *RentUpdateOne) SetKinName(s string) *RentUpdateOne {
+	ruo.mutation.SetKinName(s)
+	return ruo
+}
+
 // SetAddedTime sets the added_time field.
 func (ruo *RentUpdateOne) SetAddedTime(t time.Time) *RentUpdateOne {
 	ruo.mutation.SetAddedTime(t)
@@ -405,6 +477,21 @@ func (ruo *RentUpdateOne) ClearNurse() *RentUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (ruo *RentUpdateOne) Save(ctx context.Context) (*Rent, error) {
+	if v, ok := ruo.mutation.RentID(); ok {
+		if err := rent.RentIDValidator(v); err != nil {
+			return nil, &ValidationError{Name: "rent_id", err: fmt.Errorf("ent: validator failed for field \"rent_id\": %w", err)}
+		}
+	}
+	if v, ok := ruo.mutation.KinTel(); ok {
+		if err := rent.KinTelValidator(v); err != nil {
+			return nil, &ValidationError{Name: "kin_tel", err: fmt.Errorf("ent: validator failed for field \"kin_tel\": %w", err)}
+		}
+	}
+	if v, ok := ruo.mutation.KinName(); ok {
+		if err := rent.KinNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "kin_name", err: fmt.Errorf("ent: validator failed for field \"kin_name\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -471,6 +558,27 @@ func (ruo *RentUpdateOne) sqlSave(ctx context.Context) (r *Rent, err error) {
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Rent.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := ruo.mutation.RentID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldRentID,
+		})
+	}
+	if value, ok := ruo.mutation.KinTel(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldKinTel,
+		})
+	}
+	if value, ok := ruo.mutation.KinName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldKinName,
+		})
+	}
 	if value, ok := ruo.mutation.AddedTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

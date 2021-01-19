@@ -93,10 +93,364 @@ func IDLTE(id int) predicate.Rent {
 	})
 }
 
+// RentID applies equality check predicate on the "rent_id" field. It's identical to RentIDEQ.
+func RentID(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRentID), v))
+	})
+}
+
+// KinTel applies equality check predicate on the "kin_tel" field. It's identical to KinTelEQ.
+func KinTel(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldKinTel), v))
+	})
+}
+
+// KinName applies equality check predicate on the "kin_name" field. It's identical to KinNameEQ.
+func KinName(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldKinName), v))
+	})
+}
+
 // AddedTime applies equality check predicate on the "added_time" field. It's identical to AddedTimeEQ.
 func AddedTime(v time.Time) predicate.Rent {
 	return predicate.Rent(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAddedTime), v))
+	})
+}
+
+// RentIDEQ applies the EQ predicate on the "rent_id" field.
+func RentIDEQ(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDNEQ applies the NEQ predicate on the "rent_id" field.
+func RentIDNEQ(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDIn applies the In predicate on the "rent_id" field.
+func RentIDIn(vs ...string) predicate.Rent {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Rent(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldRentID), v...))
+	})
+}
+
+// RentIDNotIn applies the NotIn predicate on the "rent_id" field.
+func RentIDNotIn(vs ...string) predicate.Rent {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Rent(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldRentID), v...))
+	})
+}
+
+// RentIDGT applies the GT predicate on the "rent_id" field.
+func RentIDGT(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDGTE applies the GTE predicate on the "rent_id" field.
+func RentIDGTE(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDLT applies the LT predicate on the "rent_id" field.
+func RentIDLT(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDLTE applies the LTE predicate on the "rent_id" field.
+func RentIDLTE(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDContains applies the Contains predicate on the "rent_id" field.
+func RentIDContains(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDHasPrefix applies the HasPrefix predicate on the "rent_id" field.
+func RentIDHasPrefix(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDHasSuffix applies the HasSuffix predicate on the "rent_id" field.
+func RentIDHasSuffix(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDEqualFold applies the EqualFold predicate on the "rent_id" field.
+func RentIDEqualFold(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldRentID), v))
+	})
+}
+
+// RentIDContainsFold applies the ContainsFold predicate on the "rent_id" field.
+func RentIDContainsFold(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldRentID), v))
+	})
+}
+
+// KinTelEQ applies the EQ predicate on the "kin_tel" field.
+func KinTelEQ(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelNEQ applies the NEQ predicate on the "kin_tel" field.
+func KinTelNEQ(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelIn applies the In predicate on the "kin_tel" field.
+func KinTelIn(vs ...string) predicate.Rent {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Rent(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldKinTel), v...))
+	})
+}
+
+// KinTelNotIn applies the NotIn predicate on the "kin_tel" field.
+func KinTelNotIn(vs ...string) predicate.Rent {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Rent(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldKinTel), v...))
+	})
+}
+
+// KinTelGT applies the GT predicate on the "kin_tel" field.
+func KinTelGT(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelGTE applies the GTE predicate on the "kin_tel" field.
+func KinTelGTE(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelLT applies the LT predicate on the "kin_tel" field.
+func KinTelLT(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelLTE applies the LTE predicate on the "kin_tel" field.
+func KinTelLTE(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelContains applies the Contains predicate on the "kin_tel" field.
+func KinTelContains(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelHasPrefix applies the HasPrefix predicate on the "kin_tel" field.
+func KinTelHasPrefix(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelHasSuffix applies the HasSuffix predicate on the "kin_tel" field.
+func KinTelHasSuffix(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelEqualFold applies the EqualFold predicate on the "kin_tel" field.
+func KinTelEqualFold(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldKinTel), v))
+	})
+}
+
+// KinTelContainsFold applies the ContainsFold predicate on the "kin_tel" field.
+func KinTelContainsFold(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldKinTel), v))
+	})
+}
+
+// KinNameEQ applies the EQ predicate on the "kin_name" field.
+func KinNameEQ(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameNEQ applies the NEQ predicate on the "kin_name" field.
+func KinNameNEQ(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameIn applies the In predicate on the "kin_name" field.
+func KinNameIn(vs ...string) predicate.Rent {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Rent(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldKinName), v...))
+	})
+}
+
+// KinNameNotIn applies the NotIn predicate on the "kin_name" field.
+func KinNameNotIn(vs ...string) predicate.Rent {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Rent(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldKinName), v...))
+	})
+}
+
+// KinNameGT applies the GT predicate on the "kin_name" field.
+func KinNameGT(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameGTE applies the GTE predicate on the "kin_name" field.
+func KinNameGTE(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameLT applies the LT predicate on the "kin_name" field.
+func KinNameLT(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameLTE applies the LTE predicate on the "kin_name" field.
+func KinNameLTE(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameContains applies the Contains predicate on the "kin_name" field.
+func KinNameContains(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameHasPrefix applies the HasPrefix predicate on the "kin_name" field.
+func KinNameHasPrefix(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameHasSuffix applies the HasSuffix predicate on the "kin_name" field.
+func KinNameHasSuffix(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameEqualFold applies the EqualFold predicate on the "kin_name" field.
+func KinNameEqualFold(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldKinName), v))
+	})
+}
+
+// KinNameContainsFold applies the ContainsFold predicate on the "kin_name" field.
+func KinNameContainsFold(v string) predicate.Rent {
+	return predicate.Rent(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldKinName), v))
 	})
 }
 

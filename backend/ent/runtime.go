@@ -21,6 +21,7 @@ import (
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/prefix"
 	"github.com/sut63/team08/ent/prescription"
+	"github.com/sut63/team08/ent/rent"
 	"github.com/sut63/team08/ent/room"
 	"github.com/sut63/team08/ent/roomtype"
 	"github.com/sut63/team08/ent/schema"
@@ -176,6 +177,20 @@ func init() {
 	prescriptionDescPrescripDateTime := prescriptionFields[1].Descriptor()
 	// prescription.DefaultPrescripDateTime holds the default value on creation for the Prescrip_DateTime field.
 	prescription.DefaultPrescripDateTime = prescriptionDescPrescripDateTime.Default.(func() time.Time)
+	rentFields := schema.Rent{}.Fields()
+	_ = rentFields
+	// rentDescRentID is the schema descriptor for rent_id field.
+	rentDescRentID := rentFields[0].Descriptor()
+	// rent.RentIDValidator is a validator for the "rent_id" field. It is called by the builders before save.
+	rent.RentIDValidator = rentDescRentID.Validators[0].(func(string) error)
+	// rentDescKinTel is the schema descriptor for kin_tel field.
+	rentDescKinTel := rentFields[1].Descriptor()
+	// rent.KinTelValidator is a validator for the "kin_tel" field. It is called by the builders before save.
+	rent.KinTelValidator = rentDescKinTel.Validators[0].(func(string) error)
+	// rentDescKinName is the schema descriptor for kin_name field.
+	rentDescKinName := rentFields[2].Descriptor()
+	// rent.KinNameValidator is a validator for the "kin_name" field. It is called by the builders before save.
+	rent.KinNameValidator = rentDescKinName.Validators[0].(func(string) error)
 	roomFields := schema.Room{}.Fields()
 	_ = roomFields
 	// roomDescName is the schema descriptor for name field.

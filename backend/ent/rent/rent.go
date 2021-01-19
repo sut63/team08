@@ -7,6 +7,12 @@ const (
 	Label = "rent"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldRentID holds the string denoting the rent_id field in the database.
+	FieldRentID = "rent_id"
+	// FieldKinTel holds the string denoting the kin_tel field in the database.
+	FieldKinTel = "kin_tel"
+	// FieldKinName holds the string denoting the kin_name field in the database.
+	FieldKinName = "kin_name"
 	// FieldAddedTime holds the string denoting the added_time field in the database.
 	FieldAddedTime = "added_time"
 
@@ -45,6 +51,9 @@ const (
 // Columns holds all SQL columns for rent fields.
 var Columns = []string{
 	FieldID,
+	FieldRentID,
+	FieldKinTel,
+	FieldKinName,
 	FieldAddedTime,
 }
 
@@ -54,3 +63,12 @@ var ForeignKeys = []string{
 	"Patient_id",
 	"room_id",
 }
+
+var (
+	// RentIDValidator is a validator for the "rent_id" field. It is called by the builders before save.
+	RentIDValidator func(string) error
+	// KinTelValidator is a validator for the "kin_tel" field. It is called by the builders before save.
+	KinTelValidator func(string) error
+	// KinNameValidator is a validator for the "kin_name" field. It is called by the builders before save.
+	KinNameValidator func(string) error
+)

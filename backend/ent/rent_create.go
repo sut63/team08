@@ -23,6 +23,24 @@ type RentCreate struct {
 	hooks    []Hook
 }
 
+// SetRentID sets the rent_id field.
+func (rc *RentCreate) SetRentID(s string) *RentCreate {
+	rc.mutation.SetRentID(s)
+	return rc
+}
+
+// SetKinTel sets the kin_tel field.
+func (rc *RentCreate) SetKinTel(s string) *RentCreate {
+	rc.mutation.SetKinTel(s)
+	return rc
+}
+
+// SetKinName sets the kin_name field.
+func (rc *RentCreate) SetKinName(s string) *RentCreate {
+	rc.mutation.SetKinName(s)
+	return rc
+}
+
 // SetAddedTime sets the added_time field.
 func (rc *RentCreate) SetAddedTime(t time.Time) *RentCreate {
 	rc.mutation.SetAddedTime(t)
@@ -93,6 +111,30 @@ func (rc *RentCreate) Mutation() *RentMutation {
 
 // Save creates the Rent in the database.
 func (rc *RentCreate) Save(ctx context.Context) (*Rent, error) {
+	if _, ok := rc.mutation.RentID(); !ok {
+		return nil, &ValidationError{Name: "rent_id", err: errors.New("ent: missing required field \"rent_id\"")}
+	}
+	if v, ok := rc.mutation.RentID(); ok {
+		if err := rent.RentIDValidator(v); err != nil {
+			return nil, &ValidationError{Name: "rent_id", err: fmt.Errorf("ent: validator failed for field \"rent_id\": %w", err)}
+		}
+	}
+	if _, ok := rc.mutation.KinTel(); !ok {
+		return nil, &ValidationError{Name: "kin_tel", err: errors.New("ent: missing required field \"kin_tel\"")}
+	}
+	if v, ok := rc.mutation.KinTel(); ok {
+		if err := rent.KinTelValidator(v); err != nil {
+			return nil, &ValidationError{Name: "kin_tel", err: fmt.Errorf("ent: validator failed for field \"kin_tel\": %w", err)}
+		}
+	}
+	if _, ok := rc.mutation.KinName(); !ok {
+		return nil, &ValidationError{Name: "kin_name", err: errors.New("ent: missing required field \"kin_name\"")}
+	}
+	if v, ok := rc.mutation.KinName(); ok {
+		if err := rent.KinNameValidator(v); err != nil {
+			return nil, &ValidationError{Name: "kin_name", err: fmt.Errorf("ent: validator failed for field \"kin_name\": %w", err)}
+		}
+	}
 	if _, ok := rc.mutation.AddedTime(); !ok {
 		return nil, &ValidationError{Name: "added_time", err: errors.New("ent: missing required field \"added_time\"")}
 	}
@@ -156,6 +198,30 @@ func (rc *RentCreate) createSpec() (*Rent, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := rc.mutation.RentID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldRentID,
+		})
+		r.RentID = value
+	}
+	if value, ok := rc.mutation.KinTel(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldKinTel,
+		})
+		r.KinTel = value
+	}
+	if value, ok := rc.mutation.KinName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: rent.FieldKinName,
+		})
+		r.KinName = value
+	}
 	if value, ok := rc.mutation.AddedTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

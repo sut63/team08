@@ -8561,6 +8561,9 @@ type RentMutation struct {
 	op             Op
 	typ            string
 	id             *int
+	rent_id        *string
+	kin_tel        *string
+	kin_name       *string
 	added_time     *time.Time
 	clearedFields  map[string]struct{}
 	room           *int
@@ -8650,6 +8653,117 @@ func (m *RentMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetRentID sets the rent_id field.
+func (m *RentMutation) SetRentID(s string) {
+	m.rent_id = &s
+}
+
+// RentID returns the rent_id value in the mutation.
+func (m *RentMutation) RentID() (r string, exists bool) {
+	v := m.rent_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldRentID returns the old rent_id value of the Rent.
+// If the Rent object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RentMutation) OldRentID(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldRentID is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldRentID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldRentID: %w", err)
+	}
+	return oldValue.RentID, nil
+}
+
+// ResetRentID reset all changes of the "rent_id" field.
+func (m *RentMutation) ResetRentID() {
+	m.rent_id = nil
+}
+
+// SetKinTel sets the kin_tel field.
+func (m *RentMutation) SetKinTel(s string) {
+	m.kin_tel = &s
+}
+
+// KinTel returns the kin_tel value in the mutation.
+func (m *RentMutation) KinTel() (r string, exists bool) {
+	v := m.kin_tel
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldKinTel returns the old kin_tel value of the Rent.
+// If the Rent object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RentMutation) OldKinTel(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldKinTel is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldKinTel requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldKinTel: %w", err)
+	}
+	return oldValue.KinTel, nil
+}
+
+// ResetKinTel reset all changes of the "kin_tel" field.
+func (m *RentMutation) ResetKinTel() {
+	m.kin_tel = nil
+}
+
+// SetKinName sets the kin_name field.
+func (m *RentMutation) SetKinName(s string) {
+	m.kin_name = &s
+}
+
+// KinName returns the kin_name value in the mutation.
+func (m *RentMutation) KinName() (r string, exists bool) {
+	v := m.kin_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldKinName returns the old kin_name value of the Rent.
+// If the Rent object wasn't provided to the builder, the object is fetched
+// from the database.
+// An error is returned if the mutation operation is not UpdateOne, or database query fails.
+func (m *RentMutation) OldKinName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldKinName is allowed only on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldKinName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldKinName: %w", err)
+	}
+	return oldValue.KinName, nil
+}
+
+// ResetKinName reset all changes of the "kin_name" field.
+func (m *RentMutation) ResetKinName() {
+	m.kin_name = nil
 }
 
 // SetAddedTime sets the added_time field.
@@ -8820,7 +8934,16 @@ func (m *RentMutation) Type() string {
 // this mutation. Note that, in order to get all numeric
 // fields that were in/decremented, call AddedFields().
 func (m *RentMutation) Fields() []string {
-	fields := make([]string, 0, 1)
+	fields := make([]string, 0, 4)
+	if m.rent_id != nil {
+		fields = append(fields, rent.FieldRentID)
+	}
+	if m.kin_tel != nil {
+		fields = append(fields, rent.FieldKinTel)
+	}
+	if m.kin_name != nil {
+		fields = append(fields, rent.FieldKinName)
+	}
 	if m.added_time != nil {
 		fields = append(fields, rent.FieldAddedTime)
 	}
@@ -8832,6 +8955,12 @@ func (m *RentMutation) Fields() []string {
 // not set, or was not define in the schema.
 func (m *RentMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case rent.FieldRentID:
+		return m.RentID()
+	case rent.FieldKinTel:
+		return m.KinTel()
+	case rent.FieldKinName:
+		return m.KinName()
 	case rent.FieldAddedTime:
 		return m.AddedTime()
 	}
@@ -8843,6 +8972,12 @@ func (m *RentMutation) Field(name string) (ent.Value, bool) {
 // or the query to the database was failed.
 func (m *RentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case rent.FieldRentID:
+		return m.OldRentID(ctx)
+	case rent.FieldKinTel:
+		return m.OldKinTel(ctx)
+	case rent.FieldKinName:
+		return m.OldKinName(ctx)
 	case rent.FieldAddedTime:
 		return m.OldAddedTime(ctx)
 	}
@@ -8854,6 +8989,27 @@ func (m *RentMutation) OldField(ctx context.Context, name string) (ent.Value, er
 // type mismatch the field type.
 func (m *RentMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case rent.FieldRentID:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetRentID(v)
+		return nil
+	case rent.FieldKinTel:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetKinTel(v)
+		return nil
+	case rent.FieldKinName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetKinName(v)
+		return nil
 	case rent.FieldAddedTime:
 		v, ok := value.(time.Time)
 		if !ok {
@@ -8911,6 +9067,15 @@ func (m *RentMutation) ClearField(name string) error {
 // defined in the schema.
 func (m *RentMutation) ResetField(name string) error {
 	switch name {
+	case rent.FieldRentID:
+		m.ResetRentID()
+		return nil
+	case rent.FieldKinTel:
+		m.ResetKinTel()
+		return nil
+	case rent.FieldKinName:
+		m.ResetKinName()
+		return nil
 	case rent.FieldAddedTime:
 		m.ResetAddedTime()
 		return nil

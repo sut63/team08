@@ -395,6 +395,9 @@ var (
 	// RentsColumns holds the columns for the "rents" table.
 	RentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "rent_id", Type: field.TypeString},
+		{Name: "kin_tel", Type: field.TypeString},
+		{Name: "kin_name", Type: field.TypeString},
 		{Name: "added_time", Type: field.TypeTime},
 		{Name: "nurse_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Unique: true, Nullable: true},
@@ -408,21 +411,21 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "rents_nurses_fromnurse",
-				Columns: []*schema.Column{RentsColumns[2]},
+				Columns: []*schema.Column{RentsColumns[5]},
 
 				RefColumns: []*schema.Column{NursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "rents_patients_frompatient",
-				Columns: []*schema.Column{RentsColumns[3]},
+				Columns: []*schema.Column{RentsColumns[6]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "rents_rooms_rents",
-				Columns: []*schema.Column{RentsColumns[4]},
+				Columns: []*schema.Column{RentsColumns[7]},
 
 				RefColumns: []*schema.Column{RoomsColumns[0]},
 				OnDelete:   schema.SetNull,

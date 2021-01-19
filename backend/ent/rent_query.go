@@ -332,12 +332,12 @@ func (rq *RentQuery) WithNurse(opts ...func(*NurseQuery)) *RentQuery {
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"added_time,omitempty"`
+//		RentID string `json:"rent_id,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Rent.Query().
-//		GroupBy(rent.FieldAddedTime).
+//		GroupBy(rent.FieldRentID).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -358,11 +358,11 @@ func (rq *RentQuery) GroupBy(field string, fields ...string) *RentGroupBy {
 // Example:
 //
 //	var v []struct {
-//		AddedTime time.Time `json:"added_time,omitempty"`
+//		RentID string `json:"rent_id,omitempty"`
 //	}
 //
 //	client.Rent.Query().
-//		Select(rent.FieldAddedTime).
+//		Select(rent.FieldRentID).
 //		Scan(ctx, &v)
 //
 func (rq *RentQuery) Select(field string, fields ...string) *RentSelect {
