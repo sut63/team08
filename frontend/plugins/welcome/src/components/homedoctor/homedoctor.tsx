@@ -19,6 +19,12 @@ import {
 import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
+import { Cookies } from 'react-cookie/cjs';//cookie
+import { useCookies } from 'react-cookie/cjs';//cookie
+
+
+const cookies = new Cookies();
+const Name = cookies.get('Name');
 
 const HeaderCustom = {
   minHeight: '50px',
@@ -58,7 +64,13 @@ function a11yProps(index: any) {
 export default function ScrollableTabsButtonForce() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+  function Logout() {
+    removeCookie('ID', { path: '/' })
+    removeCookie('Name', { path: '/' })
+    removeCookie('Email', { path: '/' })
+    window.location.href = "http://localhost:3000/";
+  }
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -67,9 +79,9 @@ export default function ScrollableTabsButtonForce() {
 
     <Page theme={pageTheme.service}>
       <Header style={HeaderCustom} title={`แพทย์`}>
-        <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true" fontSize="large" />
-
-        <Link component={RouterLink} to="/">
+      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true" fontSize="large" />
+        <div style={{ marginLeft: 10 }}>{Name}</div>
+        <Link onClick={Logout}>
           Logout
          </Link>
       </Header>

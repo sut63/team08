@@ -11,6 +11,8 @@ import LocalHospitalIcon from '@material-ui/icons/LocalHospital';
 import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
 import { EntNurse, EntDoctor, EntMedical } from '../../api/models'; // import interface User
 import Swal from 'sweetalert2'; // alert
+import { useCookies } from 'react-cookie/cjs';//cookie
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -37,6 +39,7 @@ const Login: FC<{}> = () => {
 
   const classes = useStyles();
   const api = new DefaultApi();
+  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
 
   const [nurses, SetNurses] = React.useState<EntNurse[]>([]);
   const [doctors, SetDoctors] = React.useState<EntDoctor[]>([]);
@@ -94,6 +97,9 @@ const Login: FC<{}> = () => {
     nurses.filter(item => item.nurseEmail === email).map(item2 => {
       if (status == false) {
         if (item2.nursePassword == password) {
+          setCookie('ID', item2.id, {path:'/' })
+          setCookie('Name', item2.nurseName, {path:'/' })
+          setCookie('Email', item2.nurseEmail, {path:'/' })
           window.location.href = "http://localhost:3000/homenurse";
           status = true
         }
@@ -102,6 +108,9 @@ const Login: FC<{}> = () => {
     doctors.filter(item => item.doctorEmail === email).map(item2 => {
       if (status == false) {
         if (item2.doctorPassword == password) {
+          setCookie('ID', item2.id, {path:'/' })
+          setCookie('Name', item2.doctorName, {path:'/' })
+          setCookie('Email', item2.doctorEmail, {path:'/' })
           window.location.href = "http://localhost:3000/homedoctor";
           status = true
         }
@@ -110,6 +119,9 @@ const Login: FC<{}> = () => {
     medicals.filter(item => item.medicalEmail === email).map(item2 => {
       if (status == false) {
         if (item2.medicalPassword == password) {
+          setCookie('ID', item2.id, {path:'/' })
+          setCookie('Name', item2.medicalName, {path:'/' })
+          setCookie('Email', item2.medicalEmail, {path:'/' })
           window.location.href = "http://localhost:3000/homemedical";
           status = true
         }
