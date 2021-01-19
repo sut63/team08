@@ -4698,11 +4698,20 @@ var doc = `{
                 "added": {
                     "type": "string"
                 },
+                "kinName": {
+                    "type": "string"
+                },
+                "kinTel": {
+                    "type": "string"
+                },
                 "nurse": {
                     "type": "integer"
                 },
                 "patient": {
                     "type": "integer"
+                },
+                "rentID": {
+                    "type": "string"
                 },
                 "room": {
                     "type": "integer"
@@ -5440,8 +5449,20 @@ var doc = `{
                     "description": "ID of the ent.",
                     "type": "integer"
                 },
+                "kin_name": {
+                    "description": "KinName holds the value of the \"kin_name\" field.",
+                    "type": "string"
+                },
+                "kin_tel": {
+                    "description": "KinTel holds the value of the \"kin_tel\" field.",
+                    "type": "string"
+                },
                 "patient_id": {
                     "type": "integer"
+                },
+                "rent_id": {
+                    "description": "RentID holds the value of the \"rent_id\" field.",
+                    "type": "string"
                 }
             }
         },
