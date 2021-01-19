@@ -19,6 +19,12 @@ type Rent struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// RentID holds the value of the "rent_id" field.
+	RentID string `json:"rent_id,omitempty"`
+	// KinTel holds the value of the "kin_tel" field.
+	KinTel string `json:"kin_tel,omitempty"`
+	// KinName holds the value of the "kin_name" field.
+	KinName string `json:"kin_name,omitempty"`
 	// AddedTime holds the value of the "added_time" field.
 	AddedTime time.Time `json:"added_time,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -87,8 +93,11 @@ func (e RentEdges) NurseOrErr() (*Nurse, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Rent) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // id
-		&sql.NullTime{},  // added_time
+		&sql.NullInt64{},  // id
+		&sql.NullString{}, // rent_id
+		&sql.NullString{}, // kin_tel
+		&sql.NullString{}, // kin_name
+		&sql.NullTime{},   // added_time
 	}
 }
 
@@ -113,12 +122,27 @@ func (r *Rent) assignValues(values ...interface{}) error {
 	}
 	r.ID = int(value.Int64)
 	values = values[1:]
-	if value, ok := values[0].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field added_time", values[0])
+	if value, ok := values[0].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field rent_id", values[0])
+	} else if value.Valid {
+		r.RentID = value.String
+	}
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field kin_tel", values[1])
+	} else if value.Valid {
+		r.KinTel = value.String
+	}
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field kin_name", values[2])
+	} else if value.Valid {
+		r.KinName = value.String
+	}
+	if value, ok := values[3].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field added_time", values[3])
 	} else if value.Valid {
 		r.AddedTime = value.Time
 	}
-	values = values[1:]
+	values = values[4:]
 	if len(values) == len(rent.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field nurse_id", value)
@@ -180,6 +204,12 @@ func (r *Rent) String() string {
 	var builder strings.Builder
 	builder.WriteString("Rent(")
 	builder.WriteString(fmt.Sprintf("id=%v", r.ID))
+	builder.WriteString(", rent_id=")
+	builder.WriteString(r.RentID)
+	builder.WriteString(", kin_tel=")
+	builder.WriteString(r.KinTel)
+	builder.WriteString(", kin_name=")
+	builder.WriteString(r.KinName)
 	builder.WriteString(", added_time=")
 	builder.WriteString(r.AddedTime.Format(time.ANSIC))
 	builder.WriteByte(')')
