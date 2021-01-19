@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/sut63/team08/ent"
 	"github.com/sut63/team08/ent/nurse"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/rent"
 	"github.com/sut63/team08/ent/room"
-	"github.com/gin-gonic/gin"
 )
 
 // RentController defines the struct for the rent controller
@@ -22,6 +22,9 @@ type RentController struct {
 
 //Rent struct
 type Rent struct {
+	RentID	string
+	KinTel 	string
+	KinName	string
 	Added   string
 	Room    int
 	Patient int
@@ -83,11 +86,14 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 		return
 	}
 
-
 	datetime, err := time.Parse(time.RFC3339, obj.Added)
 
 	r, err := ctl.client.Rent.
 		Create().
+		
+		SetRentID(obj.RentID).
+		SetKinName(obj.KinName).
+		SetKinTel(obj.KinTel).
 		SetAddedTime(datetime).
 		SetRoom(ro).
 		SetPatient(p).
@@ -96,7 +102,8 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
