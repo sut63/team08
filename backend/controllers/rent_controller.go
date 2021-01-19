@@ -22,9 +22,9 @@ type RentController struct {
 
 //Rent struct
 type Rent struct {
-	RentID	string
-	KinTel 	string
-	KinName	string
+	RentID  string
+	KinTel  string
+	KinName string
 	Added   string
 	Room    int
 	Patient int
@@ -90,7 +90,6 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 
 	r, err := ctl.client.Rent.
 		Create().
-		
 		SetRentID(obj.RentID).
 		SetKinName(obj.KinName).
 		SetKinTel(obj.KinTel).
