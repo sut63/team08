@@ -16,7 +16,12 @@ import {
 } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
-import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
+import { Cookies } from 'react-cookie/cjs';//cookie
+import { useCookies } from 'react-cookie/cjs';//cookie
+
+
+const cookies = new Cookies();
+const Name = cookies.get('Name');
 
 const HeaderCustom = {
   minHeight: '50px',
@@ -45,84 +50,92 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-  
-      function a11yProps(index: any) {
-        return {
-          id: `scrollable-force-tab-${index}`,
-          'aria-controls': `scrollable-force-tabpanel-${index}`,
-        };
-      }
 
-      export default function ScrollableTabsButtonForce() {
-        const classes = useStyles();
-        const [value, setValue] = React.useState(0);
-      
-        const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-          setValue(newValue);
-        };
+function a11yProps(index: any) {
+  return {
+    id: `scrollable-force-tab-${index}`,
+    'aria-controls': `scrollable-force-tabpanel-${index}`,
+  };
+}
+
+export default function ScrollableTabsButtonForce() {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+  function Logout() {
+    removeCookie('ID', { path: '/' })
+    removeCookie('Name', { path: '/' })
+    removeCookie('Email', { path: '/' })
+    window.location.href = "http://localhost:3000/";
+  }
+  
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
 
   return (
 
     <Page theme={pageTheme.service}>
       <Header style={HeaderCustom} title={`เจ้าหน้าที่เวชระเบียน`}>
-      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
-  
-        <Link component={RouterLink} to="/">
-             Logout
+      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true" fontSize="large" />
+        <div style={{ marginLeft: 10 }}>{Name}</div>
+        <Link onClick={Logout}>
+          Logout
          </Link>
       </Header>
 
-    
-    
+
+
       <Content>
         <Container maxWidth="sm">
           <Grid container spacing={1}>
             <Grid item xs={12}>
-   <Table >
-     <tr><td></td>
-       <td  align="center">
-           <br></br>
-         <ApartmentIcon color="primary" style={{ fontSize: 150 }} />
-     <Typography component="h1" variant="h5">
-     SE63 Hospital
+              <Table >
+                <tr><td></td>
+                  <td align="center">
+                    <br></br>
+                    <ApartmentIcon color="primary" style={{ fontSize: 150 }} />
+                    <Typography component="h1" variant="h5">
+                      SE63 Hospital
      </Typography><br></br>
-     </td>
-     </tr>
+                  </td>
+                </tr>
 
-     <tr><td></td><td>
-         <hr ></hr></td>
-     </tr>
-     <Grid item xs={5}>
-              <div className={classes.paper}> </div>
-            </Grid>
-     <tr><br></br></tr>
-     <tr><td></td>
-     <td>
-     <AppBar position="static" color="default">
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="on"
-          indicatorColor="primary"
-          textColor="primary"
-          aria-label="scrollable force tabs example"
-        >
-           <Tab label="ระบบบันทึกสิทธิการรักษาพยาบาล" icon={<LoupeIcon />} {...a11yProps(0)}  component={RouterLink} to="/covered"/>
-           <Tab label="ระบบค้นหาสิทธิการรักษาพยาบาล" icon={<HowToRegIcon />} {...a11yProps(4)}  component={RouterLink} to="/"/>
-        </Tabs>
-      </AppBar>
-     </td>
-     </tr>
+                <tr><td></td><td>
+                  <hr ></hr></td>
+                </tr>
+                <Grid item xs={5}>
+                  <div className={classes.paper}> </div>
+                </Grid>
+                <tr><br></br></tr>
+                <tr><td></td>
+                  <td>
+                    <AppBar position="static" color="default">
+                      <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="scrollable"
+                        scrollButtons="on"
+                        indicatorColor="primary"
+                        textColor="primary"
+                        aria-label="scrollable force tabs example"
+                      >
+                        <Tab label="ระบบบันทึกสิทธิการรักษาพยาบาล" icon={<LoupeIcon />} {...a11yProps(0)} component={RouterLink} to="/covered" />
+                        <Tab label="ระบบค้นหาสิทธิการรักษาพยาบาล" icon={<HowToRegIcon />} {...a11yProps(4)} component={RouterLink} to="/" />
+                      </Tabs>
+                    </AppBar>
+                  </td>
+                </tr>
 
-     </Table>
-     </Grid> 
-           
-           
+              </Table>
             </Grid>
+
+
+          </Grid>
         </Container>
       </Content>
-   
+
     </Page>
   );
-  }
+}
