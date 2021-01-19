@@ -27,6 +27,18 @@ export interface ControllersRent {
     added?: string;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersRent
+     */
+    kinName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersRent
+     */
+    kinTel?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersRent
      */
@@ -37,6 +49,12 @@ export interface ControllersRent {
      * @memberof ControllersRent
      */
     patient?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersRent
+     */
+    rentID?: string;
     /**
      * 
      * @type {number}
@@ -56,8 +74,11 @@ export function ControllersRentFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'added': !exists(json, 'added') ? undefined : json['added'],
+        'kinName': !exists(json, 'kinName') ? undefined : json['kinName'],
+        'kinTel': !exists(json, 'kinTel') ? undefined : json['kinTel'],
         'nurse': !exists(json, 'nurse') ? undefined : json['nurse'],
         'patient': !exists(json, 'patient') ? undefined : json['patient'],
+        'rentID': !exists(json, 'rentID') ? undefined : json['rentID'],
         'room': !exists(json, 'room') ? undefined : json['room'],
     };
 }
@@ -72,8 +93,11 @@ export function ControllersRentToJSON(value?: ControllersRent | null): any {
     return {
         
         'added': value.added,
+        'kinName': value.kinName,
+        'kinTel': value.kinTel,
         'nurse': value.nurse,
         'patient': value.patient,
+        'rentID': value.rentID,
         'room': value.room,
     };
 }

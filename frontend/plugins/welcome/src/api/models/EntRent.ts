@@ -45,11 +45,29 @@ export interface EntRent {
      */
     id?: number;
     /**
+     * KinName holds the value of the "kin_name" field.
+     * @type {string}
+     * @memberof EntRent
+     */
+    kinName?: string;
+    /**
+     * KinTel holds the value of the "kin_tel" field.
+     * @type {string}
+     * @memberof EntRent
+     */
+    kinTel?: string;
+    /**
      * 
      * @type {number}
      * @memberof EntRent
      */
     patientId?: number;
+    /**
+     * RentID holds the value of the "rent_id" field.
+     * @type {string}
+     * @memberof EntRent
+     */
+    rentId?: string;
 }
 
 export function EntRentFromJSON(json: any): EntRent {
@@ -65,7 +83,10 @@ export function EntRentFromJSONTyped(json: any, ignoreDiscriminator: boolean): E
         'addedTime': !exists(json, 'added_time') ? undefined : json['added_time'],
         'edges': !exists(json, 'edges') ? undefined : EntRentEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
+        'kinName': !exists(json, 'kin_name') ? undefined : json['kin_name'],
+        'kinTel': !exists(json, 'kin_tel') ? undefined : json['kin_tel'],
         'patientId': !exists(json, 'patient_id') ? undefined : json['patient_id'],
+        'rentId': !exists(json, 'rent_id') ? undefined : json['rent_id'],
     };
 }
 
@@ -81,7 +102,10 @@ export function EntRentToJSON(value?: EntRent | null): any {
         'added_time': value.addedTime,
         'edges': EntRentEdgesToJSON(value.edges),
         'id': value.id,
+        'kin_name': value.kinName,
+        'kin_tel': value.kinTel,
         'patient_id': value.patientId,
+        'rent_id': value.rentId,
     };
 }
 
