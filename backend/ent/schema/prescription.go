@@ -3,6 +3,9 @@ package schema
 import (
 	"time"
 
+	"errors"
+	"regexp"
+
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
@@ -17,8 +20,17 @@ type Prescription struct {
 func (Prescription) Fields() []ent.Field {
 
 	return []ent.Field{
+		field.String("Prescrip_Number").Validate(func(s string) error {
+			match, _ := regexp.MatchString("[P]\\d{3}", s)
+			if !match {
+				return errors.New("รูปแบบรหัสยาไม่ถูกต้อง")
+			}
+			return nil
+		}),
 
-		field.String("Prescrip_Note"),
+		field.String("Prescrip_Issue").NotEmpty(),
+
+		field.String("Prescrip_Note").NotEmpty(),
 
 		field.Time("Prescrip_DateTime").Default(time.Now),
 	}
