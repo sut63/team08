@@ -113,7 +113,8 @@ func (ctl *PrescriptionController) CreatePrescription(c *gin.Context) {
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
