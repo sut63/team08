@@ -29,6 +29,8 @@ type Prescription struct {
 	Drug    int
 	Note    string
 	Added   string
+	Number  string
+	Issue   string
 }
 
 // CreatePrescription handles POST requests for adding prescription entities
@@ -91,6 +93,13 @@ func (ctl *PrescriptionController) CreatePrescription(c *gin.Context) {
 		return
 	}
 	time, err := time.Parse(time.RFC3339, obj.Added)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"status": false,
+			"error":  "added time wrong",
+		})
+		return
+	}
 	pr, err := ctl.client.Prescription.
 		Create().
 		SetDoctor(d).
@@ -98,6 +107,8 @@ func (ctl *PrescriptionController) CreatePrescription(c *gin.Context) {
 		SetNurse(n).
 		SetDrug(dr).
 		SetPrescripDateTime(time).
+		SetPrescripNumber(obj.Number).
+		SetPrescripIssue(obj.Issue).
 		SetPrescripNote(obj.Note).
 		Save(context.Background())
 	if err != nil {
