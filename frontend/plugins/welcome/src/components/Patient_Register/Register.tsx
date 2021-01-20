@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Content, Header, Page, pageTheme } from '@backstage/core';
-import SaveIcon from '@material-ui/icons/Save'; 
+import SaveIcon from '@material-ui/icons/Save';
 import { Link as RouterLink } from 'react-router-dom';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Swal from 'sweetalert2'; // alert
@@ -17,11 +17,11 @@ import {
   Link,
 } from '@material-ui/core';
 import { DefaultApi } from '../../api/apis'; // Api Gennerate From Command
-import { 
+import {
   EntBloodtype,
   EntGender,
   EntPrefix,
-  } from '../../api/models'; // import interface User
+} from '../../api/models'; // import interface User
 
 // header css
 const HeaderCustom = {
@@ -53,22 +53,22 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Register: FC<{email:string}> = (email) => {
-  
-  
-  
-  
+const Register: FC<{ email: string }> = (email) => {
+
+
+
+
   const classes = useStyles();
   const http = new DefaultApi();
 
-  
+
 
   const [bloodtypes, setBloodtypes] = React.useState<EntBloodtype[]>([]);
   const [prefixs, setPrefixs] = React.useState<EntPrefix[]>([]);
   const [genders, setGenders] = React.useState<EntGender[]>([]);
-  
-  
-  
+
+
+
 
   const getBloodtype = async () => {
     const res = await http.listBloodtype({ limit: 4, offset: 0 });
@@ -88,28 +88,28 @@ const Register: FC<{email:string}> = (email) => {
   };
 
   // Lifecycle Hooks
-   // Lifecycle Hooks
-   useEffect(() => {
+  // Lifecycle Hooks
+  useEffect(() => {
     getBloodtype();
     getPrefix();
     getGender();
   }, []);
 
   // set data to object playlist_video
-  
-  
+
+
   const NamehandleChange = (event: any) => {
     setName(event.target.value as string);
   };
-  
+
   const PrefixhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setPredixID(event.target.value as number);
   };
-  
+
   const GenderhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setGenderID(event.target.value as number);
   };
-  
+
   const WeighthandleChange = (event: any) => {
     setWeight(event.target.value as string);
   };
@@ -126,10 +126,7 @@ const Register: FC<{email:string}> = (email) => {
     setBloodtypesID(event.target.value as number);
   };
 
-  const DoctorhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDoctorID(event.target.value as number);
-  };
-  
+
   const [prefixID, setPredixID] = React.useState(Number);
   const [name, setName] = React.useState(String);
   const [genderID, setGenderID] = React.useState(Number);
@@ -137,9 +134,8 @@ const Register: FC<{email:string}> = (email) => {
   const [height, setHeight] = React.useState(String);
   const [age, setAge] = React.useState(String);
   const [bloodtypeID, setBloodtypesID] = React.useState(Number);
-  const [doctorID, setDoctorID] = React.useState(Number);
 
-  
+
   // alert setting
   const Toast = Swal.mixin({
     toast: true,
@@ -152,7 +148,43 @@ const Register: FC<{email:string}> = (email) => {
       toast.addEventListener('mouseleave', Swal.resumeTimer);
     },
   });
+  // alert error
+  const aleartMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+  // check error 
+  const checkCaseSaveError = (field: string) => {
+    switch (field) {
+      case 'prefix not found':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนคำนำหน้าชื่อผู้ป่วย");
+        return;
+      case 'gender not found':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนเพศของผู้ป่วย");
+        return;
+      case 'bloodtype not found':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนกรุ๊ปเลือดของผู้ป่วย");
+        return;
+      case "weight wrong":
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รูปแบบของน้ำหนักไม่ถูกต้อง");
+        return;
+      case 'height wrong':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รูปแบบของส่วนสูงไม่ถูกต้อง");
+        return;
+      case 'age wrong':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รูปแบบของอายุไม่ถูกต้อง");
+        return;
+      case 'Patient_name':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รูปแบบของชื่อผู้ป่วยไม่ถูกต้อง");
+        return;
+      default:
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ");
+        return;
+    };
 
+  }
 
   // function save data
   function save() {
@@ -162,14 +194,13 @@ const Register: FC<{email:string}> = (email) => {
       name: name,
       weight: weight,
       prefix: prefixID,
-      doctor: doctorID,
       gender: genderID,
       bloodtype: bloodtypeID,
     };
-    
-    
+
+
     console.log(patients)
-   
+
     const apiUrl = 'http://localhost:8080/api/v1/patients';
     const requestOptions = {
       method: 'POST',
@@ -182,28 +213,25 @@ const Register: FC<{email:string}> = (email) => {
       .then(data => {
         console.log(data);
         if (data.status === true) {
-          
+
           Toast.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลสำเร็จ',
           });
         } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
+          checkCaseSaveError(data.error.Name || data.error)
         }
       });
   }
-  
+
   return (
     <Page theme={pageTheme.service}>
-      
+
       <Header style={HeaderCustom} title={`ระบบลงทะเบียนผู้ป่วยใน`}>
-      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
+        <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true" fontSize="large" />
         <div style={{ marginLeft: 10 }}> </div>
         <Link component={RouterLink} to="/">
-             Logout
+          Logout
          </Link>
       </Header>
       <Content>
@@ -216,9 +244,9 @@ const Register: FC<{email:string}> = (email) => {
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
                 <Select
-                  id ="prefix_id"
+                  id="prefix_id"
                   name="prefix_id"
-                  value={prefixID }
+                  value={prefixID}
                   onChange={PrefixhandleChange}
                 >
                   {prefixs.map(item => {
@@ -228,7 +256,7 @@ const Register: FC<{email:string}> = (email) => {
                       </MenuItem>
                     );
                   })}
-                  
+
                 </Select>
               </FormControl>
             </Grid>
@@ -237,18 +265,18 @@ const Register: FC<{email:string}> = (email) => {
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <TextField 
-                  
-                  
-                  value = {name || ''}
-                  id ="patientName"
-                  name="patientName"
-                  variant="outlined" 
+                <TextField
+
+
+                  value={name}
+                  id="name"
+                  name="name"
+                  variant="outlined"
                   onChange={NamehandleChange}
                   className={classes.textField}
                   InputLabelProps={{
-                  shrink: true,
-                }}
+                    shrink: true,
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -279,19 +307,19 @@ const Register: FC<{email:string}> = (email) => {
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <TextField 
-                  name = "weight"
-                  id="weight" 
-                  value = {weight}
-                  
+                <TextField
+                  name="weight"
+                  id="weight"
+                  value={weight}
+
                   variant="outlined"
                   onChange={WeighthandleChange}
                   className={classes.textField}
                   InputLabelProps={{
-                  shrink: true,
-                }}
+                    shrink: true,
+                  }}
                 />
-                
+
               </FormControl>
             </Grid>
             <Grid item xs={3}>
@@ -299,16 +327,16 @@ const Register: FC<{email:string}> = (email) => {
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <TextField 
-                  name = "height"
-                  id="height" 
-                  value = {height}
+                <TextField
+                  name="height"
+                  id="height"
+                  value={height}
                   variant="outlined"
                   onChange={HeighthandleChange}
                   className={classes.textField}
                   InputLabelProps={{
-                  shrink: true,
-                }}
+                    shrink: true,
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -318,16 +346,16 @@ const Register: FC<{email:string}> = (email) => {
             </Grid>
             <Grid item xs={9}>
               <FormControl variant="outlined" className={classes.formControl}>
-                <TextField 
-                  name ="age"
-                  id="age" 
-                  value = {age}
+                <TextField
+                  name="age"
+                  id="age"
+                  value={age}
                   variant="outlined"
                   onChange={AgehandleChange}
                   className={classes.textField}
                   InputLabelProps={{
-                  shrink: true,
-                }}
+                    shrink: true,
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -340,7 +368,7 @@ const Register: FC<{email:string}> = (email) => {
                 <Select
                   name="bloodtype_id"
                   id="bloodtype_id"
-                  value={bloodtypeID }
+                  value={bloodtypeID}
                   onChange={BloodTypehandleChange}
                 >
                   {bloodtypes.map(item => {
@@ -354,10 +382,10 @@ const Register: FC<{email:string}> = (email) => {
               </FormControl>
             </Grid>
 
-            
+
             <Grid item xs={3}></Grid>
             <Grid item xs={9}>
-            <Button
+              <Button
                 variant="contained"
                 color="primary"
                 size="large"
@@ -369,7 +397,6 @@ const Register: FC<{email:string}> = (email) => {
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <Button
                 variant="contained"
-                color="amber"
                 size="large"
                 startIcon={<NavigateBeforeIcon />}
                 component={RouterLink} to="/homenurse"
