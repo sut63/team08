@@ -166,10 +166,10 @@ const checkCaseSaveError = (field: string) => {
       aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วย");
       return;
     case 'Doctor not found':
-      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วย");
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อแพทย์ผู้สั่งยา");
       return;
     case 'Drug not found':
-      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วย");
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อยา");
       return;
     case 'Nurse not found':
       aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อพยาบาลที่บันทึก");
