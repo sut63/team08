@@ -152,7 +152,21 @@ func init() {
 	// patientDescPatientName is the schema descriptor for Patient_name field.
 	patientDescPatientName := patientFields[0].Descriptor()
 	// patient.PatientNameValidator is a validator for the "Patient_name" field. It is called by the builders before save.
-	patient.PatientNameValidator = patientDescPatientName.Validators[0].(func(string) error)
+	patient.PatientNameValidator = func() func(string) error {
+		validators := patientDescPatientName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(_Patient_name string) error {
+			for _, fn := range fns {
+				if err := fn(_Patient_name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// patientDescPatientAge is the schema descriptor for Patient_age field.
 	patientDescPatientAge := patientFields[1].Descriptor()
 	// patient.PatientAgeValidator is a validator for the "Patient_age" field. It is called by the builders before save.

@@ -1,6 +1,10 @@
 package schema
 
 import (
+	"errors"
+	"regexp"
+	"strings"
+
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
@@ -14,7 +18,14 @@ type Patient struct {
 // Fields of the Patient.
 func (Patient) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("Patient_name").NotEmpty(),
+		field.String("Patient_name").
+			Match(regexp.MustCompile("[a-zA-Z_]+$")).
+			Validate(func(s string) error {
+				if strings.ToLower(s) == s {
+					return errors.New("รูปแบบของชื่อผู้ป่วยไม่ถูกต้อง")
+				}
+				return nil
+			}),
 		field.Int("Patient_age").Positive(),
 		field.Float("Patient_weight").Positive(),
 		field.Float("Patient_height").Positive(),
