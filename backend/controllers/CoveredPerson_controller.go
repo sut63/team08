@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/sut63/team08/ent"
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
+	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/schemetype"
-	"github.com/gin-gonic/gin"
 )
 
 // CoveredPersonController defines the struct for the CoveredPerson controller
@@ -22,10 +23,14 @@ type CoveredPersonController struct {
 
 //CoveredPerson struct
 type CoveredPerson struct {
+	Medical     int
 	Patient     int
 	SchemeType  int
 	Fund        int
 	Certificate int
+	Number      string
+	Note        string
+	FundTitle   string
 }
 
 // CreateCoveredPerson handles POST requests for adding CoveredPerson entities
@@ -44,6 +49,16 @@ func (ctl *CoveredPersonController) CreateCoveredPerson(c *gin.Context) {
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
 			"error": "CoveredPerson binding failed",
+		})
+		return
+	}
+	me, err := ctl.client.Medical.
+		Query().
+		Where(medical.IDEQ(int(obj.Medical))).
+		Only(context.Background())
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "Medical not found",
 		})
 		return
 	}
@@ -90,14 +105,19 @@ func (ctl *CoveredPersonController) CreateCoveredPerson(c *gin.Context) {
 
 	cp, err := ctl.client.CoveredPerson.
 		Create().
+		SetMedical(me).
 		SetPatient(p).
 		SetSchemeType(st).
 		SetFund(f).
 		SetCertificate(ce).
+		SetCoveredPersonNumber(obj.Number).
+		SetCoveredPersonNote(obj.Note).
+		SetFundTitle(obj.FundTitle).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
@@ -171,6 +191,7 @@ func (ctl *CoveredPersonController) ListCoveredPerson(c *gin.Context) {
 
 	coveredpersons, err := ctl.client.CoveredPerson.
 		Query().
+		WithMedical().
 		WithPatient().
 		WithSchemeType().
 		WithFund().

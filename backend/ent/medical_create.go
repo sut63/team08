@@ -9,6 +9,7 @@ import (
 
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/medical"
 )
 
@@ -41,6 +42,21 @@ func (mc *MedicalCreate) SetMedicalPassword(s string) *MedicalCreate {
 func (mc *MedicalCreate) SetMedicalTel(s string) *MedicalCreate {
 	mc.mutation.SetMedicalTel(s)
 	return mc
+}
+
+// AddMedicalCoveredPersonIDs adds the Medical_CoveredPerson edge to CoveredPerson by ids.
+func (mc *MedicalCreate) AddMedicalCoveredPersonIDs(ids ...int) *MedicalCreate {
+	mc.mutation.AddMedicalCoveredPersonIDs(ids...)
+	return mc
+}
+
+// AddMedicalCoveredPerson adds the Medical_CoveredPerson edges to CoveredPerson.
+func (mc *MedicalCreate) AddMedicalCoveredPerson(c ...*CoveredPerson) *MedicalCreate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return mc.AddMedicalCoveredPersonIDs(ids...)
 }
 
 // Mutation returns the MedicalMutation object of the builder.
@@ -173,6 +189,25 @@ func (mc *MedicalCreate) createSpec() (*Medical, *sqlgraph.CreateSpec) {
 			Column: medical.FieldMedicalTel,
 		})
 		m.MedicalTel = value
+	}
+	if nodes := mc.mutation.MedicalCoveredPersonIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   medical.MedicalCoveredPersonTable,
+			Columns: []string{medical.MedicalCoveredPersonColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: coveredperson.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return m, _spec
 }

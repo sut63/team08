@@ -16,8 +16,18 @@ const (
 	// FieldMedicalTel holds the string denoting the medical_tel field in the database.
 	FieldMedicalTel = "medical_tel"
 
+	// EdgeMedicalCoveredPerson holds the string denoting the medical_coveredperson edge name in mutations.
+	EdgeMedicalCoveredPerson = "Medical_CoveredPerson"
+
 	// Table holds the table name of the medical in the database.
 	Table = "medicals"
+	// MedicalCoveredPersonTable is the table the holds the Medical_CoveredPerson relation/edge.
+	MedicalCoveredPersonTable = "covered_persons"
+	// MedicalCoveredPersonInverseTable is the table name for the CoveredPerson entity.
+	// It exists in this package in order to avoid circular dependency with the "coveredperson" package.
+	MedicalCoveredPersonInverseTable = "covered_persons"
+	// MedicalCoveredPersonColumn is the table column denoting the Medical_CoveredPerson relation/edge.
+	MedicalCoveredPersonColumn = "medical_id"
 )
 
 // Columns holds all SQL columns for medical fields.

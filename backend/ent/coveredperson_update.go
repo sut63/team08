@@ -12,6 +12,7 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
+	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/predicate"
 	"github.com/sut63/team08/ent/schemetype"
@@ -28,6 +29,24 @@ type CoveredPersonUpdate struct {
 // Where adds a new predicate for the builder.
 func (cpu *CoveredPersonUpdate) Where(ps ...predicate.CoveredPerson) *CoveredPersonUpdate {
 	cpu.predicates = append(cpu.predicates, ps...)
+	return cpu
+}
+
+// SetCoveredPersonNumber sets the CoveredPerson_Number field.
+func (cpu *CoveredPersonUpdate) SetCoveredPersonNumber(s string) *CoveredPersonUpdate {
+	cpu.mutation.SetCoveredPersonNumber(s)
+	return cpu
+}
+
+// SetCoveredPersonNote sets the CoveredPerson_Note field.
+func (cpu *CoveredPersonUpdate) SetCoveredPersonNote(s string) *CoveredPersonUpdate {
+	cpu.mutation.SetCoveredPersonNote(s)
+	return cpu
+}
+
+// SetFundTitle sets the Fund_Title field.
+func (cpu *CoveredPersonUpdate) SetFundTitle(s string) *CoveredPersonUpdate {
+	cpu.mutation.SetFundTitle(s)
 	return cpu
 }
 
@@ -107,6 +126,25 @@ func (cpu *CoveredPersonUpdate) SetCertificate(c *Certificate) *CoveredPersonUpd
 	return cpu.SetCertificateID(c.ID)
 }
 
+// SetMedicalID sets the Medical edge to Medical by id.
+func (cpu *CoveredPersonUpdate) SetMedicalID(id int) *CoveredPersonUpdate {
+	cpu.mutation.SetMedicalID(id)
+	return cpu
+}
+
+// SetNillableMedicalID sets the Medical edge to Medical by id if the given value is not nil.
+func (cpu *CoveredPersonUpdate) SetNillableMedicalID(id *int) *CoveredPersonUpdate {
+	if id != nil {
+		cpu = cpu.SetMedicalID(*id)
+	}
+	return cpu
+}
+
+// SetMedical sets the Medical edge to Medical.
+func (cpu *CoveredPersonUpdate) SetMedical(m *Medical) *CoveredPersonUpdate {
+	return cpu.SetMedicalID(m.ID)
+}
+
 // Mutation returns the CoveredPersonMutation object of the builder.
 func (cpu *CoveredPersonUpdate) Mutation() *CoveredPersonMutation {
 	return cpu.mutation
@@ -136,8 +174,29 @@ func (cpu *CoveredPersonUpdate) ClearCertificate() *CoveredPersonUpdate {
 	return cpu
 }
 
+// ClearMedical clears the Medical edge to Medical.
+func (cpu *CoveredPersonUpdate) ClearMedical() *CoveredPersonUpdate {
+	cpu.mutation.ClearMedical()
+	return cpu
+}
+
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (cpu *CoveredPersonUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := cpu.mutation.CoveredPersonNumber(); ok {
+		if err := coveredperson.CoveredPersonNumberValidator(v); err != nil {
+			return 0, &ValidationError{Name: "CoveredPerson_Number", err: fmt.Errorf("ent: validator failed for field \"CoveredPerson_Number\": %w", err)}
+		}
+	}
+	if v, ok := cpu.mutation.CoveredPersonNote(); ok {
+		if err := coveredperson.CoveredPersonNoteValidator(v); err != nil {
+			return 0, &ValidationError{Name: "CoveredPerson_Note", err: fmt.Errorf("ent: validator failed for field \"CoveredPerson_Note\": %w", err)}
+		}
+	}
+	if v, ok := cpu.mutation.FundTitle(); ok {
+		if err := coveredperson.FundTitleValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Fund_Title", err: fmt.Errorf("ent: validator failed for field \"Fund_Title\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -205,6 +264,27 @@ func (cpu *CoveredPersonUpdate) sqlSave(ctx context.Context) (n int, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := cpu.mutation.CoveredPersonNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldCoveredPersonNumber,
+		})
+	}
+	if value, ok := cpu.mutation.CoveredPersonNote(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldCoveredPersonNote,
+		})
+	}
+	if value, ok := cpu.mutation.FundTitle(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldFundTitle,
+		})
 	}
 	if cpu.mutation.PatientCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -346,6 +426,41 @@ func (cpu *CoveredPersonUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
+	if cpu.mutation.MedicalCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   coveredperson.MedicalTable,
+			Columns: []string{coveredperson.MedicalColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: medical.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cpu.mutation.MedicalIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   coveredperson.MedicalTable,
+			Columns: []string{coveredperson.MedicalColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: medical.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cpu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{coveredperson.Label}
@@ -362,6 +477,24 @@ type CoveredPersonUpdateOne struct {
 	config
 	hooks    []Hook
 	mutation *CoveredPersonMutation
+}
+
+// SetCoveredPersonNumber sets the CoveredPerson_Number field.
+func (cpuo *CoveredPersonUpdateOne) SetCoveredPersonNumber(s string) *CoveredPersonUpdateOne {
+	cpuo.mutation.SetCoveredPersonNumber(s)
+	return cpuo
+}
+
+// SetCoveredPersonNote sets the CoveredPerson_Note field.
+func (cpuo *CoveredPersonUpdateOne) SetCoveredPersonNote(s string) *CoveredPersonUpdateOne {
+	cpuo.mutation.SetCoveredPersonNote(s)
+	return cpuo
+}
+
+// SetFundTitle sets the Fund_Title field.
+func (cpuo *CoveredPersonUpdateOne) SetFundTitle(s string) *CoveredPersonUpdateOne {
+	cpuo.mutation.SetFundTitle(s)
+	return cpuo
 }
 
 // SetPatientID sets the Patient edge to Patient by id.
@@ -440,6 +573,25 @@ func (cpuo *CoveredPersonUpdateOne) SetCertificate(c *Certificate) *CoveredPerso
 	return cpuo.SetCertificateID(c.ID)
 }
 
+// SetMedicalID sets the Medical edge to Medical by id.
+func (cpuo *CoveredPersonUpdateOne) SetMedicalID(id int) *CoveredPersonUpdateOne {
+	cpuo.mutation.SetMedicalID(id)
+	return cpuo
+}
+
+// SetNillableMedicalID sets the Medical edge to Medical by id if the given value is not nil.
+func (cpuo *CoveredPersonUpdateOne) SetNillableMedicalID(id *int) *CoveredPersonUpdateOne {
+	if id != nil {
+		cpuo = cpuo.SetMedicalID(*id)
+	}
+	return cpuo
+}
+
+// SetMedical sets the Medical edge to Medical.
+func (cpuo *CoveredPersonUpdateOne) SetMedical(m *Medical) *CoveredPersonUpdateOne {
+	return cpuo.SetMedicalID(m.ID)
+}
+
 // Mutation returns the CoveredPersonMutation object of the builder.
 func (cpuo *CoveredPersonUpdateOne) Mutation() *CoveredPersonMutation {
 	return cpuo.mutation
@@ -469,8 +621,29 @@ func (cpuo *CoveredPersonUpdateOne) ClearCertificate() *CoveredPersonUpdateOne {
 	return cpuo
 }
 
+// ClearMedical clears the Medical edge to Medical.
+func (cpuo *CoveredPersonUpdateOne) ClearMedical() *CoveredPersonUpdateOne {
+	cpuo.mutation.ClearMedical()
+	return cpuo
+}
+
 // Save executes the query and returns the updated entity.
 func (cpuo *CoveredPersonUpdateOne) Save(ctx context.Context) (*CoveredPerson, error) {
+	if v, ok := cpuo.mutation.CoveredPersonNumber(); ok {
+		if err := coveredperson.CoveredPersonNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "CoveredPerson_Number", err: fmt.Errorf("ent: validator failed for field \"CoveredPerson_Number\": %w", err)}
+		}
+	}
+	if v, ok := cpuo.mutation.CoveredPersonNote(); ok {
+		if err := coveredperson.CoveredPersonNoteValidator(v); err != nil {
+			return nil, &ValidationError{Name: "CoveredPerson_Note", err: fmt.Errorf("ent: validator failed for field \"CoveredPerson_Note\": %w", err)}
+		}
+	}
+	if v, ok := cpuo.mutation.FundTitle(); ok {
+		if err := coveredperson.FundTitleValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Fund_Title", err: fmt.Errorf("ent: validator failed for field \"Fund_Title\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -537,6 +710,27 @@ func (cpuo *CoveredPersonUpdateOne) sqlSave(ctx context.Context) (cp *CoveredPer
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing CoveredPerson.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := cpuo.mutation.CoveredPersonNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldCoveredPersonNumber,
+		})
+	}
+	if value, ok := cpuo.mutation.CoveredPersonNote(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldCoveredPersonNote,
+		})
+	}
+	if value, ok := cpuo.mutation.FundTitle(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldFundTitle,
+		})
+	}
 	if cpuo.mutation.PatientCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -669,6 +863,41 @@ func (cpuo *CoveredPersonUpdateOne) sqlSave(ctx context.Context) (cp *CoveredPer
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: certificate.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if cpuo.mutation.MedicalCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   coveredperson.MedicalTable,
+			Columns: []string{coveredperson.MedicalColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: medical.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := cpuo.mutation.MedicalIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   coveredperson.MedicalTable,
+			Columns: []string{coveredperson.MedicalColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: medical.FieldID,
 				},
 			},
 		}
