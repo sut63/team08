@@ -5,7 +5,7 @@ import SaveIcon from '@material-ui/icons/Save'; // icon save
 import { Link as RouterLink } from 'react-router-dom';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Swal from 'sweetalert2'; // alert
-
+import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
 import {
   Container,
   Grid,
@@ -61,19 +61,6 @@ const Prescription: FC<{}> = () => {
   const [patients, setPatients] = React.useState<EntPatient[]>([]);
   const [drugs, setDrugs] = React.useState<EntDrug[]>([]);
   const [nurses, setNurses] = React.useState<EntNurse[]>([]);
-    
-  // alert setting
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: toast => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    },
-  });
 
   const getDoctors = async () => {
     const res = await http.listDoctor({ limit: 2, offset: 0 });
@@ -94,7 +81,20 @@ const Prescription: FC<{}> = () => {
     const res = await http.listNurse({ limit: 2, offset: 0 });
     setNurses(res);
   };
+   // Lifecycle Hooks
+   useEffect(() => {
+    getDoctors();
+    getPatient();
+    getDrug();
+    getNurse();
+  }, []);
 
+  const PrescriptionNumberhandleChange = (event: any) => {
+    setPrescriptionNumber(event.target.value as string);
+  };
+  const PrescriptionIssuehandleChange = (event: any) => {
+    setPrescriptionIssue(event.target.value as string);
+  };
   const PrescriptionNotehandleChange = (event: any) => {
     setPrescriptionNote(event.target.value as string);
   };
@@ -110,11 +110,12 @@ const Prescription: FC<{}> = () => {
   const DrughandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setDrugID(event.target.value as number);
   };
-
   const NursehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setNurseID(event.target.value as number);
   };
 
+  const [prescriptionissue, setPrescriptionIssue] = React.useState(String);
+  const [prescriptionnumber, setPrescriptionNumber] = React.useState(String);
   const [prescriptionnote, setPrescriptionNote] = React.useState(String);
   const [added, setPrescriptionDateTime] = React.useState(String);
   const [doctorID, setDoctorID] = React.useState(Number);
@@ -123,26 +124,69 @@ const Prescription: FC<{}> = () => {
   const [nurseID, setNurseID] = React.useState(Number);
 
 
-
-  // Lifecycle Hooks
-  useEffect(() => {
-    getDoctors();
-    getPatient();
-    getDrug();
-    getNurse();
-  }, []);
-
-
+  // alert setting
+  const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: toast => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    },
+  });
+  const prescriptions = {
+    note: prescriptionnote,
+    added: added + ":00+00:00",
+    doctor: doctorID,
+    patient: patientID,
+    drug: drugID,
+    nurse: nurseID,
+    number: prescriptionnumber,
+    issue: prescriptionissue,
+  }
+// alert error
+const aleartMessage = (icon: any, title: any) => {
+  Toast.fire({
+    icon: icon,
+    title: title,
+  });
+}
+// check error 
+const checkCaseSaveError = (field: string) => {
+  switch (field) {
+    case 'Prescrip_Number':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รหัสการสั่งยาขึ้นต้นด้วย P ตามด้วยตัวเลข 3 หลัก");
+      return;
+    case "added time wrong":
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนวันเวลาที่สั่งยา");
+      return;
+    case 'Patient not found':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วย");
+      return;
+    case 'Doctor not found':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วย");
+      return;
+    case 'Drug not found':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วย");
+      return;
+    case 'Nurse not found':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อพยาบาลที่บันทึก");
+      return;
+    case 'Prescrip_Issue':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณากรอกวิธีใช้งานยา");
+      return;
+    case 'Prescrip_Note':
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณากรอกหมายเหตุ");
+      return;
+    default:
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ");
+      return;
+  };
+}
   // function save data
   function save() {
-    const prescriptions = {
-      note: prescriptionnote,
-      added: added + ":00+00:00",
-      doctor: doctorID,
-      patient: patientID,
-      drug: drugID,
-      nurse: nurseID,
-    }
     const apiUrl = 'http://localhost:8080/api/v1/prescriptions';
     const requestOptions = {
       method: 'POST',
@@ -150,181 +194,221 @@ const Prescription: FC<{}> = () => {
       body: JSON.stringify(prescriptions),
     };
     console.log(prescriptions); // log ดูข้อมูล สามารถ Inspect ดูข้อมูลได้ F12 เลือก Tab Console
-
     fetch(apiUrl, requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        if (data.status === true) {
-        
-          Toast.fire({
-            icon: 'success',
-            title: 'บันทึกข้อมูลสำเร็จ',
-          });
-        } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
-        }
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      if (data.status === true) {
 
-      });
+        Toast.fire({
+          icon: 'success',
+          title: 'บันทึกข้อมูลสำเร็จ',
+        });
+      } else {
+        checkCaseSaveError(data.error.Name || data.error)
+      }
+    });
 }
   
-  return (
-    <Page theme={pageTheme.service}>
-      <Header style={HeaderCustom} title={`Prescription System`}>
-      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
-        <div style={{ marginLeft: 10 }}> </div>
-        <Link component={RouterLink} to="/">
-             Logout
-         </Link>
-      </Header>
-      <Content>
-        <Container maxWidth="sm">
-          <Grid container spacing={3}>
-            <Grid item xs={12}></Grid>
-            <Grid item xs={4}>
-              <div className={classes.paper}>ผู้ป่วย</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel></InputLabel>
-                <Select
-                  name="patient"
-                  value={patientID}
-                  onChange={PatienthandleChange}
-                >
-                  {patients.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.patientName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>แพทย์ผู้สั่งยา</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel></InputLabel>
-                <Select
-                  name="doctor"
-                  value={doctorID}
-                  onChange={DoctorhandleChange}
-                >
-                  {doctors.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.doctorName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>ยาที่สั่ง</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel></InputLabel>
-                <Select
-                  name="drug"
-                  value={drugID}
-                  onChange={DrughandleChange}
-                >
-                  {drugs.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.drugName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={4}>
-              <div className={classes.paper}>วันเวลาที่สั่งยา</div>
-            </Grid>
-            <Grid item xs={8}>
-              <form className={classes.container} noValidate>
-                <TextField
-                  label="เลือกวันเวลาที่สั่งยา"
-                  name="added"
-                  type="datetime-local"
-                  value={added}
-                  onChange={PrescriptiontDateTimehandleChange}
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </form>
-            </Grid>
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>พยาบาลผู้บันทึก</div>
-            </Grid>
-            <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel></InputLabel>
-                <Select
-                  name="nurse"
-                  value={nurseID}
-                  onChange={NursehandleChange}
-                >
-                  {nurses.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.nurseName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs={4}>
-              <div className={classes.paper}>หมายเหตุ</div>
-            </Grid>
-            <Grid item xs={8}>
-            <TextField
-               name="note"
-               label=""
-               multiline
-               defaultValue="Default Value"
-               variant="outlined"
-               value={prescriptionnote} 
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  onChange={PrescriptionNotehandleChange}
-              />
-            </Grid>
-            <Grid item xs={4}></Grid>
-            <Grid item xs={8}>
-            <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                startIcon={<SaveIcon />}
-                onClick={save}
-              >
-                SAVE
-              </Button>
-            </Grid>
+return (
+  <Page theme={pageTheme.service}>
+    <Header style={HeaderCustom} title={`Prescription System`}>
+    <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
+      <div style={{ marginLeft: 10 }}> </div>
+      <Link component={RouterLink} to="/">
+           Logout
+       </Link>
+    </Header>
+    <Content>
+      <Container maxWidth="sm">
+        <Grid container spacing={3}>
+          <Grid item xs={12}></Grid>
+          <Grid item xs={4}>
+            <div className={classes.paper}>รหัสการสั่งยา</div>
           </Grid>
-        </Container>
-      </Content>
-    </Page>
-  );
-};
+          <Grid item xs={8}>
+          <TextField
+             name="number"
+             label=""
+             multiline
+             defaultValue="Default Value"
+             variant="outlined"
+             value={prescriptionnumber} 
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={PrescriptionNumberhandleChange}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.paper}>ผู้ป่วย</div>
+          </Grid>
+          <Grid item xs={8}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel></InputLabel>
+              <Select
+                name="patient"
+                value={patientID}
+                onChange={PatienthandleChange}
+              >
+                {patients.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.patientName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
 
+          <Grid item xs={4}>
+            <div className={classes.paper}>แพทย์ผู้สั่งยา</div>
+          </Grid>
+          <Grid item xs={8}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel></InputLabel>
+              <Select
+                name="doctor"
+                value={doctorID}
+                onChange={DoctorhandleChange}
+              >
+                {doctors.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.doctorName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={4}>
+            <div className={classes.paper}>ยาที่สั่ง</div>
+          </Grid>
+          <Grid item xs={8}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel></InputLabel>
+              <Select
+                name="drug"
+                value={drugID}
+                onChange={DrughandleChange}
+              >
+                {drugs.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.drugName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={4}>
+            <div className={classes.paper}>วันเวลาที่สั่งยา</div>
+          </Grid>
+          <Grid item xs={8}>
+            <form className={classes.container} noValidate>
+              <TextField
+                label="เลือกวันเวลาที่สั่งยา"
+                name="added"
+                type="datetime-local"
+                value={added}
+                onChange={PrescriptiontDateTimehandleChange}
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+            </form>
+          </Grid>
+
+          <Grid item xs={4}>
+            <div className={classes.paper}>พยาบาลผู้บันทึก</div>
+          </Grid>
+          <Grid item xs={8}>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel></InputLabel>
+              <Select
+                name="nurse"
+                value={nurseID}
+                onChange={NursehandleChange}
+              >
+                {nurses.map(item => {
+                  return (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.nurseName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.paper}>วิธีการใช้ยา</div>
+          </Grid>
+          <Grid item xs={8}>
+          <TextField
+             name="issue"
+             label=""
+             multiline
+             defaultValue="Default Value"
+             variant="outlined"
+             value={prescriptionissue} 
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={PrescriptionIssuehandleChange}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <div className={classes.paper}>หมายเหตุ</div>
+          </Grid>
+          <Grid item xs={8}>
+          <TextField
+             name="note"
+             label=""
+             multiline
+             defaultValue="Default Value"
+             variant="outlined"
+             value={prescriptionnote} 
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={PrescriptionNotehandleChange}
+            />
+          </Grid>
+
+          <Grid item xs={4}></Grid>
+          <Grid item xs={8}>
+          <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<SaveIcon />}
+              onClick={save}
+            >
+              SAVE
+            </Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<NavigateBeforeIcon />}
+              component={RouterLink} to="/homenurse"
+            >
+              Back
+            </Button>
+          </Grid>
+        </Grid>
+      </Container>
+    </Content>
+  </Page>
+);
+};
 export default Prescription;
