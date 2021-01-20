@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/gin-gonic/gin"
 	"github.com/sut63/team08/ent"
 	"github.com/sut63/team08/ent/bloodtype"
 	"github.com/sut63/team08/ent/gender"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/prefix"
-	"github.com/gin-gonic/gin"
 )
 
 // PatientController defines the struct for the patient controller
@@ -56,7 +56,8 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "prefix not found",
+			"status": false,
+			"error":  "prefix not found",
 		})
 		return
 	}
@@ -68,7 +69,8 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "gender not found",
+			"status": false,
+			"error":  "gender not found",
 		})
 		return
 	}
@@ -79,14 +81,36 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "bloodtype not found",
+			"status": false,
+			"error":  "bloodtype not found",
 		})
 		return
 	}
 
 	w, err := strconv.ParseFloat(obj.Weight, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"status": false,
+			"error":  "weight wrong",
+		})
+		return
+	}
 	h, err := strconv.ParseFloat(obj.Height, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"status": false,
+			"error":  "height wrong",
+		})
+		return
+	}
 	a, err := strconv.Atoi(obj.Age)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"status": false,
+			"error":  "age wrong",
+		})
+		return
+	}
 
 	p, err := ctl.client.Patient.
 		Create().
@@ -101,7 +125,8 @@ func (ctl *PatientController) CreatePatient(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
