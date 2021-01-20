@@ -190,7 +190,21 @@ func init() {
 	// rentDescKinName is the schema descriptor for kin_name field.
 	rentDescKinName := rentFields[2].Descriptor()
 	// rent.KinNameValidator is a validator for the "kin_name" field. It is called by the builders before save.
-	rent.KinNameValidator = rentDescKinName.Validators[0].(func(string) error)
+	rent.KinNameValidator = func() func(string) error {
+		validators := rentDescKinName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(kin_name string) error {
+			for _, fn := range fns {
+				if err := fn(kin_name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	roomFields := schema.Room{}.Fields()
 	_ = roomFields
 	// roomDescName is the schema descriptor for name field.

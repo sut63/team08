@@ -3,6 +3,7 @@ package schema
 import (
 	"errors"
 	"regexp"
+	"strings"
 
 	"github.com/facebookincubator/ent"
 	"github.com/facebookincubator/ent/schema/edge"
@@ -17,23 +18,29 @@ type Rent struct {
 // Fields of the Rent.
 func (Rent) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("rent_id").Validate(func(s string)error {
+		field.String("rent_id").Validate(func(s string) error {
 			match, _ := regexp.MatchString("[R]\\d{4}", s)
-			if !match{
+			if !match {
 				return errors.New("รูปแบบรหัสการจองไม่ถูกต้อง")
 			}
 			return nil
 		}),
-		field.String("kin_tel").Validate(func(s string)error {
+		field.String("kin_tel").Validate(func(s string) error {
 			match, _ := regexp.MatchString("[0]\\d{9}", s)
-			if !match{
+			if !match {
 				return errors.New("รูปแบบของเบอร์โทรศัพท์ไม่ถูกต้อง")
 			}
 			return nil
 		}),
-		field.String("kin_name").NotEmpty(),
+		field.String("kin_name").
+			Match(regexp.MustCompile("[a-zA-Z_]+$")).
+			Validate(func(s string) error {
+				if strings.ToLower(s) == s {
+					return errors.New("รูปแบบของชื่อญาติผู้ป่วยไม่ถูกต้อง")
+				}
+				return nil
+			}),
 		field.Time("added_time"),
-
 	}
 }
 
