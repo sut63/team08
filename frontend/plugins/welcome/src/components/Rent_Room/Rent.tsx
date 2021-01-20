@@ -56,22 +56,12 @@ const useStyles = makeStyles(theme => ({
 
 
 const Rent: FC<{ email: string }> = (email) => {
-
-
-
-
   const classes = useStyles();
   const http = new DefaultApi();
-
-
   const [rooms, setRooms] = React.useState<EntRoom[]>([]);
   const [patients, setPatients] = React.useState<EntPatient[]>([]);
   const [roomtypes, setRoomtypes] = React.useState<EntRoomtype[]>([]);
   const [nurses, SetNurses] = React.useState<EntNurse[]>([]);
-
-
-
-
   const getNurse = async () => {
     const res = await http.listNurse({ limit: -1, offset: 0 });
     SetNurses(res);
@@ -93,7 +83,6 @@ const Rent: FC<{ email: string }> = (email) => {
     const res = await http.listRoomtype({ limit: 3, offset: 0 });
     setRoomtypes(res);
   };
-
   // Lifecycle Hooks
   useEffect(() => {
     getRoom();
@@ -101,9 +90,6 @@ const Rent: FC<{ email: string }> = (email) => {
     getRoomtype();
     getNurse();
   }, []);
-
-
-
   const RoomtypehandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setRoomtypeID(event.target.value as number);
     console.log(roomtypeID)
@@ -124,12 +110,23 @@ const Rent: FC<{ email: string }> = (email) => {
     setNurseID(event.target.value as number);
     console.log(roomtypeID)
   };
-
+  const RentIDhandleChange = (event: any) => {
+    setRentID(event.target.value as string);
+  };
+  const KinNamehandleChange = (event: any) => {
+    setKinName(event.target.value as string);
+  };
+  const KinTelhandleChange = (event: any) => {
+    setKinTel(event.target.value as string);
+  };
   const [roomtypeID, setRoomtypeID] = React.useState(Number);
   const [roomID, setRoomID] = React.useState(Number);
   const [patientID, setPatientID] = React.useState(Number);
   const [nurseID, setNurseID] = React.useState(Number);
   const [addeds, setAdded] = React.useState(String);
+  const [rentID, setRentID] = React.useState(String);
+  const [kinname, setKinName] = React.useState(String);
+  const [kintel, setKinTel] = React.useState(String);
 
   // alert setting
   const Toast = Swal.mixin({
@@ -145,12 +142,51 @@ const Rent: FC<{ email: string }> = (email) => {
   });
 
   const rents = {
-    patient: patientID,
+    rentid: rentID,
     room: roomID,
-    added: addeds + ":00+00:00",
+    patient: patientID,
+    kinname: kinname,
+    kintel: kintel,
     nurse: nurseID,
+    added: addeds + ":00+00:00",
   };
+  // alert error
+  const aleartMessage = (icon: any, title: any) => {
+    Toast.fire({
+      icon: icon,
+      title: title,
+    });
+  }
+  // check error 
+  const checkCaseSaveError = (field: string) => {
+    switch (field) {
+      case 'rent_id':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รหัสการจองขึ้นต้นด้วย R ตามด้วยตัวเลข 4 หลัก");
+        return;
+      case 'kin_tel':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รูปแบบของเบอร์โทรไม่ถูกต้อง");
+        return;
+      case 'kin_name':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: รูปแบบชื่อไม่ถูกต้อง ตัวอักษรตัวแรกขึ้นต้นด้วยตัวพิมพ์ใหญ่");
+        return;
+      case "added time wrong":
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนวันที่ต้องการเข้าห้องพัก");
+        return;
+      case 'room not found':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนห้องพักที่ต้องการเข้าห้องพัก");
+        return;
+      case 'patient not found':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อผู้ป่วยที่ต้องการเข้าห้องพัก");
+        return;
+      case 'nurse not found':
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อพยาบาลที่ประจำห้องพักนี้");
+        return;
+      default:
+        aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: ผู้ป่วยหรือห้องพักนี้ได้ทำการจองแล้ว ");
+        return;
+    };
 
+  }
   // function save data
   function save() {
     console.log(rents)
@@ -173,10 +209,7 @@ const Rent: FC<{ email: string }> = (email) => {
             title: 'บันทึกข้อมูลสำเร็จ',
           });
         } else {
-          Toast.fire({
-            icon: 'error',
-            title: 'บันทึกข้อมูลไม่สำเร็จ',
-          });
+          checkCaseSaveError(data.error.Name || data.error)
         }
       });
     rooms.map(item => {
@@ -190,10 +223,10 @@ const Rent: FC<{ email: string }> = (email) => {
     <Page theme={pageTheme.service}>
 
       <Header style={HeaderCustom} title={`ระบบจองห้องพักผู้ป่วย`}>
-      <IconButton>
-        <AccountCircleIcon />
-      </IconButton>
-        
+        <IconButton>
+          <AccountCircleIcon />
+        </IconButton>
+
         <div style={{ marginLeft: 10 }}> </div>
         <Link component={RouterLink} to="/">
           Logout
@@ -203,12 +236,31 @@ const Rent: FC<{ email: string }> = (email) => {
         <Container maxWidth="sm">
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              
+
             </Grid>
 
             <Grid item xs={3}></Grid>
 
             <Grid item xs={9}></Grid>
+            <Grid item xs={3}>
+              <div className={classes.paper}>รหัสการจองห้องพัก</div>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  name="rent_id"
+                  id="rent_id"
+                  value={rentID}
+                  variant="outlined"
+                  onChange={RentIDhandleChange}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+              </FormControl>
+            </Grid>
             <Grid item xs={3}>
               <div className={classes.paper}>ประเภทห้อง</div>
             </Grid>
@@ -277,7 +329,44 @@ const Rent: FC<{ email: string }> = (email) => {
                 </Select>
               </FormControl>
             </Grid>
+            <Grid item xs={3}>
+              <div className={classes.paper}>ชื่อญาติผู้ป่วย</div>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  name="kin_name"
+                  id="kin_name"
+                  value={kinname}
+                  variant="outlined"
+                  onChange={KinNamehandleChange}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
 
+              </FormControl>
+            </Grid>
+            <Grid item xs={3}>
+              <div className={classes.paper}>เบอร์โทรญาติผู้ป่วย</div>
+            </Grid>
+            <Grid item xs={9}>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <TextField
+                  name="kin_tel"
+                  id="kin_tel"
+                  value={kintel}
+                  variant="outlined"
+                  onChange={KinTelhandleChange}
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+
+              </FormControl>
+            </Grid>
             <Grid item xs={3}>
               <div className={classes.paper}>พยาบาล</div>
             </Grid>
@@ -286,7 +375,6 @@ const Rent: FC<{ email: string }> = (email) => {
                 <Select
                   id="nurse_id"
                   name="nurse_id"
-
                   value={nurseID}
                   onChange={NursehandleChange}
                 >
@@ -311,7 +399,7 @@ const Rent: FC<{ email: string }> = (email) => {
                   label="เลือกเวลา"
                   name="added"
                   type="datetime-local"
-                  value={addeds} // (undefined || '') = ''
+                  value={addeds || null} // (undefined || '') = ''
                   className={classes.textField}
                   InputLabelProps={{
                     shrink: true,
@@ -320,10 +408,6 @@ const Rent: FC<{ email: string }> = (email) => {
                 />
               </form>
             </Grid>
-
-
-
-
             <Grid item xs={3}></Grid>
             <Grid item xs={9}>
               <Button
@@ -332,8 +416,6 @@ const Rent: FC<{ email: string }> = (email) => {
                 size="large"
                 startIcon={<SaveIcon />}
                 onClick={save}
-
-
               >
                 Save
               </Button>

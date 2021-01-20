@@ -46,7 +46,8 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 	obj := Rent{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": err,
+			"status": false,
+			"error":  "rent binding failed",
 		})
 		return
 	}
@@ -57,7 +58,8 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": err,
+			"status": false,
+			"error":  "room not found",
 		})
 		return
 	}
@@ -69,7 +71,8 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": err,
+			"status": false,
+			"error":  "patient not found",
 		})
 		return
 	}
@@ -81,7 +84,8 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": err,
+			"status": false,
+			"error":  "nurse not found",
 		})
 		return
 	}
@@ -89,7 +93,8 @@ func (ctl *RentController) CreateRent(c *gin.Context) {
 	datetime, err := time.Parse(time.RFC3339, obj.Added)
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": err,
+			"status": false,
+			"error":  "added time wrong",
 		})
 		return
 	}
