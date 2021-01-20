@@ -14,6 +14,7 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
+	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/predicate"
 	"github.com/sut63/team08/ent/schemetype"
@@ -32,6 +33,7 @@ type CoveredPersonQuery struct {
 	withSchemeType  *SchemeTypeQuery
 	withFund        *FundQuery
 	withCertificate *CertificateQuery
+	withMedical     *MedicalQuery
 	withFKs         bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -127,6 +129,24 @@ func (cpq *CoveredPersonQuery) QueryCertificate() *CertificateQuery {
 			sqlgraph.From(coveredperson.Table, coveredperson.FieldID, cpq.sqlQuery()),
 			sqlgraph.To(certificate.Table, certificate.FieldID),
 			sqlgraph.Edge(sqlgraph.M2O, true, coveredperson.CertificateTable, coveredperson.CertificateColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(cpq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryMedical chains the current query on the Medical edge.
+func (cpq *CoveredPersonQuery) QueryMedical() *MedicalQuery {
+	query := &MedicalQuery{config: cpq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := cpq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(coveredperson.Table, coveredperson.FieldID, cpq.sqlQuery()),
+			sqlgraph.To(medical.Table, medical.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, coveredperson.MedicalTable, coveredperson.MedicalColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(cpq.driver.Dialect(), step)
 		return fromU, nil
@@ -357,8 +377,32 @@ func (cpq *CoveredPersonQuery) WithCertificate(opts ...func(*CertificateQuery)) 
 	return cpq
 }
 
+//  WithMedical tells the query-builder to eager-loads the nodes that are connected to
+// the "Medical" edge. The optional arguments used to configure the query builder of the edge.
+func (cpq *CoveredPersonQuery) WithMedical(opts ...func(*MedicalQuery)) *CoveredPersonQuery {
+	query := &MedicalQuery{config: cpq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	cpq.withMedical = query
+	return cpq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		CoveredPersonNumber string `json:"CoveredPerson_Number,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.CoveredPerson.Query().
+//		GroupBy(coveredperson.FieldCoveredPersonNumber).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (cpq *CoveredPersonQuery) GroupBy(field string, fields ...string) *CoveredPersonGroupBy {
 	group := &CoveredPersonGroupBy{config: cpq.config}
 	group.fields = append([]string{field}, fields...)
@@ -372,6 +416,17 @@ func (cpq *CoveredPersonQuery) GroupBy(field string, fields ...string) *CoveredP
 }
 
 // Select one or more fields from the given query.
+//
+// Example:
+//
+//	var v []struct {
+//		CoveredPersonNumber string `json:"CoveredPerson_Number,omitempty"`
+//	}
+//
+//	client.CoveredPerson.Query().
+//		Select(coveredperson.FieldCoveredPersonNumber).
+//		Scan(ctx, &v)
+//
 func (cpq *CoveredPersonQuery) Select(field string, fields ...string) *CoveredPersonSelect {
 	selector := &CoveredPersonSelect{config: cpq.config}
 	selector.fields = append([]string{field}, fields...)
@@ -400,14 +455,15 @@ func (cpq *CoveredPersonQuery) sqlAll(ctx context.Context) ([]*CoveredPerson, er
 		nodes       = []*CoveredPerson{}
 		withFKs     = cpq.withFKs
 		_spec       = cpq.querySpec()
-		loadedTypes = [4]bool{
+		loadedTypes = [5]bool{
 			cpq.withPatient != nil,
 			cpq.withSchemeType != nil,
 			cpq.withFund != nil,
 			cpq.withCertificate != nil,
+			cpq.withMedical != nil,
 		}
 	)
-	if cpq.withPatient != nil || cpq.withSchemeType != nil || cpq.withFund != nil || cpq.withCertificate != nil {
+	if cpq.withPatient != nil || cpq.withSchemeType != nil || cpq.withFund != nil || cpq.withCertificate != nil || cpq.withMedical != nil {
 		withFKs = true
 	}
 	if withFKs {
@@ -533,6 +589,31 @@ func (cpq *CoveredPersonQuery) sqlAll(ctx context.Context) ([]*CoveredPerson, er
 			}
 			for i := range nodes {
 				nodes[i].Edges.Certificate = n
+			}
+		}
+	}
+
+	if query := cpq.withMedical; query != nil {
+		ids := make([]int, 0, len(nodes))
+		nodeids := make(map[int][]*CoveredPerson)
+		for i := range nodes {
+			if fk := nodes[i].medical_id; fk != nil {
+				ids = append(ids, *fk)
+				nodeids[*fk] = append(nodeids[*fk], nodes[i])
+			}
+		}
+		query.Where(medical.IDIn(ids...))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			nodes, ok := nodeids[n.ID]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "medical_id" returned %v`, n.ID)
+			}
+			for i := range nodes {
+				nodes[i].Edges.Medical = n
 			}
 		}
 	}

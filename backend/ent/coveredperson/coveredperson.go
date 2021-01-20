@@ -7,6 +7,12 @@ const (
 	Label = "covered_person"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCoveredPersonNumber holds the string denoting the coveredperson_number field in the database.
+	FieldCoveredPersonNumber = "covered_person_number"
+	// FieldCoveredPersonNote holds the string denoting the coveredperson_note field in the database.
+	FieldCoveredPersonNote = "covered_person_note"
+	// FieldFundTitle holds the string denoting the fund_title field in the database.
+	FieldFundTitle = "fund_title"
 
 	// EdgePatient holds the string denoting the patient edge name in mutations.
 	EdgePatient = "Patient"
@@ -16,6 +22,8 @@ const (
 	EdgeFund = "Fund"
 	// EdgeCertificate holds the string denoting the certificate edge name in mutations.
 	EdgeCertificate = "Certificate"
+	// EdgeMedical holds the string denoting the medical edge name in mutations.
+	EdgeMedical = "Medical"
 
 	// Table holds the table name of the coveredperson in the database.
 	Table = "covered_persons"
@@ -47,17 +55,37 @@ const (
 	CertificateInverseTable = "certificates"
 	// CertificateColumn is the table column denoting the Certificate relation/edge.
 	CertificateColumn = "Certificate_id"
+	// MedicalTable is the table the holds the Medical relation/edge.
+	MedicalTable = "covered_persons"
+	// MedicalInverseTable is the table name for the Medical entity.
+	// It exists in this package in order to avoid circular dependency with the "medical" package.
+	MedicalInverseTable = "medicals"
+	// MedicalColumn is the table column denoting the Medical relation/edge.
+	MedicalColumn = "medical_id"
 )
 
 // Columns holds all SQL columns for coveredperson fields.
 var Columns = []string{
 	FieldID,
+	FieldCoveredPersonNumber,
+	FieldCoveredPersonNote,
+	FieldFundTitle,
 }
 
 // ForeignKeys holds the SQL foreign-keys that are owned by the CoveredPerson type.
 var ForeignKeys = []string{
 	"Certificate_id",
 	"Fund_id",
+	"medical_id",
 	"Patient_id",
 	"SchemeType_id",
 }
+
+var (
+	// CoveredPersonNumberValidator is a validator for the "CoveredPerson_Number" field. It is called by the builders before save.
+	CoveredPersonNumberValidator func(string) error
+	// CoveredPersonNoteValidator is a validator for the "CoveredPerson_Note" field. It is called by the builders before save.
+	CoveredPersonNoteValidator func(string) error
+	// FundTitleValidator is a validator for the "Fund_Title" field. It is called by the builders before save.
+	FundTitleValidator func(string) error
+)

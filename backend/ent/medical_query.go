@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"errors"
 	"fmt"
 	"math"
@@ -11,6 +12,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/predicate"
 )
@@ -23,6 +25,8 @@ type MedicalQuery struct {
 	order      []OrderFunc
 	unique     []string
 	predicates []predicate.Medical
+	// eager-loading edges.
+	withMedicalCoveredPerson *CoveredPersonQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -50,6 +54,24 @@ func (mq *MedicalQuery) Offset(offset int) *MedicalQuery {
 func (mq *MedicalQuery) Order(o ...OrderFunc) *MedicalQuery {
 	mq.order = append(mq.order, o...)
 	return mq
+}
+
+// QueryMedicalCoveredPerson chains the current query on the Medical_CoveredPerson edge.
+func (mq *MedicalQuery) QueryMedicalCoveredPerson() *CoveredPersonQuery {
+	query := &CoveredPersonQuery{config: mq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := mq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(medical.Table, medical.FieldID, mq.sqlQuery()),
+			sqlgraph.To(coveredperson.Table, coveredperson.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, medical.MedicalCoveredPersonTable, medical.MedicalCoveredPersonColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(mq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first Medical entity in the query. Returns *NotFoundError when no medical was found.
@@ -231,6 +253,17 @@ func (mq *MedicalQuery) Clone() *MedicalQuery {
 	}
 }
 
+//  WithMedicalCoveredPerson tells the query-builder to eager-loads the nodes that are connected to
+// the "Medical_CoveredPerson" edge. The optional arguments used to configure the query builder of the edge.
+func (mq *MedicalQuery) WithMedicalCoveredPerson(opts ...func(*CoveredPersonQuery)) *MedicalQuery {
+	query := &CoveredPersonQuery{config: mq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	mq.withMedicalCoveredPerson = query
+	return mq
+}
+
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
 //
@@ -295,8 +328,11 @@ func (mq *MedicalQuery) prepareQuery(ctx context.Context) error {
 
 func (mq *MedicalQuery) sqlAll(ctx context.Context) ([]*Medical, error) {
 	var (
-		nodes = []*Medical{}
-		_spec = mq.querySpec()
+		nodes       = []*Medical{}
+		_spec       = mq.querySpec()
+		loadedTypes = [1]bool{
+			mq.withMedicalCoveredPerson != nil,
+		}
 	)
 	_spec.ScanValues = func() []interface{} {
 		node := &Medical{config: mq.config}
@@ -309,6 +345,7 @@ func (mq *MedicalQuery) sqlAll(ctx context.Context) ([]*Medical, error) {
 			return fmt.Errorf("ent: Assign called without calling ScanValues")
 		}
 		node := nodes[len(nodes)-1]
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(values...)
 	}
 	if err := sqlgraph.QueryNodes(ctx, mq.driver, _spec); err != nil {
@@ -317,6 +354,35 @@ func (mq *MedicalQuery) sqlAll(ctx context.Context) ([]*Medical, error) {
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+
+	if query := mq.withMedicalCoveredPerson; query != nil {
+		fks := make([]driver.Value, 0, len(nodes))
+		nodeids := make(map[int]*Medical)
+		for i := range nodes {
+			fks = append(fks, nodes[i].ID)
+			nodeids[nodes[i].ID] = nodes[i]
+		}
+		query.withFKs = true
+		query.Where(predicate.CoveredPerson(func(s *sql.Selector) {
+			s.Where(sql.InValues(medical.MedicalCoveredPersonColumn, fks...))
+		}))
+		neighbors, err := query.All(ctx)
+		if err != nil {
+			return nil, err
+		}
+		for _, n := range neighbors {
+			fk := n.medical_id
+			if fk == nil {
+				return nil, fmt.Errorf(`foreign-key "medical_id" is nil for node %v`, n.ID)
+			}
+			node, ok := nodeids[*fk]
+			if !ok {
+				return nil, fmt.Errorf(`unexpected foreign-key "medical_id" returned %v for node %v`, *fk, n.ID)
+			}
+			node.Edges.MedicalCoveredPerson = append(node.Edges.MedicalCoveredPerson, n)
+		}
+	}
+
 	return nodes, nil
 }
 

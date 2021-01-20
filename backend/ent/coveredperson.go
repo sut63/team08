@@ -10,20 +10,28 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
+	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/schemetype"
 )
 
 // CoveredPerson is the model entity for the CoveredPerson schema.
 type CoveredPerson struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CoveredPersonNumber holds the value of the "CoveredPerson_Number" field.
+	CoveredPersonNumber string `json:"CoveredPerson_Number,omitempty"`
+	// CoveredPersonNote holds the value of the "CoveredPerson_Note" field.
+	CoveredPersonNote string `json:"CoveredPerson_Note,omitempty"`
+	// FundTitle holds the value of the "Fund_Title" field.
+	FundTitle string `json:"Fund_Title,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CoveredPersonQuery when eager-loading is set.
 	Edges          CoveredPersonEdges `json:"edges"`
 	Certificate_id *int
 	Fund_id        *int
+	medical_id     *int
 	Patient_id     *int
 	SchemeType_id  *int
 }
@@ -38,9 +46,11 @@ type CoveredPersonEdges struct {
 	Fund *Fund
 	// Certificate holds the value of the Certificate edge.
 	Certificate *Certificate
+	// Medical holds the value of the Medical edge.
+	Medical *Medical
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [4]bool
+	loadedTypes [5]bool
 }
 
 // PatientOrErr returns the Patient value or an error if the edge
@@ -99,10 +109,27 @@ func (e CoveredPersonEdges) CertificateOrErr() (*Certificate, error) {
 	return nil, &NotLoadedError{edge: "Certificate"}
 }
 
+// MedicalOrErr returns the Medical value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e CoveredPersonEdges) MedicalOrErr() (*Medical, error) {
+	if e.loadedTypes[4] {
+		if e.Medical == nil {
+			// The edge Medical was loaded in eager-loading,
+			// but was not found.
+			return nil, &NotFoundError{label: medical.Label}
+		}
+		return e.Medical, nil
+	}
+	return nil, &NotLoadedError{edge: "Medical"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*CoveredPerson) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // id
+		&sql.NullInt64{},  // id
+		&sql.NullString{}, // CoveredPerson_Number
+		&sql.NullString{}, // CoveredPerson_Note
+		&sql.NullString{}, // Fund_Title
 	}
 }
 
@@ -111,6 +138,7 @@ func (*CoveredPerson) fkValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{}, // Certificate_id
 		&sql.NullInt64{}, // Fund_id
+		&sql.NullInt64{}, // medical_id
 		&sql.NullInt64{}, // Patient_id
 		&sql.NullInt64{}, // SchemeType_id
 	}
@@ -128,7 +156,22 @@ func (cp *CoveredPerson) assignValues(values ...interface{}) error {
 	}
 	cp.ID = int(value.Int64)
 	values = values[1:]
-	values = values[0:]
+	if value, ok := values[0].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field CoveredPerson_Number", values[0])
+	} else if value.Valid {
+		cp.CoveredPersonNumber = value.String
+	}
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field CoveredPerson_Note", values[1])
+	} else if value.Valid {
+		cp.CoveredPersonNote = value.String
+	}
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Fund_Title", values[2])
+	} else if value.Valid {
+		cp.FundTitle = value.String
+	}
+	values = values[3:]
 	if len(values) == len(coveredperson.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field Certificate_id", value)
@@ -143,12 +186,18 @@ func (cp *CoveredPerson) assignValues(values ...interface{}) error {
 			*cp.Fund_id = int(value.Int64)
 		}
 		if value, ok := values[2].(*sql.NullInt64); !ok {
+			return fmt.Errorf("unexpected type %T for edge-field medical_id", value)
+		} else if value.Valid {
+			cp.medical_id = new(int)
+			*cp.medical_id = int(value.Int64)
+		}
+		if value, ok := values[3].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field Patient_id", value)
 		} else if value.Valid {
 			cp.Patient_id = new(int)
 			*cp.Patient_id = int(value.Int64)
 		}
-		if value, ok := values[3].(*sql.NullInt64); !ok {
+		if value, ok := values[4].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field SchemeType_id", value)
 		} else if value.Valid {
 			cp.SchemeType_id = new(int)
@@ -178,6 +227,11 @@ func (cp *CoveredPerson) QueryCertificate() *CertificateQuery {
 	return (&CoveredPersonClient{config: cp.config}).QueryCertificate(cp)
 }
 
+// QueryMedical queries the Medical edge of the CoveredPerson.
+func (cp *CoveredPerson) QueryMedical() *MedicalQuery {
+	return (&CoveredPersonClient{config: cp.config}).QueryMedical(cp)
+}
+
 // Update returns a builder for updating this CoveredPerson.
 // Note that, you need to call CoveredPerson.Unwrap() before calling this method, if this CoveredPerson
 // was returned from a transaction, and the transaction was committed or rolled back.
@@ -201,6 +255,12 @@ func (cp *CoveredPerson) String() string {
 	var builder strings.Builder
 	builder.WriteString("CoveredPerson(")
 	builder.WriteString(fmt.Sprintf("id=%v", cp.ID))
+	builder.WriteString(", CoveredPerson_Number=")
+	builder.WriteString(cp.CoveredPersonNumber)
+	builder.WriteString(", CoveredPerson_Note=")
+	builder.WriteString(cp.CoveredPersonNote)
+	builder.WriteString(", Fund_Title=")
+	builder.WriteString(cp.FundTitle)
 	builder.WriteByte(')')
 	return builder.String()
 }

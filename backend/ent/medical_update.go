@@ -9,6 +9,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/facebookincubator/ent/schema/field"
+	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/predicate"
 )
@@ -51,9 +52,39 @@ func (mu *MedicalUpdate) SetMedicalTel(s string) *MedicalUpdate {
 	return mu
 }
 
+// AddMedicalCoveredPersonIDs adds the Medical_CoveredPerson edge to CoveredPerson by ids.
+func (mu *MedicalUpdate) AddMedicalCoveredPersonIDs(ids ...int) *MedicalUpdate {
+	mu.mutation.AddMedicalCoveredPersonIDs(ids...)
+	return mu
+}
+
+// AddMedicalCoveredPerson adds the Medical_CoveredPerson edges to CoveredPerson.
+func (mu *MedicalUpdate) AddMedicalCoveredPerson(c ...*CoveredPerson) *MedicalUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return mu.AddMedicalCoveredPersonIDs(ids...)
+}
+
 // Mutation returns the MedicalMutation object of the builder.
 func (mu *MedicalUpdate) Mutation() *MedicalMutation {
 	return mu.mutation
+}
+
+// RemoveMedicalCoveredPersonIDs removes the Medical_CoveredPerson edge to CoveredPerson by ids.
+func (mu *MedicalUpdate) RemoveMedicalCoveredPersonIDs(ids ...int) *MedicalUpdate {
+	mu.mutation.RemoveMedicalCoveredPersonIDs(ids...)
+	return mu
+}
+
+// RemoveMedicalCoveredPerson removes Medical_CoveredPerson edges to CoveredPerson.
+func (mu *MedicalUpdate) RemoveMedicalCoveredPerson(c ...*CoveredPerson) *MedicalUpdate {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return mu.RemoveMedicalCoveredPersonIDs(ids...)
 }
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
@@ -78,6 +109,7 @@ func (mu *MedicalUpdate) Save(ctx context.Context) (int, error) {
 			return 0, &ValidationError{Name: "Medical_Tel", err: fmt.Errorf("ent: validator failed for field \"Medical_Tel\": %w", err)}
 		}
 	}
+
 	var (
 		err      error
 		affected int
@@ -173,6 +205,44 @@ func (mu *MedicalUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: medical.FieldMedicalTel,
 		})
 	}
+	if nodes := mu.mutation.RemovedMedicalCoveredPersonIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   medical.MedicalCoveredPersonTable,
+			Columns: []string{medical.MedicalCoveredPersonColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: coveredperson.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := mu.mutation.MedicalCoveredPersonIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   medical.MedicalCoveredPersonTable,
+			Columns: []string{medical.MedicalCoveredPersonColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: coveredperson.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{medical.Label}
@@ -215,9 +285,39 @@ func (muo *MedicalUpdateOne) SetMedicalTel(s string) *MedicalUpdateOne {
 	return muo
 }
 
+// AddMedicalCoveredPersonIDs adds the Medical_CoveredPerson edge to CoveredPerson by ids.
+func (muo *MedicalUpdateOne) AddMedicalCoveredPersonIDs(ids ...int) *MedicalUpdateOne {
+	muo.mutation.AddMedicalCoveredPersonIDs(ids...)
+	return muo
+}
+
+// AddMedicalCoveredPerson adds the Medical_CoveredPerson edges to CoveredPerson.
+func (muo *MedicalUpdateOne) AddMedicalCoveredPerson(c ...*CoveredPerson) *MedicalUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return muo.AddMedicalCoveredPersonIDs(ids...)
+}
+
 // Mutation returns the MedicalMutation object of the builder.
 func (muo *MedicalUpdateOne) Mutation() *MedicalMutation {
 	return muo.mutation
+}
+
+// RemoveMedicalCoveredPersonIDs removes the Medical_CoveredPerson edge to CoveredPerson by ids.
+func (muo *MedicalUpdateOne) RemoveMedicalCoveredPersonIDs(ids ...int) *MedicalUpdateOne {
+	muo.mutation.RemoveMedicalCoveredPersonIDs(ids...)
+	return muo
+}
+
+// RemoveMedicalCoveredPerson removes Medical_CoveredPerson edges to CoveredPerson.
+func (muo *MedicalUpdateOne) RemoveMedicalCoveredPerson(c ...*CoveredPerson) *MedicalUpdateOne {
+	ids := make([]int, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return muo.RemoveMedicalCoveredPersonIDs(ids...)
 }
 
 // Save executes the query and returns the updated entity.
@@ -242,6 +342,7 @@ func (muo *MedicalUpdateOne) Save(ctx context.Context) (*Medical, error) {
 			return nil, &ValidationError{Name: "Medical_Tel", err: fmt.Errorf("ent: validator failed for field \"Medical_Tel\": %w", err)}
 		}
 	}
+
 	var (
 		err  error
 		node *Medical
@@ -334,6 +435,44 @@ func (muo *MedicalUpdateOne) sqlSave(ctx context.Context) (m *Medical, err error
 			Value:  value,
 			Column: medical.FieldMedicalTel,
 		})
+	}
+	if nodes := muo.mutation.RemovedMedicalCoveredPersonIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   medical.MedicalCoveredPersonTable,
+			Columns: []string{medical.MedicalCoveredPersonColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: coveredperson.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := muo.mutation.MedicalCoveredPersonIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   medical.MedicalCoveredPersonTable,
+			Columns: []string{medical.MedicalCoveredPersonColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: coveredperson.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	m = &Medical{config: muo.config}
 	_spec.Assign = m.assignValues

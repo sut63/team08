@@ -40,6 +40,9 @@ func (ctl *FundController) CreateFund(c *gin.Context) {
 		Create().
 		SetFundName(obj.FundName).
 		Save(context.Background())
+
+	fmt.Println(err)
+
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "saving failed",
@@ -127,81 +130,6 @@ func (ctl *FundController) ListFund(c *gin.Context) {
 	c.JSON(200, funds)
 }
 
-// DeleteFund handles DELETE requests to delete a fund entity
-// @Summary Delete a fund entity by ID
-// @Description get fund by ID
-// @ID delete-fund
-// @Produce  json
-// @Param id path int true "fund ID"
-// @Success 200 {object} gin.H
-// @Failure 400 {object} gin.H
-// @Failure 404 {object} gin.H
-// @Failure 500 {object} gin.H
-// @Router /funds/{id} [delete]
-func (ctl *FundController) DeleteFund(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	err = ctl.client.Fund.
-		DeleteOneID(int(id)).
-		Exec(context.Background())
-	if err != nil {
-		c.JSON(404, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
-}
-
-// UpdateFund handles PUT requests to update a fund entity
-// @Summary Update a fund entity by ID
-// @Description update fund by ID
-// @ID update-fund
-// @Accept   json
-// @Produce  json
-// @Param id path int true "fund ID"
-// @Param fund body ent.Fund true "fund entity"
-// @Success 200 {object} ent.Fund
-// @Failure 400 {object} gin.H
-// @Failure 500 {object} gin.H
-// @Router /funds/{id} [put]
-func (ctl *FundController) UpdateFund(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
-
-	obj := ent.Fund{}
-	if err := c.ShouldBind(&obj); err != nil {
-		c.JSON(400, gin.H{
-			"error": "fund binding failed",
-		})
-		return
-	}
-	obj.ID = int(id)
-	fmt.Println(obj.ID)
-	f, err := ctl.client.Fund.
-		UpdateOne(&obj).
-		SetFundName(obj.FundName).
-		Save(context.Background())
-	if err != nil {
-		c.JSON(400, gin.H{"error": "update failed"})
-		return
-	}
-
-	c.JSON(200, f)
-}
-
 // NewFundController creates and registers handles for the fund controller
 func NewFundController(router gin.IRouter, client *ent.Client) *FundController {
 	uc := &FundController{
@@ -220,6 +148,4 @@ func (ctl *FundController) register() {
 	// CRUD
 	funds.POST("", ctl.CreateFund)
 	funds.GET(":id", ctl.GetFund)
-	funds.PUT(":id", ctl.UpdateFund)
-	funds.DELETE(":id", ctl.DeleteFund)
 }

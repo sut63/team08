@@ -23,6 +23,27 @@ type Medical struct {
 	MedicalPassword string `json:"Medical_Password,omitempty"`
 	// MedicalTel holds the value of the "Medical_Tel" field.
 	MedicalTel string `json:"Medical_Tel,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the MedicalQuery when eager-loading is set.
+	Edges MedicalEdges `json:"edges"`
+}
+
+// MedicalEdges holds the relations/edges for other nodes in the graph.
+type MedicalEdges struct {
+	// MedicalCoveredPerson holds the value of the Medical_CoveredPerson edge.
+	MedicalCoveredPerson []*CoveredPerson
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// MedicalCoveredPersonOrErr returns the MedicalCoveredPerson value or an error if the edge
+// was not loaded in eager-loading.
+func (e MedicalEdges) MedicalCoveredPersonOrErr() ([]*CoveredPerson, error) {
+	if e.loadedTypes[0] {
+		return e.MedicalCoveredPerson, nil
+	}
+	return nil, &NotLoadedError{edge: "Medical_CoveredPerson"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -69,6 +90,11 @@ func (m *Medical) assignValues(values ...interface{}) error {
 		m.MedicalTel = value.String
 	}
 	return nil
+}
+
+// QueryMedicalCoveredPerson queries the Medical_CoveredPerson edge of the Medical.
+func (m *Medical) QueryMedicalCoveredPerson() *CoveredPersonQuery {
+	return (&MedicalClient{config: m.config}).QueryMedicalCoveredPerson(m)
 }
 
 // Update returns a builder for updating this Medical.

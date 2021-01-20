@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
@@ -11,6 +12,7 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
+	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/schemetype"
 )
@@ -20,6 +22,24 @@ type CoveredPersonCreate struct {
 	config
 	mutation *CoveredPersonMutation
 	hooks    []Hook
+}
+
+// SetCoveredPersonNumber sets the CoveredPerson_Number field.
+func (cpc *CoveredPersonCreate) SetCoveredPersonNumber(s string) *CoveredPersonCreate {
+	cpc.mutation.SetCoveredPersonNumber(s)
+	return cpc
+}
+
+// SetCoveredPersonNote sets the CoveredPerson_Note field.
+func (cpc *CoveredPersonCreate) SetCoveredPersonNote(s string) *CoveredPersonCreate {
+	cpc.mutation.SetCoveredPersonNote(s)
+	return cpc
+}
+
+// SetFundTitle sets the Fund_Title field.
+func (cpc *CoveredPersonCreate) SetFundTitle(s string) *CoveredPersonCreate {
+	cpc.mutation.SetFundTitle(s)
+	return cpc
 }
 
 // SetPatientID sets the Patient edge to Patient by id.
@@ -98,6 +118,25 @@ func (cpc *CoveredPersonCreate) SetCertificate(c *Certificate) *CoveredPersonCre
 	return cpc.SetCertificateID(c.ID)
 }
 
+// SetMedicalID sets the Medical edge to Medical by id.
+func (cpc *CoveredPersonCreate) SetMedicalID(id int) *CoveredPersonCreate {
+	cpc.mutation.SetMedicalID(id)
+	return cpc
+}
+
+// SetNillableMedicalID sets the Medical edge to Medical by id if the given value is not nil.
+func (cpc *CoveredPersonCreate) SetNillableMedicalID(id *int) *CoveredPersonCreate {
+	if id != nil {
+		cpc = cpc.SetMedicalID(*id)
+	}
+	return cpc
+}
+
+// SetMedical sets the Medical edge to Medical.
+func (cpc *CoveredPersonCreate) SetMedical(m *Medical) *CoveredPersonCreate {
+	return cpc.SetMedicalID(m.ID)
+}
+
 // Mutation returns the CoveredPersonMutation object of the builder.
 func (cpc *CoveredPersonCreate) Mutation() *CoveredPersonMutation {
 	return cpc.mutation
@@ -105,6 +144,30 @@ func (cpc *CoveredPersonCreate) Mutation() *CoveredPersonMutation {
 
 // Save creates the CoveredPerson in the database.
 func (cpc *CoveredPersonCreate) Save(ctx context.Context) (*CoveredPerson, error) {
+	if _, ok := cpc.mutation.CoveredPersonNumber(); !ok {
+		return nil, &ValidationError{Name: "CoveredPerson_Number", err: errors.New("ent: missing required field \"CoveredPerson_Number\"")}
+	}
+	if v, ok := cpc.mutation.CoveredPersonNumber(); ok {
+		if err := coveredperson.CoveredPersonNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "CoveredPerson_Number", err: fmt.Errorf("ent: validator failed for field \"CoveredPerson_Number\": %w", err)}
+		}
+	}
+	if _, ok := cpc.mutation.CoveredPersonNote(); !ok {
+		return nil, &ValidationError{Name: "CoveredPerson_Note", err: errors.New("ent: missing required field \"CoveredPerson_Note\"")}
+	}
+	if v, ok := cpc.mutation.CoveredPersonNote(); ok {
+		if err := coveredperson.CoveredPersonNoteValidator(v); err != nil {
+			return nil, &ValidationError{Name: "CoveredPerson_Note", err: fmt.Errorf("ent: validator failed for field \"CoveredPerson_Note\": %w", err)}
+		}
+	}
+	if _, ok := cpc.mutation.FundTitle(); !ok {
+		return nil, &ValidationError{Name: "Fund_Title", err: errors.New("ent: missing required field \"Fund_Title\"")}
+	}
+	if v, ok := cpc.mutation.FundTitle(); ok {
+		if err := coveredperson.FundTitleValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Fund_Title", err: fmt.Errorf("ent: validator failed for field \"Fund_Title\": %w", err)}
+		}
+	}
 	var (
 		err  error
 		node *CoveredPerson
@@ -165,6 +228,30 @@ func (cpc *CoveredPersonCreate) createSpec() (*CoveredPerson, *sqlgraph.CreateSp
 			},
 		}
 	)
+	if value, ok := cpc.mutation.CoveredPersonNumber(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldCoveredPersonNumber,
+		})
+		cp.CoveredPersonNumber = value
+	}
+	if value, ok := cpc.mutation.CoveredPersonNote(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldCoveredPersonNote,
+		})
+		cp.CoveredPersonNote = value
+	}
+	if value, ok := cpc.mutation.FundTitle(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: coveredperson.FieldFundTitle,
+		})
+		cp.FundTitle = value
+	}
 	if nodes := cpc.mutation.PatientIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
@@ -233,6 +320,25 @@ func (cpc *CoveredPersonCreate) createSpec() (*CoveredPerson, *sqlgraph.CreateSp
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: certificate.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := cpc.mutation.MedicalIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   coveredperson.MedicalTable,
+			Columns: []string{coveredperson.MedicalColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: medical.FieldID,
 				},
 			},
 		}
