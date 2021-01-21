@@ -91,6 +91,360 @@ func IDLTE(id int) predicate.Diagnose {
 	})
 }
 
+// DiagnoseID applies equality check predicate on the "Diagnose_ID" field. It's identical to DiagnoseIDEQ.
+func DiagnoseID(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseSymptoms applies equality check predicate on the "Diagnose_Symptoms" field. It's identical to DiagnoseSymptomsEQ.
+func DiagnoseSymptoms(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseNote applies equality check predicate on the "Diagnose_Note" field. It's identical to DiagnoseNoteEQ.
+func DiagnoseNote(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseIDEQ applies the EQ predicate on the "Diagnose_ID" field.
+func DiagnoseIDEQ(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDNEQ applies the NEQ predicate on the "Diagnose_ID" field.
+func DiagnoseIDNEQ(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDIn applies the In predicate on the "Diagnose_ID" field.
+func DiagnoseIDIn(vs ...string) predicate.Diagnose {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Diagnose(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDiagnoseID), v...))
+	})
+}
+
+// DiagnoseIDNotIn applies the NotIn predicate on the "Diagnose_ID" field.
+func DiagnoseIDNotIn(vs ...string) predicate.Diagnose {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Diagnose(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDiagnoseID), v...))
+	})
+}
+
+// DiagnoseIDGT applies the GT predicate on the "Diagnose_ID" field.
+func DiagnoseIDGT(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDGTE applies the GTE predicate on the "Diagnose_ID" field.
+func DiagnoseIDGTE(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDLT applies the LT predicate on the "Diagnose_ID" field.
+func DiagnoseIDLT(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDLTE applies the LTE predicate on the "Diagnose_ID" field.
+func DiagnoseIDLTE(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDContains applies the Contains predicate on the "Diagnose_ID" field.
+func DiagnoseIDContains(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDHasPrefix applies the HasPrefix predicate on the "Diagnose_ID" field.
+func DiagnoseIDHasPrefix(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDHasSuffix applies the HasSuffix predicate on the "Diagnose_ID" field.
+func DiagnoseIDHasSuffix(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDEqualFold applies the EqualFold predicate on the "Diagnose_ID" field.
+func DiagnoseIDEqualFold(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseIDContainsFold applies the ContainsFold predicate on the "Diagnose_ID" field.
+func DiagnoseIDContainsFold(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDiagnoseID), v))
+	})
+}
+
+// DiagnoseSymptomsEQ applies the EQ predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsEQ(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsNEQ applies the NEQ predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsNEQ(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsIn applies the In predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsIn(vs ...string) predicate.Diagnose {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Diagnose(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDiagnoseSymptoms), v...))
+	})
+}
+
+// DiagnoseSymptomsNotIn applies the NotIn predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsNotIn(vs ...string) predicate.Diagnose {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Diagnose(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDiagnoseSymptoms), v...))
+	})
+}
+
+// DiagnoseSymptomsGT applies the GT predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsGT(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsGTE applies the GTE predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsGTE(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsLT applies the LT predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsLT(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsLTE applies the LTE predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsLTE(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsContains applies the Contains predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsContains(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsHasPrefix applies the HasPrefix predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsHasPrefix(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsHasSuffix applies the HasSuffix predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsHasSuffix(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsEqualFold applies the EqualFold predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsEqualFold(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseSymptomsContainsFold applies the ContainsFold predicate on the "Diagnose_Symptoms" field.
+func DiagnoseSymptomsContainsFold(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDiagnoseSymptoms), v))
+	})
+}
+
+// DiagnoseNoteEQ applies the EQ predicate on the "Diagnose_Note" field.
+func DiagnoseNoteEQ(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteNEQ applies the NEQ predicate on the "Diagnose_Note" field.
+func DiagnoseNoteNEQ(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteIn applies the In predicate on the "Diagnose_Note" field.
+func DiagnoseNoteIn(vs ...string) predicate.Diagnose {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Diagnose(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDiagnoseNote), v...))
+	})
+}
+
+// DiagnoseNoteNotIn applies the NotIn predicate on the "Diagnose_Note" field.
+func DiagnoseNoteNotIn(vs ...string) predicate.Diagnose {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Diagnose(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDiagnoseNote), v...))
+	})
+}
+
+// DiagnoseNoteGT applies the GT predicate on the "Diagnose_Note" field.
+func DiagnoseNoteGT(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteGTE applies the GTE predicate on the "Diagnose_Note" field.
+func DiagnoseNoteGTE(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteLT applies the LT predicate on the "Diagnose_Note" field.
+func DiagnoseNoteLT(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteLTE applies the LTE predicate on the "Diagnose_Note" field.
+func DiagnoseNoteLTE(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteContains applies the Contains predicate on the "Diagnose_Note" field.
+func DiagnoseNoteContains(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteHasPrefix applies the HasPrefix predicate on the "Diagnose_Note" field.
+func DiagnoseNoteHasPrefix(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteHasSuffix applies the HasSuffix predicate on the "Diagnose_Note" field.
+func DiagnoseNoteHasSuffix(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteEqualFold applies the EqualFold predicate on the "Diagnose_Note" field.
+func DiagnoseNoteEqualFold(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldDiagnoseNote), v))
+	})
+}
+
+// DiagnoseNoteContainsFold applies the ContainsFold predicate on the "Diagnose_Note" field.
+func DiagnoseNoteContainsFold(v string) predicate.Diagnose {
+	return predicate.Diagnose(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldDiagnoseNote), v))
+	})
+}
+
 // HasDisease applies the HasEdge predicate on the "disease" edge.
 func HasDisease() predicate.Diagnose {
 	return predicate.Diagnose(func(s *sql.Selector) {

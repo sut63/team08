@@ -16,9 +16,15 @@ import (
 
 // Diagnose is the model entity for the Diagnose schema.
 type Diagnose struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// DiagnoseID holds the value of the "Diagnose_ID" field.
+	DiagnoseID string `json:"Diagnose_ID,omitempty"`
+	// DiagnoseSymptoms holds the value of the "Diagnose_Symptoms" field.
+	DiagnoseSymptoms string `json:"Diagnose_Symptoms,omitempty"`
+	// DiagnoseNote holds the value of the "Diagnose_Note" field.
+	DiagnoseNote string `json:"Diagnose_Note,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the DiagnoseQuery when eager-loading is set.
 	Edges         DiagnoseEdges `json:"edges"`
@@ -102,7 +108,10 @@ func (e DiagnoseEdges) DoctorOrErr() (*Doctor, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Diagnose) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // id
+		&sql.NullInt64{},  // id
+		&sql.NullString{}, // Diagnose_ID
+		&sql.NullString{}, // Diagnose_Symptoms
+		&sql.NullString{}, // Diagnose_Note
 	}
 }
 
@@ -128,7 +137,22 @@ func (d *Diagnose) assignValues(values ...interface{}) error {
 	}
 	d.ID = int(value.Int64)
 	values = values[1:]
-	values = values[0:]
+	if value, ok := values[0].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Diagnose_ID", values[0])
+	} else if value.Valid {
+		d.DiagnoseID = value.String
+	}
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Diagnose_Symptoms", values[1])
+	} else if value.Valid {
+		d.DiagnoseSymptoms = value.String
+	}
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Diagnose_Note", values[2])
+	} else if value.Valid {
+		d.DiagnoseNote = value.String
+	}
+	values = values[3:]
 	if len(values) == len(diagnose.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field department_id", value)
@@ -201,6 +225,12 @@ func (d *Diagnose) String() string {
 	var builder strings.Builder
 	builder.WriteString("Diagnose(")
 	builder.WriteString(fmt.Sprintf("id=%v", d.ID))
+	builder.WriteString(", Diagnose_ID=")
+	builder.WriteString(d.DiagnoseID)
+	builder.WriteString(", Diagnose_Symptoms=")
+	builder.WriteString(d.DiagnoseSymptoms)
+	builder.WriteString(", Diagnose_Note=")
+	builder.WriteString(d.DiagnoseNote)
 	builder.WriteByte(')')
 	return builder.String()
 }
