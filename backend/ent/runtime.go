@@ -7,6 +7,7 @@ import (
 
 	"github.com/sut63/team08/ent/bloodtype"
 	"github.com/sut63/team08/ent/certificate"
+	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/department"
 	"github.com/sut63/team08/ent/disease"
 	"github.com/sut63/team08/ent/doctor"
@@ -45,6 +46,20 @@ func init() {
 	certificateDescCertificateName := certificateFields[0].Descriptor()
 	// certificate.CertificateNameValidator is a validator for the "Certificate_Name" field. It is called by the builders before save.
 	certificate.CertificateNameValidator = certificateDescCertificateName.Validators[0].(func(string) error)
+	coveredpersonFields := schema.CoveredPerson{}.Fields()
+	_ = coveredpersonFields
+	// coveredpersonDescCoveredPersonNumber is the schema descriptor for CoveredPerson_Number field.
+	coveredpersonDescCoveredPersonNumber := coveredpersonFields[0].Descriptor()
+	// coveredperson.CoveredPersonNumberValidator is a validator for the "CoveredPerson_Number" field. It is called by the builders before save.
+	coveredperson.CoveredPersonNumberValidator = coveredpersonDescCoveredPersonNumber.Validators[0].(func(string) error)
+	// coveredpersonDescCoveredPersonNote is the schema descriptor for CoveredPerson_Note field.
+	coveredpersonDescCoveredPersonNote := coveredpersonFields[1].Descriptor()
+	// coveredperson.CoveredPersonNoteValidator is a validator for the "CoveredPerson_Note" field. It is called by the builders before save.
+	coveredperson.CoveredPersonNoteValidator = coveredpersonDescCoveredPersonNote.Validators[0].(func(string) error)
+	// coveredpersonDescFundTitle is the schema descriptor for Fund_Title field.
+	coveredpersonDescFundTitle := coveredpersonFields[2].Descriptor()
+	// coveredperson.FundTitleValidator is a validator for the "Fund_Title" field. It is called by the builders before save.
+	coveredperson.FundTitleValidator = coveredpersonDescFundTitle.Validators[0].(func(string) error)
 	departmentFields := schema.Department{}.Fields()
 	_ = departmentFields
 	// departmentDescDepartmentName is the schema descriptor for Department_Name field.
@@ -187,8 +202,20 @@ func init() {
 	prefix.PnameValidator = prefixDescPname.Validators[0].(func(string) error)
 	prescriptionFields := schema.Prescription{}.Fields()
 	_ = prescriptionFields
+	// prescriptionDescPrescripNumber is the schema descriptor for Prescrip_Number field.
+	prescriptionDescPrescripNumber := prescriptionFields[0].Descriptor()
+	// prescription.PrescripNumberValidator is a validator for the "Prescrip_Number" field. It is called by the builders before save.
+	prescription.PrescripNumberValidator = prescriptionDescPrescripNumber.Validators[0].(func(string) error)
+	// prescriptionDescPrescripIssue is the schema descriptor for Prescrip_Issue field.
+	prescriptionDescPrescripIssue := prescriptionFields[1].Descriptor()
+	// prescription.PrescripIssueValidator is a validator for the "Prescrip_Issue" field. It is called by the builders before save.
+	prescription.PrescripIssueValidator = prescriptionDescPrescripIssue.Validators[0].(func(string) error)
+	// prescriptionDescPrescripNote is the schema descriptor for Prescrip_Note field.
+	prescriptionDescPrescripNote := prescriptionFields[2].Descriptor()
+	// prescription.PrescripNoteValidator is a validator for the "Prescrip_Note" field. It is called by the builders before save.
+	prescription.PrescripNoteValidator = prescriptionDescPrescripNote.Validators[0].(func(string) error)
 	// prescriptionDescPrescripDateTime is the schema descriptor for Prescrip_DateTime field.
-	prescriptionDescPrescripDateTime := prescriptionFields[1].Descriptor()
+	prescriptionDescPrescripDateTime := prescriptionFields[3].Descriptor()
 	// prescription.DefaultPrescripDateTime holds the default value on creation for the Prescrip_DateTime field.
 	prescription.DefaultPrescripDateTime = prescriptionDescPrescripDateTime.Default.(func() time.Time)
 	rentFields := schema.Rent{}.Fields()

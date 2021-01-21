@@ -32,6 +32,18 @@ func (pu *PrescriptionUpdate) Where(ps ...predicate.Prescription) *PrescriptionU
 	return pu
 }
 
+// SetPrescripNumber sets the Prescrip_Number field.
+func (pu *PrescriptionUpdate) SetPrescripNumber(s string) *PrescriptionUpdate {
+	pu.mutation.SetPrescripNumber(s)
+	return pu
+}
+
+// SetPrescripIssue sets the Prescrip_Issue field.
+func (pu *PrescriptionUpdate) SetPrescripIssue(s string) *PrescriptionUpdate {
+	pu.mutation.SetPrescripIssue(s)
+	return pu
+}
+
 // SetPrescripNote sets the Prescrip_Note field.
 func (pu *PrescriptionUpdate) SetPrescripNote(s string) *PrescriptionUpdate {
 	pu.mutation.SetPrescripNote(s)
@@ -159,6 +171,21 @@ func (pu *PrescriptionUpdate) ClearDrug() *PrescriptionUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (pu *PrescriptionUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := pu.mutation.PrescripNumber(); ok {
+		if err := prescription.PrescripNumberValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Prescrip_Number", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Number\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.PrescripIssue(); ok {
+		if err := prescription.PrescripIssueValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Prescrip_Issue", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Issue\": %w", err)}
+		}
+	}
+	if v, ok := pu.mutation.PrescripNote(); ok {
+		if err := prescription.PrescripNoteValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Prescrip_Note", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Note\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -226,6 +253,20 @@ func (pu *PrescriptionUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := pu.mutation.PrescripNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: prescription.FieldPrescripNumber,
+		})
+	}
+	if value, ok := pu.mutation.PrescripIssue(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: prescription.FieldPrescripIssue,
+		})
 	}
 	if value, ok := pu.mutation.PrescripNote(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -399,6 +440,18 @@ type PrescriptionUpdateOne struct {
 	mutation *PrescriptionMutation
 }
 
+// SetPrescripNumber sets the Prescrip_Number field.
+func (puo *PrescriptionUpdateOne) SetPrescripNumber(s string) *PrescriptionUpdateOne {
+	puo.mutation.SetPrescripNumber(s)
+	return puo
+}
+
+// SetPrescripIssue sets the Prescrip_Issue field.
+func (puo *PrescriptionUpdateOne) SetPrescripIssue(s string) *PrescriptionUpdateOne {
+	puo.mutation.SetPrescripIssue(s)
+	return puo
+}
+
 // SetPrescripNote sets the Prescrip_Note field.
 func (puo *PrescriptionUpdateOne) SetPrescripNote(s string) *PrescriptionUpdateOne {
 	puo.mutation.SetPrescripNote(s)
@@ -526,6 +579,21 @@ func (puo *PrescriptionUpdateOne) ClearDrug() *PrescriptionUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (puo *PrescriptionUpdateOne) Save(ctx context.Context) (*Prescription, error) {
+	if v, ok := puo.mutation.PrescripNumber(); ok {
+		if err := prescription.PrescripNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Prescrip_Number", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Number\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.PrescripIssue(); ok {
+		if err := prescription.PrescripIssueValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Prescrip_Issue", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Issue\": %w", err)}
+		}
+	}
+	if v, ok := puo.mutation.PrescripNote(); ok {
+		if err := prescription.PrescripNoteValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Prescrip_Note", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Note\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -592,6 +660,20 @@ func (puo *PrescriptionUpdateOne) sqlSave(ctx context.Context) (pr *Prescription
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Prescription.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := puo.mutation.PrescripNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: prescription.FieldPrescripNumber,
+		})
+	}
+	if value, ok := puo.mutation.PrescripIssue(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: prescription.FieldPrescripIssue,
+		})
+	}
 	if value, ok := puo.mutation.PrescripNote(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,

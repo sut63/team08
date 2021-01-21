@@ -35,8 +35,12 @@ var (
 	// CoveredPersonsColumns holds the columns for the "covered_persons" table.
 	CoveredPersonsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "covered_person_number", Type: field.TypeString},
+		{Name: "covered_person_note", Type: field.TypeString},
+		{Name: "fund_title", Type: field.TypeString},
 		{Name: "Certificate_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Fund_id", Type: field.TypeInt, Nullable: true},
+		{Name: "medical_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "SchemeType_id", Type: field.TypeInt, Nullable: true},
 	}
@@ -48,28 +52,35 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "covered_persons_certificates_Certificate_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[1]},
+				Columns: []*schema.Column{CoveredPersonsColumns[4]},
 
 				RefColumns: []*schema.Column{CertificatesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "covered_persons_funds_Fund_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[2]},
+				Columns: []*schema.Column{CoveredPersonsColumns[5]},
 
 				RefColumns: []*schema.Column{FundsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
+				Symbol:  "covered_persons_medicals_Medical_CoveredPerson",
+				Columns: []*schema.Column{CoveredPersonsColumns[6]},
+
+				RefColumns: []*schema.Column{MedicalsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
 				Symbol:  "covered_persons_patients_Patient_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[3]},
+				Columns: []*schema.Column{CoveredPersonsColumns[7]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "covered_persons_scheme_types_SchemeType_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[4]},
+				Columns: []*schema.Column{CoveredPersonsColumns[8]},
 
 				RefColumns: []*schema.Column{SchemeTypesColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -349,6 +360,8 @@ var (
 	// PrescriptionsColumns holds the columns for the "prescriptions" table.
 	PrescriptionsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "prescrip_number", Type: field.TypeString},
+		{Name: "prescrip_issue", Type: field.TypeString},
 		{Name: "prescrip_note", Type: field.TypeString},
 		{Name: "prescrip_date_time", Type: field.TypeTime},
 		{Name: "doctor_id", Type: field.TypeInt, Nullable: true},
@@ -364,28 +377,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "prescriptions_doctors_doctor_prescription",
-				Columns: []*schema.Column{PrescriptionsColumns[3]},
+				Columns: []*schema.Column{PrescriptionsColumns[5]},
 
 				RefColumns: []*schema.Column{DoctorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "prescriptions_drugs_drug_prescription",
-				Columns: []*schema.Column{PrescriptionsColumns[4]},
+				Columns: []*schema.Column{PrescriptionsColumns[6]},
 
 				RefColumns: []*schema.Column{DrugsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "prescriptions_nurses_nurse_prescription",
-				Columns: []*schema.Column{PrescriptionsColumns[5]},
+				Columns: []*schema.Column{PrescriptionsColumns[7]},
 
 				RefColumns: []*schema.Column{NursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "prescriptions_patients_patient_prescription",
-				Columns: []*schema.Column{PrescriptionsColumns[6]},
+				Columns: []*schema.Column{PrescriptionsColumns[8]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -526,8 +539,9 @@ var (
 func init() {
 	CoveredPersonsTable.ForeignKeys[0].RefTable = CertificatesTable
 	CoveredPersonsTable.ForeignKeys[1].RefTable = FundsTable
-	CoveredPersonsTable.ForeignKeys[2].RefTable = PatientsTable
-	CoveredPersonsTable.ForeignKeys[3].RefTable = SchemeTypesTable
+	CoveredPersonsTable.ForeignKeys[2].RefTable = MedicalsTable
+	CoveredPersonsTable.ForeignKeys[3].RefTable = PatientsTable
+	CoveredPersonsTable.ForeignKeys[4].RefTable = SchemeTypesTable
 	DiagnosesTable.ForeignKeys[0].RefTable = DepartmentsTable
 	DiagnosesTable.ForeignKeys[1].RefTable = DiseasesTable
 	DiagnosesTable.ForeignKeys[2].RefTable = DoctorsTable

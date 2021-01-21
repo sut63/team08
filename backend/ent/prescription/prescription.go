@@ -11,6 +11,10 @@ const (
 	Label = "prescription"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldPrescripNumber holds the string denoting the prescrip_number field in the database.
+	FieldPrescripNumber = "prescrip_number"
+	// FieldPrescripIssue holds the string denoting the prescrip_issue field in the database.
+	FieldPrescripIssue = "prescrip_issue"
 	// FieldPrescripNote holds the string denoting the prescrip_note field in the database.
 	FieldPrescripNote = "prescrip_note"
 	// FieldPrescripDateTime holds the string denoting the prescrip_datetime field in the database.
@@ -60,6 +64,8 @@ const (
 // Columns holds all SQL columns for prescription fields.
 var Columns = []string{
 	FieldID,
+	FieldPrescripNumber,
+	FieldPrescripIssue,
 	FieldPrescripNote,
 	FieldPrescripDateTime,
 }
@@ -73,6 +79,12 @@ var ForeignKeys = []string{
 }
 
 var (
+	// PrescripNumberValidator is a validator for the "Prescrip_Number" field. It is called by the builders before save.
+	PrescripNumberValidator func(string) error
+	// PrescripIssueValidator is a validator for the "Prescrip_Issue" field. It is called by the builders before save.
+	PrescripIssueValidator func(string) error
+	// PrescripNoteValidator is a validator for the "Prescrip_Note" field. It is called by the builders before save.
+	PrescripNoteValidator func(string) error
 	// DefaultPrescripDateTime holds the default value on creation for the Prescrip_DateTime field.
 	DefaultPrescripDateTime func() time.Time
 )
