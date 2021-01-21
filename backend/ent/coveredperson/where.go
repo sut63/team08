@@ -557,34 +557,6 @@ func HasCertificateWith(preds ...predicate.Certificate) predicate.CoveredPerson 
 	})
 }
 
-// HasMedical applies the HasEdge predicate on the "Medical" edge.
-func HasMedical() predicate.CoveredPerson {
-	return predicate.CoveredPerson(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MedicalTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, MedicalTable, MedicalColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasMedicalWith applies the HasEdge predicate on the "Medical" edge with a given conditions (other predicates).
-func HasMedicalWith(preds ...predicate.Medical) predicate.CoveredPerson {
-	return predicate.CoveredPerson(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MedicalInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, MedicalTable, MedicalColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
-	})
-}
-
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.CoveredPerson) predicate.CoveredPerson {
 	return predicate.CoveredPerson(func(s *sql.Selector) {
