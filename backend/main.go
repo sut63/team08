@@ -468,9 +468,9 @@ func main() {
 	// Set Medicals Data
 	medicals := Medicals{
 		Medical: []Medical{
-			Medical{"สมศรี ภาคภูมิ", "somsee@hotmai.com", "123", "0989987653"},
-			Medical{"มีใจ มะมี", "mejai@hotmai.com", "123", "0897563456"},
-			Medical{"ถังแก๊ส เดินได้", "tuggas@hotmai.com", "123", "0893456324"},
+			Medical{"สมศรี ภาคภูมิ", "somsee@hotmail.com", "123", "0989987653"},
+			Medical{"มีใจ มะมี", "mejai@hotmail.com", "123", "0897563456"},
+			Medical{"ถังแก๊ส เดินได้", "tuggas@hotmail.com", "123", "0893456324"},
 		},
 	}
 	for _, mm := range medicals.Medical {
