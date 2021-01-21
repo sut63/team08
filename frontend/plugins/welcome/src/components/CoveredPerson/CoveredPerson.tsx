@@ -23,6 +23,13 @@ import { EntSchemeType } from '../../api/models/EntSchemeType'; // import interf
 import { EntFund} from '../../api/models/EntFund'; // import interface Fund
 import { EntCertificate } from '../../api/models/EntCertificate'; // import interface Certificate
 import { EntMedical } from '../../api/models/EntMedical'; // import interface Medical
+
+// name
+import { Cookies } from 'react-cookie/cjs';//cookie
+import { useCookies } from 'react-cookie/cjs';//cookie
+const cookies = new Cookies();
+const Name = cookies.get('Name');
+
 // header css
 const HeaderCustom = {
   minHeight: '50px',
@@ -229,16 +236,36 @@ const checkCaseSaveError = (field: string) => {
       }
     });
 }
+
+// name
+function a11yProps(index: any) {
+  return {
+    id: `scrollable-force-tab-${index}`,
+    'aria-controls': `scrollable-force-tabpanel-${index}`,
+  };
+}
+const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+
+  function Logout() {
+    removeCookie('ID', { path: '/' })
+    removeCookie('Name', { path: '/' })
+    removeCookie('Email', { path: '/' })
+    window.location.href = "http://localhost:3000/";
+  }
   
   return (
     <Page theme={pageTheme.service}>
       <Header style={HeaderCustom} title={`ระบบสิทธิการรักษาพยาบาล`}>
       <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
         <div style={{ marginLeft: 10 }}> </div>
+        <div style={{ marginLeft: 1 }}>{Name}</div>
+        <div style={{ marginLeft: 10 }}>
         <Link component={RouterLink} to="/">
              Logout
          </Link>
+         </div>
       </Header>
+
       <Content>
         <Container maxWidth="sm">
           <Grid container spacing={3}>
