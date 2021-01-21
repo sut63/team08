@@ -4,7 +4,6 @@ package medical
 
 import (
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
 	"github.com/sut63/team08/ent/predicate"
 )
 
@@ -560,34 +559,6 @@ func MedicalTelEqualFold(v string) predicate.Medical {
 func MedicalTelContainsFold(v string) predicate.Medical {
 	return predicate.Medical(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldMedicalTel), v))
-	})
-}
-
-// HasMedicalCoveredPerson applies the HasEdge predicate on the "Medical_CoveredPerson" edge.
-func HasMedicalCoveredPerson() predicate.Medical {
-	return predicate.Medical(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MedicalCoveredPersonTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, MedicalCoveredPersonTable, MedicalCoveredPersonColumn),
-		)
-		sqlgraph.HasNeighbors(s, step)
-	})
-}
-
-// HasMedicalCoveredPersonWith applies the HasEdge predicate on the "Medical_CoveredPerson" edge with a given conditions (other predicates).
-func HasMedicalCoveredPersonWith(preds ...predicate.CoveredPerson) predicate.Medical {
-	return predicate.Medical(func(s *sql.Selector) {
-		step := sqlgraph.NewStep(
-			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(MedicalCoveredPersonInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, MedicalCoveredPersonTable, MedicalCoveredPersonColumn),
-		)
-		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
-			for _, p := range preds {
-				p(s)
-			}
-		})
 	})
 }
 

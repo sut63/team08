@@ -2,7 +2,6 @@ package schema
 
 import (
 	"github.com/facebookincubator/ent"
-	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
 )
 
@@ -23,7 +22,5 @@ func (Medical) Fields() []ent.Field {
 
 // Edges of the Medical.
 func (Medical) Edges() []ent.Edge {
-	return []ent.Edge{
-		edge.To("Medical_CoveredPerson", CoveredPerson.Type).StorageKey(edge.Column("medical_id")),
-	}
+	return []ent.Edge{}
 }

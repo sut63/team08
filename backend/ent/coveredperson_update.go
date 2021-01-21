@@ -12,7 +12,6 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
-	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/predicate"
 	"github.com/sut63/team08/ent/schemetype"
@@ -126,25 +125,6 @@ func (cpu *CoveredPersonUpdate) SetCertificate(c *Certificate) *CoveredPersonUpd
 	return cpu.SetCertificateID(c.ID)
 }
 
-// SetMedicalID sets the Medical edge to Medical by id.
-func (cpu *CoveredPersonUpdate) SetMedicalID(id int) *CoveredPersonUpdate {
-	cpu.mutation.SetMedicalID(id)
-	return cpu
-}
-
-// SetNillableMedicalID sets the Medical edge to Medical by id if the given value is not nil.
-func (cpu *CoveredPersonUpdate) SetNillableMedicalID(id *int) *CoveredPersonUpdate {
-	if id != nil {
-		cpu = cpu.SetMedicalID(*id)
-	}
-	return cpu
-}
-
-// SetMedical sets the Medical edge to Medical.
-func (cpu *CoveredPersonUpdate) SetMedical(m *Medical) *CoveredPersonUpdate {
-	return cpu.SetMedicalID(m.ID)
-}
-
 // Mutation returns the CoveredPersonMutation object of the builder.
 func (cpu *CoveredPersonUpdate) Mutation() *CoveredPersonMutation {
 	return cpu.mutation
@@ -171,12 +151,6 @@ func (cpu *CoveredPersonUpdate) ClearFund() *CoveredPersonUpdate {
 // ClearCertificate clears the Certificate edge to Certificate.
 func (cpu *CoveredPersonUpdate) ClearCertificate() *CoveredPersonUpdate {
 	cpu.mutation.ClearCertificate()
-	return cpu
-}
-
-// ClearMedical clears the Medical edge to Medical.
-func (cpu *CoveredPersonUpdate) ClearMedical() *CoveredPersonUpdate {
-	cpu.mutation.ClearMedical()
 	return cpu
 }
 
@@ -426,41 +400,6 @@ func (cpu *CoveredPersonUpdate) sqlSave(ctx context.Context) (n int, err error) 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if cpu.mutation.MedicalCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   coveredperson.MedicalTable,
-			Columns: []string{coveredperson.MedicalColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: medical.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cpu.mutation.MedicalIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   coveredperson.MedicalTable,
-			Columns: []string{coveredperson.MedicalColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: medical.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
 	if n, err = sqlgraph.UpdateNodes(ctx, cpu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{coveredperson.Label}
@@ -573,25 +512,6 @@ func (cpuo *CoveredPersonUpdateOne) SetCertificate(c *Certificate) *CoveredPerso
 	return cpuo.SetCertificateID(c.ID)
 }
 
-// SetMedicalID sets the Medical edge to Medical by id.
-func (cpuo *CoveredPersonUpdateOne) SetMedicalID(id int) *CoveredPersonUpdateOne {
-	cpuo.mutation.SetMedicalID(id)
-	return cpuo
-}
-
-// SetNillableMedicalID sets the Medical edge to Medical by id if the given value is not nil.
-func (cpuo *CoveredPersonUpdateOne) SetNillableMedicalID(id *int) *CoveredPersonUpdateOne {
-	if id != nil {
-		cpuo = cpuo.SetMedicalID(*id)
-	}
-	return cpuo
-}
-
-// SetMedical sets the Medical edge to Medical.
-func (cpuo *CoveredPersonUpdateOne) SetMedical(m *Medical) *CoveredPersonUpdateOne {
-	return cpuo.SetMedicalID(m.ID)
-}
-
 // Mutation returns the CoveredPersonMutation object of the builder.
 func (cpuo *CoveredPersonUpdateOne) Mutation() *CoveredPersonMutation {
 	return cpuo.mutation
@@ -618,12 +538,6 @@ func (cpuo *CoveredPersonUpdateOne) ClearFund() *CoveredPersonUpdateOne {
 // ClearCertificate clears the Certificate edge to Certificate.
 func (cpuo *CoveredPersonUpdateOne) ClearCertificate() *CoveredPersonUpdateOne {
 	cpuo.mutation.ClearCertificate()
-	return cpuo
-}
-
-// ClearMedical clears the Medical edge to Medical.
-func (cpuo *CoveredPersonUpdateOne) ClearMedical() *CoveredPersonUpdateOne {
-	cpuo.mutation.ClearMedical()
 	return cpuo
 }
 
@@ -863,41 +777,6 @@ func (cpuo *CoveredPersonUpdateOne) sqlSave(ctx context.Context) (cp *CoveredPer
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: certificate.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges.Add = append(_spec.Edges.Add, edge)
-	}
-	if cpuo.mutation.MedicalCleared() {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   coveredperson.MedicalTable,
-			Columns: []string{coveredperson.MedicalColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: medical.FieldID,
-				},
-			},
-		}
-		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
-	}
-	if nodes := cpuo.mutation.MedicalIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   coveredperson.MedicalTable,
-			Columns: []string{coveredperson.MedicalColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: medical.FieldID,
 				},
 			},
 		}

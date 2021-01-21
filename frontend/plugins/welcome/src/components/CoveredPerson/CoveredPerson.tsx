@@ -22,7 +22,6 @@ import { EntPatient } from '../../api/models/EntPatient'; // import interface Pa
 import { EntSchemeType } from '../../api/models/EntSchemeType'; // import interface SchemeType
 import { EntFund} from '../../api/models/EntFund'; // import interface Fund
 import { EntCertificate } from '../../api/models/EntCertificate'; // import interface Certificate
-import { EntMedical } from '../../api/models/EntMedical'; // import interface Medical
 
 // name
 import { Cookies } from 'react-cookie/cjs';//cookie
@@ -69,7 +68,6 @@ const CoveredPerson: FC<{}> = () => {
   const [schemeTypes, setSchemeTypes] = React.useState<EntSchemeType[]>([]);
   const [funds, setFunds] = React.useState<EntFund[]>([]);
   const [certificates, setCertificates] = React.useState<EntCertificate[]>([]);
-  const [medicals, setMedicals] = React.useState<EntMedical[]>([]);
     
 
 
@@ -92,10 +90,6 @@ const CoveredPerson: FC<{}> = () => {
     const res = await http.listCertificate({ limit: 2, offset: 0 });
     setCertificates(res);
   };
-  const getMedical = async () => {
-    const res = await http.listMedical({ limit: 3, offset: 0 });
-    setMedicals(res);
-  };
 
 
   // Lifecycle Hooks
@@ -104,7 +98,6 @@ const CoveredPerson: FC<{}> = () => {
     getSchemeType();
     getFund();
     getCertificate();
-    getMedical();
   }, []);
 
   
@@ -130,9 +123,6 @@ const CoveredPerson: FC<{}> = () => {
   const FundTitlehandleChange = (event: any) => {
     setFundTitle(event.target.value as string);
   };
-  const MedicalhandleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setMedicalID(event.target.value as number);
-  };
 
   const [patientID, setPatientID] = React.useState(Number);
   const [schemeTypeID, setSchemeTypeID] = React.useState(Number);
@@ -141,7 +131,6 @@ const CoveredPerson: FC<{}> = () => {
   const [coveredPersonNumber, setCoveredPersonNumber] = React.useState(String);
   const [coveredPersonNote, setCoveredPersonNote] = React.useState(String);
   const [fundTitle, setFundTitle] = React.useState(String);
-  const [medicalID, setMedicalID] = React.useState(Number);
  
 
   // alert setting
@@ -209,7 +198,6 @@ const checkCaseSaveError = (field: string) => {
     number: coveredPersonNumber,
     note: coveredPersonNote,
     fundTitle: fundTitle,
-    medical: medicalID,
   }
 
 
@@ -270,28 +258,6 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
         <Container maxWidth="sm">
           <Grid container spacing={3}>
             <Grid item xs={12}></Grid>
-
-            <Grid item xs={4}>
-            <div className={classes.paper}>เจ้าหน้าที่เวชระเบียน</div>
-          </Grid>
-          <Grid item xs={8}>
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel></InputLabel>
-                <Select
-                  name="medical"
-                  value={medicalID}
-                  onChange={MedicalhandleChange}
-                >
-                  {medicals.map(item => {
-                    return (
-                      <MenuItem key={item.id} value={item.id}>
-                        {item.medicalName}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-            </Grid>
 
             <Grid item xs={4}>
             <div className={classes.paper}>รหัสสิทธิการรักษา</div>
