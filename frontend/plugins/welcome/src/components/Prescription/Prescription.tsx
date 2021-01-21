@@ -22,6 +22,13 @@ import { EntDoctor } from '../../api/models/EntDoctor'; // import interface User
 import { EntPatient } from '../../api/models/EntPatient'; // import interface Car
 import { EntDrug } from '../../api/models/EntDrug'; // import interface job
 import { EntNurse } from '../../api/models/EntNurse'; // import interface job
+
+// name
+import { Cookies } from 'react-cookie/cjs';//cookie
+import { useCookies } from 'react-cookie/cjs';//cookie
+const cookies = new Cookies();
+const Name = cookies.get('Name');
+
 // header css
 const HeaderCustom = {
   minHeight: '50px',
@@ -81,7 +88,8 @@ const Prescription: FC<{}> = () => {
     const res = await http.listNurse({ limit: 2, offset: 0 });
     setNurses(res);
   };
-   // Lifecycle Hooks
+
+  // Lifecycle Hooks
    useEffect(() => {
     getDoctors();
     getPatient();
@@ -175,7 +183,7 @@ const checkCaseSaveError = (field: string) => {
       aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณาป้อนชื่อพยาบาลที่บันทึก");
       return;
     case 'Prescrip_Issue':
-      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณากรอกวิธีใช้งานยา");
+      aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณากรอกวิธีใช้ยา");
       return;
     case 'Prescrip_Note':
       aleartMessage("error", "บันทึกข้อมูลไม่สำเร็จ: กรุณากรอกหมายเหตุ");
@@ -208,17 +216,37 @@ const checkCaseSaveError = (field: string) => {
         checkCaseSaveError(data.error.Name || data.error)
       }
     });
+
+// name
+function a11yProps(index: any) {
+  return {
+    id: `scrollable-force-tab-${index}`,
+    'aria-controls': `scrollable-force-tabpanel-${index}`,
+  };
 }
-  
+const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+
+  function Logout() {
+    removeCookie('ID', { path: '/' })
+    removeCookie('Name', { path: '/' })
+    removeCookie('Email', { path: '/' })
+    window.location.href = "http://localhost:3000/";
+  }
+}
+
 return (
   <Page theme={pageTheme.service}>
     <Header style={HeaderCustom} title={`Prescription System`}>
     <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
-      <div style={{ marginLeft: 10 }}> </div>
-      <Link component={RouterLink} to="/">
-           Logout
-       </Link>
-    </Header>
+        <div style={{ marginLeft: 10 }}> </div>
+        <div style={{ marginLeft: 1 }}>{Name}</div>
+        <div style={{ marginLeft: 10 }}>
+        <Link component={RouterLink} to="/">
+             Logout
+         </Link>
+         </div>
+      </Header>
+      
     <Content>
       <Container maxWidth="sm">
         <Grid container spacing={3}>
