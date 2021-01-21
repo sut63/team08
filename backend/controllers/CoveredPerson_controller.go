@@ -33,7 +33,7 @@ type CoveredPerson struct {
 	FundTitle   string
 }
 
-// CreateCoveredPerson handles POST requests for adding CoveredPerson entities
+// CreateCoveredPerson handles POST requests for adding coveredperson entities
 // @Summary Create coveredperson
 // @Description Create coveredperson
 // @ID create-coveredperson
@@ -127,7 +127,7 @@ func (ctl *CoveredPersonController) CreateCoveredPerson(c *gin.Context) {
 	})
 }
 
-// GetCoveredPerson handles GET requests to retrieve a CoveredPerson entity
+// GetCoveredPerson handles GET requests to retrieve a coveredPerson entity
 // @Summary Get a coveredperson entity by ID
 // @Description get coveredperson by ID
 // @ID get-coveredperson
@@ -159,7 +159,7 @@ func (ctl *CoveredPersonController) GetCoveredPerson(c *gin.Context) {
 	c.JSON(200, b)
 }
 
-// ListCoveredPerson handles request to get a list of CoveredPerson entities
+// ListCoveredPerson handles request to get a list of coveredPerson entities
 // @Summary List coveredperson entities
 // @Description list coveredperson entities
 // @ID list-coveredperson
@@ -209,7 +209,7 @@ func (ctl *CoveredPersonController) ListCoveredPerson(c *gin.Context) {
 
 }
 
-// DeleteCoveredPerson handles DELETE requests to delete a CoveredPerson entity
+// DeleteCoveredPerson handles DELETE requests to delete a coveredperson entity
 // @Summary Delete a coveredperson entity by ID
 // @Description get coveredperson by ID
 // @ID delete-coveredperson
@@ -240,7 +240,7 @@ func (ctl *CoveredPersonController) DeleteCoveredPerson(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateCoveredPerson handles PUT requests to update a CoveredPerson entity
+// UpdateCoveredPerson handles PUT requests to update a coveredperson entity
 // @Summary Update a coveredperson entity by ID
 // @Description update coveredperson by ID
 // @ID update-coveredperson
@@ -297,5 +297,6 @@ func (ctl *CoveredPersonController) register() {
 	coveredpersons.POST("", ctl.CreateCoveredPerson)
 	coveredpersons.GET("", ctl.ListCoveredPerson)
 	coveredpersons.DELETE(":id", ctl.DeleteCoveredPerson)
-
+	coveredpersons.GET(":id", ctl.GetCoveredPerson)
+	coveredpersons.PUT(":id", ctl.UpdateCoveredPerson)
 }
