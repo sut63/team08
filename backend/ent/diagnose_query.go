@@ -359,6 +359,19 @@ func (dq *DiagnoseQuery) WithDoctor(opts ...func(*DoctorQuery)) *DiagnoseQuery {
 
 // GroupBy used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		DiagnoseID string `json:"Diagnose_ID,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Diagnose.Query().
+//		GroupBy(diagnose.FieldDiagnoseID).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (dq *DiagnoseQuery) GroupBy(field string, fields ...string) *DiagnoseGroupBy {
 	group := &DiagnoseGroupBy{config: dq.config}
 	group.fields = append([]string{field}, fields...)
@@ -372,6 +385,17 @@ func (dq *DiagnoseQuery) GroupBy(field string, fields ...string) *DiagnoseGroupB
 }
 
 // Select one or more fields from the given query.
+//
+// Example:
+//
+//	var v []struct {
+//		DiagnoseID string `json:"Diagnose_ID,omitempty"`
+//	}
+//
+//	client.Diagnose.Query().
+//		Select(diagnose.FieldDiagnoseID).
+//		Scan(ctx, &v)
+//
 func (dq *DiagnoseQuery) Select(field string, fields ...string) *DiagnoseSelect {
 	selector := &DiagnoseSelect{config: dq.config}
 	selector.fields = append([]string{field}, fields...)

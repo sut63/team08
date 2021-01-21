@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/facebookincubator/ent/dialect/sql/sqlgraph"
@@ -20,6 +21,24 @@ type DiagnoseCreate struct {
 	config
 	mutation *DiagnoseMutation
 	hooks    []Hook
+}
+
+// SetDiagnoseID sets the Diagnose_ID field.
+func (dc *DiagnoseCreate) SetDiagnoseID(s string) *DiagnoseCreate {
+	dc.mutation.SetDiagnoseID(s)
+	return dc
+}
+
+// SetDiagnoseSymptoms sets the Diagnose_Symptoms field.
+func (dc *DiagnoseCreate) SetDiagnoseSymptoms(s string) *DiagnoseCreate {
+	dc.mutation.SetDiagnoseSymptoms(s)
+	return dc
+}
+
+// SetDiagnoseNote sets the Diagnose_Note field.
+func (dc *DiagnoseCreate) SetDiagnoseNote(s string) *DiagnoseCreate {
+	dc.mutation.SetDiagnoseNote(s)
+	return dc
 }
 
 // SetDiseaseID sets the disease edge to Disease by id.
@@ -105,6 +124,30 @@ func (dc *DiagnoseCreate) Mutation() *DiagnoseMutation {
 
 // Save creates the Diagnose in the database.
 func (dc *DiagnoseCreate) Save(ctx context.Context) (*Diagnose, error) {
+	if _, ok := dc.mutation.DiagnoseID(); !ok {
+		return nil, &ValidationError{Name: "Diagnose_ID", err: errors.New("ent: missing required field \"Diagnose_ID\"")}
+	}
+	if v, ok := dc.mutation.DiagnoseID(); ok {
+		if err := diagnose.DiagnoseIDValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Diagnose_ID", err: fmt.Errorf("ent: validator failed for field \"Diagnose_ID\": %w", err)}
+		}
+	}
+	if _, ok := dc.mutation.DiagnoseSymptoms(); !ok {
+		return nil, &ValidationError{Name: "Diagnose_Symptoms", err: errors.New("ent: missing required field \"Diagnose_Symptoms\"")}
+	}
+	if v, ok := dc.mutation.DiagnoseSymptoms(); ok {
+		if err := diagnose.DiagnoseSymptomsValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Diagnose_Symptoms", err: fmt.Errorf("ent: validator failed for field \"Diagnose_Symptoms\": %w", err)}
+		}
+	}
+	if _, ok := dc.mutation.DiagnoseNote(); !ok {
+		return nil, &ValidationError{Name: "Diagnose_Note", err: errors.New("ent: missing required field \"Diagnose_Note\"")}
+	}
+	if v, ok := dc.mutation.DiagnoseNote(); ok {
+		if err := diagnose.DiagnoseNoteValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Diagnose_Note", err: fmt.Errorf("ent: validator failed for field \"Diagnose_Note\": %w", err)}
+		}
+	}
 	var (
 		err  error
 		node *Diagnose
@@ -165,6 +208,30 @@ func (dc *DiagnoseCreate) createSpec() (*Diagnose, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := dc.mutation.DiagnoseID(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseID,
+		})
+		d.DiagnoseID = value
+	}
+	if value, ok := dc.mutation.DiagnoseSymptoms(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseSymptoms,
+		})
+		d.DiagnoseSymptoms = value
+	}
+	if value, ok := dc.mutation.DiagnoseNote(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseNote,
+		})
+		d.DiagnoseNote = value
+	}
 	if nodes := dc.mutation.DiseaseIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,

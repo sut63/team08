@@ -31,6 +31,24 @@ func (du *DiagnoseUpdate) Where(ps ...predicate.Diagnose) *DiagnoseUpdate {
 	return du
 }
 
+// SetDiagnoseID sets the Diagnose_ID field.
+func (du *DiagnoseUpdate) SetDiagnoseID(s string) *DiagnoseUpdate {
+	du.mutation.SetDiagnoseID(s)
+	return du
+}
+
+// SetDiagnoseSymptoms sets the Diagnose_Symptoms field.
+func (du *DiagnoseUpdate) SetDiagnoseSymptoms(s string) *DiagnoseUpdate {
+	du.mutation.SetDiagnoseSymptoms(s)
+	return du
+}
+
+// SetDiagnoseNote sets the Diagnose_Note field.
+func (du *DiagnoseUpdate) SetDiagnoseNote(s string) *DiagnoseUpdate {
+	du.mutation.SetDiagnoseNote(s)
+	return du
+}
+
 // SetDiseaseID sets the disease edge to Disease by id.
 func (du *DiagnoseUpdate) SetDiseaseID(id int) *DiagnoseUpdate {
 	du.mutation.SetDiseaseID(id)
@@ -138,6 +156,21 @@ func (du *DiagnoseUpdate) ClearDoctor() *DiagnoseUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (du *DiagnoseUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := du.mutation.DiagnoseID(); ok {
+		if err := diagnose.DiagnoseIDValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Diagnose_ID", err: fmt.Errorf("ent: validator failed for field \"Diagnose_ID\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.DiagnoseSymptoms(); ok {
+		if err := diagnose.DiagnoseSymptomsValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Diagnose_Symptoms", err: fmt.Errorf("ent: validator failed for field \"Diagnose_Symptoms\": %w", err)}
+		}
+	}
+	if v, ok := du.mutation.DiagnoseNote(); ok {
+		if err := diagnose.DiagnoseNoteValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Diagnose_Note", err: fmt.Errorf("ent: validator failed for field \"Diagnose_Note\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -205,6 +238,27 @@ func (du *DiagnoseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := du.mutation.DiagnoseID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseID,
+		})
+	}
+	if value, ok := du.mutation.DiagnoseSymptoms(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseSymptoms,
+		})
+	}
+	if value, ok := du.mutation.DiagnoseNote(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseNote,
+		})
 	}
 	if du.mutation.DiseaseCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -364,6 +418,24 @@ type DiagnoseUpdateOne struct {
 	mutation *DiagnoseMutation
 }
 
+// SetDiagnoseID sets the Diagnose_ID field.
+func (duo *DiagnoseUpdateOne) SetDiagnoseID(s string) *DiagnoseUpdateOne {
+	duo.mutation.SetDiagnoseID(s)
+	return duo
+}
+
+// SetDiagnoseSymptoms sets the Diagnose_Symptoms field.
+func (duo *DiagnoseUpdateOne) SetDiagnoseSymptoms(s string) *DiagnoseUpdateOne {
+	duo.mutation.SetDiagnoseSymptoms(s)
+	return duo
+}
+
+// SetDiagnoseNote sets the Diagnose_Note field.
+func (duo *DiagnoseUpdateOne) SetDiagnoseNote(s string) *DiagnoseUpdateOne {
+	duo.mutation.SetDiagnoseNote(s)
+	return duo
+}
+
 // SetDiseaseID sets the disease edge to Disease by id.
 func (duo *DiagnoseUpdateOne) SetDiseaseID(id int) *DiagnoseUpdateOne {
 	duo.mutation.SetDiseaseID(id)
@@ -471,6 +543,21 @@ func (duo *DiagnoseUpdateOne) ClearDoctor() *DiagnoseUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (duo *DiagnoseUpdateOne) Save(ctx context.Context) (*Diagnose, error) {
+	if v, ok := duo.mutation.DiagnoseID(); ok {
+		if err := diagnose.DiagnoseIDValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Diagnose_ID", err: fmt.Errorf("ent: validator failed for field \"Diagnose_ID\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.DiagnoseSymptoms(); ok {
+		if err := diagnose.DiagnoseSymptomsValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Diagnose_Symptoms", err: fmt.Errorf("ent: validator failed for field \"Diagnose_Symptoms\": %w", err)}
+		}
+	}
+	if v, ok := duo.mutation.DiagnoseNote(); ok {
+		if err := diagnose.DiagnoseNoteValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Diagnose_Note", err: fmt.Errorf("ent: validator failed for field \"Diagnose_Note\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -537,6 +624,27 @@ func (duo *DiagnoseUpdateOne) sqlSave(ctx context.Context) (d *Diagnose, err err
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Diagnose.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := duo.mutation.DiagnoseID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseID,
+		})
+	}
+	if value, ok := duo.mutation.DiagnoseSymptoms(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseSymptoms,
+		})
+	}
+	if value, ok := duo.mutation.DiagnoseNote(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: diagnose.FieldDiagnoseNote,
+		})
+	}
 	if duo.mutation.DiseaseCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2O,
