@@ -10,7 +10,6 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
-	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/schemetype"
 )
@@ -31,7 +30,6 @@ type CoveredPerson struct {
 	Edges          CoveredPersonEdges `json:"edges"`
 	Certificate_id *int
 	Fund_id        *int
-	medical_id     *int
 	Patient_id     *int
 	SchemeType_id  *int
 }
@@ -46,11 +44,9 @@ type CoveredPersonEdges struct {
 	Fund *Fund
 	// Certificate holds the value of the Certificate edge.
 	Certificate *Certificate
-	// Medical holds the value of the Medical edge.
-	Medical *Medical
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [5]bool
+	loadedTypes [4]bool
 }
 
 // PatientOrErr returns the Patient value or an error if the edge
@@ -109,20 +105,6 @@ func (e CoveredPersonEdges) CertificateOrErr() (*Certificate, error) {
 	return nil, &NotLoadedError{edge: "Certificate"}
 }
 
-// MedicalOrErr returns the Medical value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e CoveredPersonEdges) MedicalOrErr() (*Medical, error) {
-	if e.loadedTypes[4] {
-		if e.Medical == nil {
-			// The edge Medical was loaded in eager-loading,
-			// but was not found.
-			return nil, &NotFoundError{label: medical.Label}
-		}
-		return e.Medical, nil
-	}
-	return nil, &NotLoadedError{edge: "Medical"}
-}
-
 // scanValues returns the types for scanning values from sql.Rows.
 func (*CoveredPerson) scanValues() []interface{} {
 	return []interface{}{
@@ -138,7 +120,6 @@ func (*CoveredPerson) fkValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{}, // Certificate_id
 		&sql.NullInt64{}, // Fund_id
-		&sql.NullInt64{}, // medical_id
 		&sql.NullInt64{}, // Patient_id
 		&sql.NullInt64{}, // SchemeType_id
 	}
@@ -186,18 +167,12 @@ func (cp *CoveredPerson) assignValues(values ...interface{}) error {
 			*cp.Fund_id = int(value.Int64)
 		}
 		if value, ok := values[2].(*sql.NullInt64); !ok {
-			return fmt.Errorf("unexpected type %T for edge-field medical_id", value)
-		} else if value.Valid {
-			cp.medical_id = new(int)
-			*cp.medical_id = int(value.Int64)
-		}
-		if value, ok := values[3].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field Patient_id", value)
 		} else if value.Valid {
 			cp.Patient_id = new(int)
 			*cp.Patient_id = int(value.Int64)
 		}
-		if value, ok := values[4].(*sql.NullInt64); !ok {
+		if value, ok := values[3].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field SchemeType_id", value)
 		} else if value.Valid {
 			cp.SchemeType_id = new(int)
@@ -225,11 +200,6 @@ func (cp *CoveredPerson) QueryFund() *FundQuery {
 // QueryCertificate queries the Certificate edge of the CoveredPerson.
 func (cp *CoveredPerson) QueryCertificate() *CertificateQuery {
 	return (&CoveredPersonClient{config: cp.config}).QueryCertificate(cp)
-}
-
-// QueryMedical queries the Medical edge of the CoveredPerson.
-func (cp *CoveredPerson) QueryMedical() *MedicalQuery {
-	return (&CoveredPersonClient{config: cp.config}).QueryMedical(cp)
 }
 
 // Update returns a builder for updating this CoveredPerson.

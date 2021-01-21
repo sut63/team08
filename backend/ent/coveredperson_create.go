@@ -12,7 +12,6 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
-	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/schemetype"
 )
@@ -116,25 +115,6 @@ func (cpc *CoveredPersonCreate) SetNillableCertificateID(id *int) *CoveredPerson
 // SetCertificate sets the Certificate edge to Certificate.
 func (cpc *CoveredPersonCreate) SetCertificate(c *Certificate) *CoveredPersonCreate {
 	return cpc.SetCertificateID(c.ID)
-}
-
-// SetMedicalID sets the Medical edge to Medical by id.
-func (cpc *CoveredPersonCreate) SetMedicalID(id int) *CoveredPersonCreate {
-	cpc.mutation.SetMedicalID(id)
-	return cpc
-}
-
-// SetNillableMedicalID sets the Medical edge to Medical by id if the given value is not nil.
-func (cpc *CoveredPersonCreate) SetNillableMedicalID(id *int) *CoveredPersonCreate {
-	if id != nil {
-		cpc = cpc.SetMedicalID(*id)
-	}
-	return cpc
-}
-
-// SetMedical sets the Medical edge to Medical.
-func (cpc *CoveredPersonCreate) SetMedical(m *Medical) *CoveredPersonCreate {
-	return cpc.SetMedicalID(m.ID)
 }
 
 // Mutation returns the CoveredPersonMutation object of the builder.
@@ -320,25 +300,6 @@ func (cpc *CoveredPersonCreate) createSpec() (*CoveredPerson, *sqlgraph.CreateSp
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: certificate.FieldID,
-				},
-			},
-		}
-		for _, k := range nodes {
-			edge.Target.Nodes = append(edge.Target.Nodes, k)
-		}
-		_spec.Edges = append(_spec.Edges, edge)
-	}
-	if nodes := cpc.mutation.MedicalIDs(); len(nodes) > 0 {
-		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   coveredperson.MedicalTable,
-			Columns: []string{coveredperson.MedicalColumn},
-			Bidi:    false,
-			Target: &sqlgraph.EdgeTarget{
-				IDSpec: &sqlgraph.FieldSpec{
-					Type:   field.TypeInt,
-					Column: medical.FieldID,
 				},
 			},
 		}

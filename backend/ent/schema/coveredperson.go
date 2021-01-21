@@ -38,6 +38,5 @@ func (CoveredPerson) Edges() []ent.Edge {
 		edge.From("SchemeType", SchemeType.Type).Ref("SchemeType_CoveredPerson").Unique(),
 		edge.From("Fund", Fund.Type).Ref("Fund_CoveredPerson").Unique(),
 		edge.From("Certificate", Certificate.Type).Ref("Certificate_CoveredPerson").Unique(),
-		edge.From("Medical", Medical.Type).Ref("Medical_CoveredPerson").Unique(),
 	}
 }

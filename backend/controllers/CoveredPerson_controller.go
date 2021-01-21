@@ -10,7 +10,6 @@ import (
 	"github.com/sut63/team08/ent/certificate"
 	"github.com/sut63/team08/ent/coveredperson"
 	"github.com/sut63/team08/ent/fund"
-	"github.com/sut63/team08/ent/medical"
 	"github.com/sut63/team08/ent/patient"
 	"github.com/sut63/team08/ent/schemetype"
 )
@@ -23,7 +22,6 @@ type CoveredPersonController struct {
 
 //CoveredPerson struct
 type CoveredPerson struct {
-	Medical     int
 	Patient     int
 	SchemeType  int
 	Fund        int
@@ -52,16 +50,7 @@ func (ctl *CoveredPersonController) CreateCoveredPerson(c *gin.Context) {
 		})
 		return
 	}
-	me, err := ctl.client.Medical.
-		Query().
-		Where(medical.IDEQ(int(obj.Medical))).
-		Only(context.Background())
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": "Medical not found",
-		})
-		return
-	}
+
 	p, err := ctl.client.Patient.
 		Query().
 		Where(patient.IDEQ(int(obj.Patient))).
@@ -105,7 +94,6 @@ func (ctl *CoveredPersonController) CreateCoveredPerson(c *gin.Context) {
 
 	cp, err := ctl.client.CoveredPerson.
 		Create().
-		SetMedical(me).
 		SetPatient(p).
 		SetSchemeType(st).
 		SetFund(f).
@@ -191,7 +179,6 @@ func (ctl *CoveredPersonController) ListCoveredPerson(c *gin.Context) {
 
 	coveredpersons, err := ctl.client.CoveredPerson.
 		Query().
-		WithMedical().
 		WithPatient().
 		WithSchemeType().
 		WithFund().

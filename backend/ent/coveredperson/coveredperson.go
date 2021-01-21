@@ -22,8 +22,6 @@ const (
 	EdgeFund = "Fund"
 	// EdgeCertificate holds the string denoting the certificate edge name in mutations.
 	EdgeCertificate = "Certificate"
-	// EdgeMedical holds the string denoting the medical edge name in mutations.
-	EdgeMedical = "Medical"
 
 	// Table holds the table name of the coveredperson in the database.
 	Table = "covered_persons"
@@ -55,13 +53,6 @@ const (
 	CertificateInverseTable = "certificates"
 	// CertificateColumn is the table column denoting the Certificate relation/edge.
 	CertificateColumn = "Certificate_id"
-	// MedicalTable is the table the holds the Medical relation/edge.
-	MedicalTable = "covered_persons"
-	// MedicalInverseTable is the table name for the Medical entity.
-	// It exists in this package in order to avoid circular dependency with the "medical" package.
-	MedicalInverseTable = "medicals"
-	// MedicalColumn is the table column denoting the Medical relation/edge.
-	MedicalColumn = "medical_id"
 )
 
 // Columns holds all SQL columns for coveredperson fields.
@@ -76,7 +67,6 @@ var Columns = []string{
 var ForeignKeys = []string{
 	"Certificate_id",
 	"Fund_id",
-	"medical_id",
 	"Patient_id",
 	"SchemeType_id",
 }
