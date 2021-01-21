@@ -1,12 +1,15 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Content, Header, Page, pageTheme } from '@backstage/core';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import LoupeIcon from '@material-ui/icons/Loupe';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import Typography from '@material-ui/core/Typography';
 import {
@@ -14,7 +17,6 @@ import {
   Grid,
   Table,
 } from '@material-ui/core';
-import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
 import { Cookies } from 'react-cookie/cjs';//cookie
 import { useCookies } from 'react-cookie/cjs';//cookie
@@ -48,6 +50,13 @@ const useStyles = makeStyles(theme => ({
   textField: {
     width: 1000,
   },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+
 }));
 
 
@@ -62,6 +71,7 @@ export default function ScrollableTabsButtonForce() {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+
   function Logout() {
     removeCookie('ID', { path: '/' })
     removeCookie('Name', { path: '/' })
@@ -69,20 +79,62 @@ export default function ScrollableTabsButtonForce() {
     window.location.href = "http://localhost:3000/";
   }
   
-
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
+  };
+
+  const [auth, setAuth] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
 
     <Page theme={pageTheme.service}>
       <Header style={HeaderCustom} title={`เจ้าหน้าที่เวชระเบียน`}>
-      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true" fontSize="large" />
-        <div style={{ marginLeft: 10 }}>{Name}</div>
-        <Link onClick={Logout}>
-          Logout
-         </Link>
+       
+         
+          <div style={{ marginLeft: 1 }}>{Name}</div>
+     
+
+          {auth && (
+            <div>
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle fontSize="large"/>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem component={RouterLink} to="/homemedical"> Home </MenuItem>
+                <MenuItem onClick={Logout}> Logout </MenuItem>
+              </Menu>
+            </div>
+          )}
       </Header>
 
 
