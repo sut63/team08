@@ -24,6 +24,18 @@ type PrescriptionCreate struct {
 	hooks    []Hook
 }
 
+// SetPrescripNumber sets the Prescrip_Number field.
+func (pc *PrescriptionCreate) SetPrescripNumber(s string) *PrescriptionCreate {
+	pc.mutation.SetPrescripNumber(s)
+	return pc
+}
+
+// SetPrescripIssue sets the Prescrip_Issue field.
+func (pc *PrescriptionCreate) SetPrescripIssue(s string) *PrescriptionCreate {
+	pc.mutation.SetPrescripIssue(s)
+	return pc
+}
+
 // SetPrescripNote sets the Prescrip_Note field.
 func (pc *PrescriptionCreate) SetPrescripNote(s string) *PrescriptionCreate {
 	pc.mutation.SetPrescripNote(s)
@@ -127,8 +139,29 @@ func (pc *PrescriptionCreate) Mutation() *PrescriptionMutation {
 
 // Save creates the Prescription in the database.
 func (pc *PrescriptionCreate) Save(ctx context.Context) (*Prescription, error) {
+	if _, ok := pc.mutation.PrescripNumber(); !ok {
+		return nil, &ValidationError{Name: "Prescrip_Number", err: errors.New("ent: missing required field \"Prescrip_Number\"")}
+	}
+	if v, ok := pc.mutation.PrescripNumber(); ok {
+		if err := prescription.PrescripNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Prescrip_Number", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Number\": %w", err)}
+		}
+	}
+	if _, ok := pc.mutation.PrescripIssue(); !ok {
+		return nil, &ValidationError{Name: "Prescrip_Issue", err: errors.New("ent: missing required field \"Prescrip_Issue\"")}
+	}
+	if v, ok := pc.mutation.PrescripIssue(); ok {
+		if err := prescription.PrescripIssueValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Prescrip_Issue", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Issue\": %w", err)}
+		}
+	}
 	if _, ok := pc.mutation.PrescripNote(); !ok {
 		return nil, &ValidationError{Name: "Prescrip_Note", err: errors.New("ent: missing required field \"Prescrip_Note\"")}
+	}
+	if v, ok := pc.mutation.PrescripNote(); ok {
+		if err := prescription.PrescripNoteValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Prescrip_Note", err: fmt.Errorf("ent: validator failed for field \"Prescrip_Note\": %w", err)}
+		}
 	}
 	if _, ok := pc.mutation.PrescripDateTime(); !ok {
 		v := prescription.DefaultPrescripDateTime()
@@ -194,6 +227,22 @@ func (pc *PrescriptionCreate) createSpec() (*Prescription, *sqlgraph.CreateSpec)
 			},
 		}
 	)
+	if value, ok := pc.mutation.PrescripNumber(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: prescription.FieldPrescripNumber,
+		})
+		pr.PrescripNumber = value
+	}
+	if value, ok := pc.mutation.PrescripIssue(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: prescription.FieldPrescripIssue,
+		})
+		pr.PrescripIssue = value
+	}
 	if value, ok := pc.mutation.PrescripNote(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,

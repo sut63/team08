@@ -363,12 +363,12 @@ func (pq *PrescriptionQuery) WithDrug(opts ...func(*DrugQuery)) *PrescriptionQue
 // Example:
 //
 //	var v []struct {
-//		PrescripNote string `json:"Prescrip_Note,omitempty"`
+//		PrescripNumber string `json:"Prescrip_Number,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Prescription.Query().
-//		GroupBy(prescription.FieldPrescripNote).
+//		GroupBy(prescription.FieldPrescripNumber).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -389,11 +389,11 @@ func (pq *PrescriptionQuery) GroupBy(field string, fields ...string) *Prescripti
 // Example:
 //
 //	var v []struct {
-//		PrescripNote string `json:"Prescrip_Note,omitempty"`
+//		PrescripNumber string `json:"Prescrip_Number,omitempty"`
 //	}
 //
 //	client.Prescription.Query().
-//		Select(prescription.FieldPrescripNote).
+//		Select(prescription.FieldPrescripNumber).
 //		Scan(ctx, &v)
 //
 func (pq *PrescriptionQuery) Select(field string, fields ...string) *PrescriptionSelect {

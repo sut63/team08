@@ -93,6 +93,20 @@ func IDLTE(id int) predicate.Prescription {
 	})
 }
 
+// PrescripNumber applies equality check predicate on the "Prescrip_Number" field. It's identical to PrescripNumberEQ.
+func PrescripNumber(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripIssue applies equality check predicate on the "Prescrip_Issue" field. It's identical to PrescripIssueEQ.
+func PrescripIssue(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPrescripIssue), v))
+	})
+}
+
 // PrescripNote applies equality check predicate on the "Prescrip_Note" field. It's identical to PrescripNoteEQ.
 func PrescripNote(v string) predicate.Prescription {
 	return predicate.Prescription(func(s *sql.Selector) {
@@ -104,6 +118,228 @@ func PrescripNote(v string) predicate.Prescription {
 func PrescripDateTime(v time.Time) predicate.Prescription {
 	return predicate.Prescription(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldPrescripDateTime), v))
+	})
+}
+
+// PrescripNumberEQ applies the EQ predicate on the "Prescrip_Number" field.
+func PrescripNumberEQ(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberNEQ applies the NEQ predicate on the "Prescrip_Number" field.
+func PrescripNumberNEQ(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberIn applies the In predicate on the "Prescrip_Number" field.
+func PrescripNumberIn(vs ...string) predicate.Prescription {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Prescription(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPrescripNumber), v...))
+	})
+}
+
+// PrescripNumberNotIn applies the NotIn predicate on the "Prescrip_Number" field.
+func PrescripNumberNotIn(vs ...string) predicate.Prescription {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Prescription(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPrescripNumber), v...))
+	})
+}
+
+// PrescripNumberGT applies the GT predicate on the "Prescrip_Number" field.
+func PrescripNumberGT(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberGTE applies the GTE predicate on the "Prescrip_Number" field.
+func PrescripNumberGTE(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberLT applies the LT predicate on the "Prescrip_Number" field.
+func PrescripNumberLT(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberLTE applies the LTE predicate on the "Prescrip_Number" field.
+func PrescripNumberLTE(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberContains applies the Contains predicate on the "Prescrip_Number" field.
+func PrescripNumberContains(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberHasPrefix applies the HasPrefix predicate on the "Prescrip_Number" field.
+func PrescripNumberHasPrefix(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberHasSuffix applies the HasSuffix predicate on the "Prescrip_Number" field.
+func PrescripNumberHasSuffix(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberEqualFold applies the EqualFold predicate on the "Prescrip_Number" field.
+func PrescripNumberEqualFold(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripNumberContainsFold applies the ContainsFold predicate on the "Prescrip_Number" field.
+func PrescripNumberContainsFold(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPrescripNumber), v))
+	})
+}
+
+// PrescripIssueEQ applies the EQ predicate on the "Prescrip_Issue" field.
+func PrescripIssueEQ(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueNEQ applies the NEQ predicate on the "Prescrip_Issue" field.
+func PrescripIssueNEQ(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueIn applies the In predicate on the "Prescrip_Issue" field.
+func PrescripIssueIn(vs ...string) predicate.Prescription {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Prescription(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPrescripIssue), v...))
+	})
+}
+
+// PrescripIssueNotIn applies the NotIn predicate on the "Prescrip_Issue" field.
+func PrescripIssueNotIn(vs ...string) predicate.Prescription {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Prescription(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPrescripIssue), v...))
+	})
+}
+
+// PrescripIssueGT applies the GT predicate on the "Prescrip_Issue" field.
+func PrescripIssueGT(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueGTE applies the GTE predicate on the "Prescrip_Issue" field.
+func PrescripIssueGTE(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueLT applies the LT predicate on the "Prescrip_Issue" field.
+func PrescripIssueLT(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueLTE applies the LTE predicate on the "Prescrip_Issue" field.
+func PrescripIssueLTE(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueContains applies the Contains predicate on the "Prescrip_Issue" field.
+func PrescripIssueContains(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueHasPrefix applies the HasPrefix predicate on the "Prescrip_Issue" field.
+func PrescripIssueHasPrefix(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueHasSuffix applies the HasSuffix predicate on the "Prescrip_Issue" field.
+func PrescripIssueHasSuffix(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueEqualFold applies the EqualFold predicate on the "Prescrip_Issue" field.
+func PrescripIssueEqualFold(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPrescripIssue), v))
+	})
+}
+
+// PrescripIssueContainsFold applies the ContainsFold predicate on the "Prescrip_Issue" field.
+func PrescripIssueContainsFold(v string) predicate.Prescription {
+	return predicate.Prescription(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPrescripIssue), v))
 	})
 }
 

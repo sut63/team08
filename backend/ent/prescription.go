@@ -20,6 +20,10 @@ type Prescription struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// PrescripNumber holds the value of the "Prescrip_Number" field.
+	PrescripNumber string `json:"Prescrip_Number,omitempty"`
+	// PrescripIssue holds the value of the "Prescrip_Issue" field.
+	PrescripIssue string `json:"Prescrip_Issue,omitempty"`
 	// PrescripNote holds the value of the "Prescrip_Note" field.
 	PrescripNote string `json:"Prescrip_Note,omitempty"`
 	// PrescripDateTime holds the value of the "Prescrip_DateTime" field.
@@ -108,6 +112,8 @@ func (e PrescriptionEdges) DrugOrErr() (*Drug, error) {
 func (*Prescription) scanValues() []interface{} {
 	return []interface{}{
 		&sql.NullInt64{},  // id
+		&sql.NullString{}, // Prescrip_Number
+		&sql.NullString{}, // Prescrip_Issue
 		&sql.NullString{}, // Prescrip_Note
 		&sql.NullTime{},   // Prescrip_DateTime
 	}
@@ -136,16 +142,26 @@ func (pr *Prescription) assignValues(values ...interface{}) error {
 	pr.ID = int(value.Int64)
 	values = values[1:]
 	if value, ok := values[0].(*sql.NullString); !ok {
-		return fmt.Errorf("unexpected type %T for field Prescrip_Note", values[0])
+		return fmt.Errorf("unexpected type %T for field Prescrip_Number", values[0])
+	} else if value.Valid {
+		pr.PrescripNumber = value.String
+	}
+	if value, ok := values[1].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Prescrip_Issue", values[1])
+	} else if value.Valid {
+		pr.PrescripIssue = value.String
+	}
+	if value, ok := values[2].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Prescrip_Note", values[2])
 	} else if value.Valid {
 		pr.PrescripNote = value.String
 	}
-	if value, ok := values[1].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field Prescrip_DateTime", values[1])
+	if value, ok := values[3].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field Prescrip_DateTime", values[3])
 	} else if value.Valid {
 		pr.PrescripDateTime = value.Time
 	}
-	values = values[2:]
+	values = values[4:]
 	if len(values) == len(prescription.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field doctor_id", value)
@@ -218,6 +234,10 @@ func (pr *Prescription) String() string {
 	var builder strings.Builder
 	builder.WriteString("Prescription(")
 	builder.WriteString(fmt.Sprintf("id=%v", pr.ID))
+	builder.WriteString(", Prescrip_Number=")
+	builder.WriteString(pr.PrescripNumber)
+	builder.WriteString(", Prescrip_Issue=")
+	builder.WriteString(pr.PrescripIssue)
 	builder.WriteString(", Prescrip_Note=")
 	builder.WriteString(pr.PrescripNote)
 	builder.WriteString(", Prescrip_DateTime=")
