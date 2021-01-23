@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/sut63/team08/ent"
+	"github.com/sut63/team08/ent/examinationroom"
 	"github.com/sut63/team08/ent/nurse"
 	"github.com/sut63/team08/ent/operative"
 	"github.com/sut63/team08/ent/operativerecord"
 	"github.com/sut63/team08/ent/tool"
-	"github.com/sut63/team08/ent/examinationroom"
-	"github.com/gin-gonic/gin"
 )
 
 // OperativerecordController defines the struct for the Operativerecord controller
@@ -28,6 +28,7 @@ type Operativerecord struct {
 	Tool            int
 	Operative       int
 	Added           string
+	Number          string
 }
 
 // CreateOperativerecord handles POST requests for adding Operativerecord entities
@@ -95,12 +96,14 @@ func (ctl *OperativerecordController) CreateOperativerecord(c *gin.Context) {
 		SetNurse(p).
 		SetTool(st).
 		SetExaminationroom(f).
+		SetNurseNumber(obj.Number).
 		SetOperative(ce).
 		SetOperativeTime(time).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
