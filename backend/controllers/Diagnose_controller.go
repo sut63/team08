@@ -25,7 +25,10 @@ type Diagnose struct {
 	Doctor   	int
 	Patient     int
 	Department 	int
-	Disease    int
+	Disease     int
+	Symptoms 	string
+	Note		string
+	Number		string		
 }
 // CreateDiagnose handles POST requests for adding diagnose entities
 // @Summary Create diagnose
@@ -88,6 +91,9 @@ func (ctl *DiagnoseController) CreateDiagnose(c *gin.Context) {
 	}
 	diag, err := ctl.client.Diagnose.
 		Create().
+		SetDiagnoseID(obj.Number).
+		SetDiagnoseSymptoms(obj.Symptoms).
+		SetDiagnoseNote(obj.Note).
 		SetDoctor(d).
 		SetPatient(p).
 		SetDepartment(dep).
@@ -95,7 +101,8 @@ func (ctl *DiagnoseController) CreateDiagnose(c *gin.Context) {
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{
-			"error": "saving failed",
+			"status": false,
+			"error":  err,
 		})
 		return
 	}
@@ -253,9 +260,7 @@ func NewDiagnoseController(router gin.IRouter, client *ent.Client) *DiagnoseCont
 		client: client,
 		router: router,
 	}
-
 	diag.register()
-
 	return diag
 
 }
