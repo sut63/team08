@@ -6,6 +6,12 @@ definitions:
         type: integer
       fund:
         type: integer
+      fundTitle:
+        type: string
+      note:
+        type: string
+      number:
+        type: string
       patient:
         type: integer
       schemeType:
@@ -19,8 +25,14 @@ definitions:
         type: integer
       doctor:
         type: integer
+      note:
+        type: string
+      number:
+        type: string
       patient:
         type: integer
+      symptoms:
+        type: string
     type: object
   controllers.Operativerecord:
     properties:
@@ -28,6 +40,8 @@ definitions:
         type: string
       examinationroom:
         type: integer
+      number:
+        type: string
       nurse:
         type: integer
       operative:
@@ -60,7 +74,11 @@ definitions:
         type: integer
       drug:
         type: integer
+      issue:
+        type: string
       note:
+        type: string
+      number:
         type: string
       nurse:
         type: integer
@@ -144,6 +162,17 @@ definitions:
     type: object
   ent.CoveredPerson:
     properties:
+      CoveredPerson_Note:
+        description: CoveredPersonNote holds the value of the "CoveredPerson_Note"
+          field.
+        type: string
+      CoveredPerson_Number:
+        description: CoveredPersonNumber holds the value of the "CoveredPerson_Number"
+          field.
+        type: string
+      Fund_Title:
+        description: FundTitle holds the value of the "Fund_Title" field.
+        type: string
       certificate_id:
         type: integer
       edges:
@@ -207,6 +236,15 @@ definitions:
     type: object
   ent.Diagnose:
     properties:
+      Diagnose_ID:
+        description: DiagnoseID holds the value of the "Diagnose_ID" field.
+        type: string
+      Diagnose_Note:
+        description: DiagnoseNote holds the value of the "Diagnose_Note" field.
+        type: string
+      Diagnose_Symptoms:
+        description: DiagnoseSymptoms holds the value of the "Diagnose_Symptoms" field.
+        type: string
       edges:
         $ref: '#/definitions/ent.DiagnoseEdges'
         description: |-
@@ -478,6 +516,9 @@ definitions:
     type: object
   ent.Operativerecord:
     properties:
+      Nurse_Number:
+        description: NurseNumber holds the value of the "Nurse_Number" field.
+        type: string
       OperativeTime:
         description: OperativeTime holds the value of the "OperativeTime" field.
         type: string
@@ -606,8 +647,14 @@ definitions:
       Prescrip_DateTime:
         description: PrescripDateTime holds the value of the "Prescrip_DateTime" field.
         type: string
+      Prescrip_Issue:
+        description: PrescripIssue holds the value of the "Prescrip_Issue" field.
+        type: string
       Prescrip_Note:
         description: PrescripNote holds the value of the "Prescrip_Note" field.
+        type: string
+      Prescrip_Number:
+        description: PrescripNumber holds the value of the "Prescrip_Number" field.
         type: string
       edges:
         $ref: '#/definitions/ent.PrescriptionEdges'
@@ -960,35 +1007,6 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Create certificate
   /certificates/{id}:
-    delete:
-      description: get certificate by ID
-      operationId: delete-certificate
-      parameters:
-      - description: Certificate ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a certificate entity by ID
     get:
       description: get certificate by ID
       operationId: get-certificate
@@ -1018,39 +1036,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a certificate entity by ID
-    put:
-      consumes:
-      - application/json
-      description: update certificate by ID
-      operationId: update-certificate
-      parameters:
-      - description: Certificate ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Certificate entity
-        in: body
-        name: certificate
-        required: true
-        schema:
-          $ref: '#/definitions/ent.Certificate'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Certificate'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a certificate entity by ID
   /coveredpersons:
     get:
       description: list coveredperson entities
@@ -2106,35 +2091,6 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Create fund
   /funds/{id}:
-    delete:
-      description: get fund by ID
-      operationId: delete-fund
-      parameters:
-      - description: fund ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a fund entity by ID
     get:
       description: get fund by ID
       operationId: get-fund
@@ -2164,39 +2120,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a fund entity by ID
-    put:
-      consumes:
-      - application/json
-      description: update fund by ID
-      operationId: update-fund
-      parameters:
-      - description: fund ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: fund entity
-        in: body
-        name: fund
-        required: true
-        schema:
-          $ref: '#/definitions/ent.Fund'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Fund'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a fund entity by ID
   /genders:
     get:
       description: list gender entities
@@ -2346,35 +2269,6 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Create medical
   /medicals/{id}:
-    delete:
-      description: get medical by ID
-      operationId: delete-medical
-      parameters:
-      - description: Medical ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a medical entity by ID
     get:
       description: get medical by ID
       operationId: get-medical
@@ -2404,39 +2298,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a medical entity by ID
-    put:
-      consumes:
-      - application/json
-      description: update medical by ID
-      operationId: update-medical
-      parameters:
-      - description: Medical ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Medical entity
-        in: body
-        name: medical
-        required: true
-        schema:
-          $ref: '#/definitions/ent.Medical'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.Medical'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a medical entity by ID
   /nurses:
     get:
       description: list nurse entities
@@ -3608,35 +3469,6 @@ paths:
             $ref: '#/definitions/gin.H'
       summary: Create schemeType
   /schemeTypes/{id}:
-    delete:
-      description: get schemeType by ID
-      operationId: delete-schemeType
-      parameters:
-      - description: SchemeType ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/gin.H'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Delete a schemeType entity by ID
     get:
       description: get schemeType by ID
       operationId: get-schemeType
@@ -3666,39 +3498,6 @@ paths:
           schema:
             $ref: '#/definitions/gin.H'
       summary: Get a schemeType entity by ID
-    put:
-      consumes:
-      - application/json
-      description: update schemeType by ID
-      operationId: update-schemeType
-      parameters:
-      - description: SchemeType ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: SchemeType entity
-        in: body
-        name: schemeType
-        required: true
-        schema:
-          $ref: '#/definitions/ent.SchemeType'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/ent.SchemeType'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Update a schemeType entity by ID
   /tools:
     get:
       description: list tool entities

@@ -299,98 +299,6 @@ var doc = `{
                         }
                     }
                 }
-            },
-            "put": {
-                "description": "update certificate by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Update a certificate entity by ID",
-                "operationId": "update-certificate",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Certificate ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Certificate entity",
-                        "name": "certificate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ent.Certificate"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Certificate"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get certificate by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Delete a certificate entity by ID",
-                "operationId": "delete-certificate",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Certificate ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
             }
         },
         "/coveredpersons": {
@@ -2015,98 +1923,6 @@ var doc = `{
                         }
                     }
                 }
-            },
-            "put": {
-                "description": "update fund by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Update a fund entity by ID",
-                "operationId": "update-fund",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "fund ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "fund entity",
-                        "name": "fund",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ent.Fund"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Fund"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get fund by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Delete a fund entity by ID",
-                "operationId": "delete-fund",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "fund ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
             }
         },
         "/genders": {
@@ -2354,98 +2170,6 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/ent.Medical"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "update medical by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Update a medical entity by ID",
-                "operationId": "update-medical",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Medical ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Medical entity",
-                        "name": "medical",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ent.Medical"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.Medical"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get medical by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Delete a medical entity by ID",
-                "operationId": "delete-medical",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Medical ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
                         }
                     },
                     "400": {
@@ -4267,98 +3991,6 @@ var doc = `{
                         }
                     }
                 }
-            },
-            "put": {
-                "description": "update schemeType by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Update a schemeType entity by ID",
-                "operationId": "update-schemeType",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "SchemeType ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "SchemeType entity",
-                        "name": "schemeType",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ent.SchemeType"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/ent.SchemeType"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "description": "get schemeType by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Delete a schemeType entity by ID",
-                "operationId": "delete-schemeType",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "SchemeType ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
             }
         },
         "/tools": {
@@ -4598,6 +4230,15 @@ var doc = `{
                 "fund": {
                     "type": "integer"
                 },
+                "fundTitle": {
+                    "type": "string"
+                },
+                "note": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
                 "patient": {
                     "type": "integer"
                 },
@@ -4618,8 +4259,17 @@ var doc = `{
                 "doctor": {
                     "type": "integer"
                 },
+                "note": {
+                    "type": "string"
+                },
+                "number": {
+                    "type": "string"
+                },
                 "patient": {
                     "type": "integer"
+                },
+                "symptoms": {
+                    "type": "string"
                 }
             }
         },
@@ -4631,6 +4281,9 @@ var doc = `{
                 },
                 "examinationroom": {
                     "type": "integer"
+                },
+                "number": {
+                    "type": "string"
                 },
                 "nurse": {
                     "type": "integer"
@@ -4681,7 +4334,13 @@ var doc = `{
                 "drug": {
                     "type": "integer"
                 },
+                "issue": {
+                    "type": "string"
+                },
                 "note": {
+                    "type": "string"
+                },
+                "number": {
                     "type": "string"
                 },
                 "nurse": {
@@ -4798,6 +4457,18 @@ var doc = `{
         "ent.CoveredPerson": {
             "type": "object",
             "properties": {
+                "CoveredPerson_Note": {
+                    "description": "CoveredPersonNote holds the value of the \"CoveredPerson_Note\" field.",
+                    "type": "string"
+                },
+                "CoveredPerson_Number": {
+                    "description": "CoveredPersonNumber holds the value of the \"CoveredPerson_Number\" field.",
+                    "type": "string"
+                },
+                "Fund_Title": {
+                    "description": "FundTitle holds the value of the \"Fund_Title\" field.",
+                    "type": "string"
+                },
                 "certificate_id": {
                     "type": "integer"
                 },
@@ -4879,6 +4550,18 @@ var doc = `{
         "ent.Diagnose": {
             "type": "object",
             "properties": {
+                "Diagnose_ID": {
+                    "description": "DiagnoseID holds the value of the \"Diagnose_ID\" field.",
+                    "type": "string"
+                },
+                "Diagnose_Note": {
+                    "description": "DiagnoseNote holds the value of the \"Diagnose_Note\" field.",
+                    "type": "string"
+                },
+                "Diagnose_Symptoms": {
+                    "description": "DiagnoseSymptoms holds the value of the \"Diagnose_Symptoms\" field.",
+                    "type": "string"
+                },
                 "edges": {
                     "description": "Edges holds the relations/edges for other nodes in the graph.\nThe values are being populated by the DiagnoseQuery when eager-loading is set.",
                     "type": "object",
@@ -5228,6 +4911,10 @@ var doc = `{
         "ent.Operativerecord": {
             "type": "object",
             "properties": {
+                "Nurse_Number": {
+                    "description": "NurseNumber holds the value of the \"Nurse_Number\" field.",
+                    "type": "string"
+                },
                 "OperativeTime": {
                     "description": "OperativeTime holds the value of the \"OperativeTime\" field.",
                     "type": "string"
@@ -5393,8 +5080,16 @@ var doc = `{
                     "description": "PrescripDateTime holds the value of the \"Prescrip_DateTime\" field.",
                     "type": "string"
                 },
+                "Prescrip_Issue": {
+                    "description": "PrescripIssue holds the value of the \"Prescrip_Issue\" field.",
+                    "type": "string"
+                },
                 "Prescrip_Note": {
                     "description": "PrescripNote holds the value of the \"Prescrip_Note\" field.",
+                    "type": "string"
+                },
+                "Prescrip_Number": {
+                    "description": "PrescripNumber holds the value of the \"Prescrip_Number\" field.",
                     "type": "string"
                 },
                 "edges": {
