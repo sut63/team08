@@ -54,8 +54,8 @@ export function EntRoomEdgesFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
-        'rents': !exists(json, 'Rents') ? undefined : EntRentFromJSON(json['Rents']),
-        'roomtype': !exists(json, 'Roomtype') ? undefined : EntRoomtypeFromJSON(json['Roomtype']),
+        'rents': !exists(json, 'rents') ? undefined : EntRentFromJSON(json['rents']),
+        'roomtype': !exists(json, 'roomtype') ? undefined : EntRoomtypeFromJSON(json['roomtype']),
     };
 }
 
