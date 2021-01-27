@@ -390,7 +390,7 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
           </Grid>
           <Grid item xs={8}>
           <TextField
-             name="fundtitile"
+             name="note"
              label=""
              multiline
              defaultValue="Default Value"

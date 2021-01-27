@@ -74,10 +74,10 @@ export function EntCoveredPersonEdgesFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'certificate': !exists(json, 'certificate') ? undefined : EntCertificateFromJSON(json['certificate']),
-        'fund': !exists(json, 'fund') ? undefined : EntFundFromJSON(json['fund']),
-        'patient': !exists(json, 'patient') ? undefined : EntPatientFromJSON(json['patient']),
-        'schemeType': !exists(json, 'schemeType') ? undefined : EntSchemeTypeFromJSON(json['schemeType']),
+        'certificate': !exists(json, 'Certificate') ? undefined : EntCertificateFromJSON(json['Certificate']),
+        'fund': !exists(json, 'Fund') ? undefined : EntFundFromJSON(json['Fund']),
+        'patient': !exists(json, 'Patient') ? undefined : EntPatientFromJSON(json['Patient']),
+        'schemeType': !exists(json, 'SchemeType') ? undefined : EntSchemeTypeFromJSON(json['SchemeType']),
     };
 }
 

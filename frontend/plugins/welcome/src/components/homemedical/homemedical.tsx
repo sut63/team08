@@ -174,7 +174,7 @@ export default function ScrollableTabsButtonForce() {
                         aria-label="scrollable force tabs example"
                       >
                         <Tab label="ระบบบันทึกสิทธิการรักษาพยาบาล" icon={<LoupeIcon />} {...a11yProps(0)} component={RouterLink} to="/covered" />
-                        <Tab label="ระบบค้นหาสิทธิการรักษาพยาบาล" icon={<HowToRegIcon />} {...a11yProps(4)} component={RouterLink} to="/" />
+                        <Tab label="ระบบค้นหาสิทธิการรักษาพยาบาล" icon={<HowToRegIcon />} {...a11yProps(4)} component={RouterLink} to="/coveredsearch" />
                       </Tabs>
                     </AppBar>
                   </td>

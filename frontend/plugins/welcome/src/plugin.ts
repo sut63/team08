@@ -3,6 +3,7 @@ import Regeister from './components/Patient_Register';
 import Rent from './components/Rent_Room';
 import SignIn from './components/SignIn'
 import Covered from './components/CoveredPerson'
+import Coveredsearch from './components/CoveredPersonsearch'
 import homedoctor from './components/homedoctor'
 import homenurse from './components/homenurse'
 import homemedical from './components/homemedical'
@@ -21,6 +22,7 @@ export const plugin = createPlugin({
     router.registerRoute('/reg', Regeister);
     router.registerRoute('/rent', Rent);
     router.registerRoute('/covered', Covered);
+    router.registerRoute('/coveredsearch', Coveredsearch);
     router.registerRoute('/pre', Prescription);
     router.registerRoute('/dia', Diagnose);
     router.registerRoute('/opera', Operativerecord);
