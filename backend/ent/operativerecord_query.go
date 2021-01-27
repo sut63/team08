@@ -363,12 +363,12 @@ func (oq *OperativerecordQuery) WithTool(opts ...func(*ToolQuery)) *Operativerec
 // Example:
 //
 //	var v []struct {
-//		OperativeTime time.Time `json:"OperativeTime,omitempty"`
+//		NurseNumber string `json:"Nurse_Number,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Operativerecord.Query().
-//		GroupBy(operativerecord.FieldOperativeTime).
+//		GroupBy(operativerecord.FieldNurseNumber).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 //
@@ -389,11 +389,11 @@ func (oq *OperativerecordQuery) GroupBy(field string, fields ...string) *Operati
 // Example:
 //
 //	var v []struct {
-//		OperativeTime time.Time `json:"OperativeTime,omitempty"`
+//		NurseNumber string `json:"Nurse_Number,omitempty"`
 //	}
 //
 //	client.Operativerecord.Query().
-//		Select(operativerecord.FieldOperativeTime).
+//		Select(operativerecord.FieldNurseNumber).
 //		Scan(ctx, &v)
 //
 func (oq *OperativerecordQuery) Select(field string, fields ...string) *OperativerecordSelect {

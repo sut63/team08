@@ -32,6 +32,12 @@ func (ou *OperativerecordUpdate) Where(ps ...predicate.Operativerecord) *Operati
 	return ou
 }
 
+// SetNurseNumber sets the Nurse_Number field.
+func (ou *OperativerecordUpdate) SetNurseNumber(s string) *OperativerecordUpdate {
+	ou.mutation.SetNurseNumber(s)
+	return ou
+}
+
 // SetOperativeTime sets the OperativeTime field.
 func (ou *OperativerecordUpdate) SetOperativeTime(t time.Time) *OperativerecordUpdate {
 	ou.mutation.SetOperativeTime(t)
@@ -153,6 +159,11 @@ func (ou *OperativerecordUpdate) ClearTool() *OperativerecordUpdate {
 
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (ou *OperativerecordUpdate) Save(ctx context.Context) (int, error) {
+	if v, ok := ou.mutation.NurseNumber(); ok {
+		if err := operativerecord.NurseNumberValidator(v); err != nil {
+			return 0, &ValidationError{Name: "Nurse_Number", err: fmt.Errorf("ent: validator failed for field \"Nurse_Number\": %w", err)}
+		}
+	}
 
 	var (
 		err      error
@@ -220,6 +231,13 @@ func (ou *OperativerecordUpdate) sqlSave(ctx context.Context) (n int, err error)
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ou.mutation.NurseNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: operativerecord.FieldNurseNumber,
+		})
 	}
 	if value, ok := ou.mutation.OperativeTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -386,6 +404,12 @@ type OperativerecordUpdateOne struct {
 	mutation *OperativerecordMutation
 }
 
+// SetNurseNumber sets the Nurse_Number field.
+func (ouo *OperativerecordUpdateOne) SetNurseNumber(s string) *OperativerecordUpdateOne {
+	ouo.mutation.SetNurseNumber(s)
+	return ouo
+}
+
 // SetOperativeTime sets the OperativeTime field.
 func (ouo *OperativerecordUpdateOne) SetOperativeTime(t time.Time) *OperativerecordUpdateOne {
 	ouo.mutation.SetOperativeTime(t)
@@ -507,6 +531,11 @@ func (ouo *OperativerecordUpdateOne) ClearTool() *OperativerecordUpdateOne {
 
 // Save executes the query and returns the updated entity.
 func (ouo *OperativerecordUpdateOne) Save(ctx context.Context) (*Operativerecord, error) {
+	if v, ok := ouo.mutation.NurseNumber(); ok {
+		if err := operativerecord.NurseNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Nurse_Number", err: fmt.Errorf("ent: validator failed for field \"Nurse_Number\": %w", err)}
+		}
+	}
 
 	var (
 		err  error
@@ -573,6 +602,13 @@ func (ouo *OperativerecordUpdateOne) sqlSave(ctx context.Context) (o *Operativer
 		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Operativerecord.ID for update")}
 	}
 	_spec.Node.ID.Value = id
+	if value, ok := ouo.mutation.NurseNumber(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: operativerecord.FieldNurseNumber,
+		})
+	}
 	if value, ok := ouo.mutation.OperativeTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

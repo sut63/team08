@@ -40,7 +40,6 @@ var (
 		{Name: "fund_title", Type: field.TypeString},
 		{Name: "Certificate_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Fund_id", Type: field.TypeInt, Nullable: true},
-		{Name: "medical_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Patient_id", Type: field.TypeInt, Nullable: true},
 		{Name: "SchemeType_id", Type: field.TypeInt, Nullable: true},
 	}
@@ -65,22 +64,15 @@ var (
 				OnDelete:   schema.SetNull,
 			},
 			{
-				Symbol:  "covered_persons_medicals_Medical_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[6]},
-
-				RefColumns: []*schema.Column{MedicalsColumns[0]},
-				OnDelete:   schema.SetNull,
-			},
-			{
 				Symbol:  "covered_persons_patients_Patient_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[7]},
+				Columns: []*schema.Column{CoveredPersonsColumns[6]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "covered_persons_scheme_types_SchemeType_CoveredPerson",
-				Columns: []*schema.Column{CoveredPersonsColumns[8]},
+				Columns: []*schema.Column{CoveredPersonsColumns[7]},
 
 				RefColumns: []*schema.Column{SchemeTypesColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -102,6 +94,9 @@ var (
 	// DiagnosesColumns holds the columns for the "diagnoses" table.
 	DiagnosesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "diagnose_id", Type: field.TypeString},
+		{Name: "diagnose_symptoms", Type: field.TypeString},
+		{Name: "diagnose_note", Type: field.TypeString},
 		{Name: "department_id", Type: field.TypeInt, Nullable: true},
 		{Name: "disease_id", Type: field.TypeInt, Nullable: true},
 		{Name: "doctor_id", Type: field.TypeInt, Nullable: true},
@@ -115,28 +110,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "diagnoses_departments_department_diagnose",
-				Columns: []*schema.Column{DiagnosesColumns[1]},
+				Columns: []*schema.Column{DiagnosesColumns[4]},
 
 				RefColumns: []*schema.Column{DepartmentsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diagnoses_diseases_disease_diagnose",
-				Columns: []*schema.Column{DiagnosesColumns[2]},
+				Columns: []*schema.Column{DiagnosesColumns[5]},
 
 				RefColumns: []*schema.Column{DiseasesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diagnoses_doctors_doctor_diagnose",
-				Columns: []*schema.Column{DiagnosesColumns[3]},
+				Columns: []*schema.Column{DiagnosesColumns[6]},
 
 				RefColumns: []*schema.Column{DoctorsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "diagnoses_patients_patient_diagnose",
-				Columns: []*schema.Column{DiagnosesColumns[4]},
+				Columns: []*schema.Column{DiagnosesColumns[7]},
 
 				RefColumns: []*schema.Column{PatientsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -263,6 +258,7 @@ var (
 	// OperativerecordsColumns holds the columns for the "operativerecords" table.
 	OperativerecordsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "nurse_number", Type: field.TypeString},
 		{Name: "operative_time", Type: field.TypeTime},
 		{Name: "Examinationroom_id", Type: field.TypeInt, Nullable: true},
 		{Name: "Nurse_id", Type: field.TypeInt, Nullable: true},
@@ -277,28 +273,28 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:  "operativerecords_examinationrooms_Examinationroom_Operativerecord",
-				Columns: []*schema.Column{OperativerecordsColumns[2]},
+				Columns: []*schema.Column{OperativerecordsColumns[3]},
 
 				RefColumns: []*schema.Column{ExaminationroomsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "operativerecords_nurses_Nurse_Operativerecord",
-				Columns: []*schema.Column{OperativerecordsColumns[3]},
+				Columns: []*schema.Column{OperativerecordsColumns[4]},
 
 				RefColumns: []*schema.Column{NursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "operativerecords_operatives_Operative_Operativerecord",
-				Columns: []*schema.Column{OperativerecordsColumns[4]},
+				Columns: []*schema.Column{OperativerecordsColumns[5]},
 
 				RefColumns: []*schema.Column{OperativesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:  "operativerecords_tools_Tool_Operativerecord",
-				Columns: []*schema.Column{OperativerecordsColumns[5]},
+				Columns: []*schema.Column{OperativerecordsColumns[6]},
 
 				RefColumns: []*schema.Column{ToolsColumns[0]},
 				OnDelete:   schema.SetNull,
@@ -539,9 +535,8 @@ var (
 func init() {
 	CoveredPersonsTable.ForeignKeys[0].RefTable = CertificatesTable
 	CoveredPersonsTable.ForeignKeys[1].RefTable = FundsTable
-	CoveredPersonsTable.ForeignKeys[2].RefTable = MedicalsTable
-	CoveredPersonsTable.ForeignKeys[3].RefTable = PatientsTable
-	CoveredPersonsTable.ForeignKeys[4].RefTable = SchemeTypesTable
+	CoveredPersonsTable.ForeignKeys[2].RefTable = PatientsTable
+	CoveredPersonsTable.ForeignKeys[3].RefTable = SchemeTypesTable
 	DiagnosesTable.ForeignKeys[0].RefTable = DepartmentsTable
 	DiagnosesTable.ForeignKeys[1].RefTable = DiseasesTable
 	DiagnosesTable.ForeignKeys[2].RefTable = DoctorsTable

@@ -11,6 +11,8 @@ const (
 	Label = "operativerecord"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldNurseNumber holds the string denoting the nurse_number field in the database.
+	FieldNurseNumber = "nurse_number"
 	// FieldOperativeTime holds the string denoting the operativetime field in the database.
 	FieldOperativeTime = "operative_time"
 
@@ -58,6 +60,7 @@ const (
 // Columns holds all SQL columns for operativerecord fields.
 var Columns = []string{
 	FieldID,
+	FieldNurseNumber,
 	FieldOperativeTime,
 }
 
@@ -70,6 +73,8 @@ var ForeignKeys = []string{
 }
 
 var (
+	// NurseNumberValidator is a validator for the "Nurse_Number" field. It is called by the builders before save.
+	NurseNumberValidator func(string) error
 	// DefaultOperativeTime holds the default value on creation for the OperativeTime field.
 	DefaultOperativeTime func() time.Time
 )
