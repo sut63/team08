@@ -15,7 +15,7 @@ import (
 	"github.com/sut63/team08/ent/prescription"
 )
 
-// PrescriptionController defines the struct for the pre-scription controller
+// PrescriptionController defines the struct for the prescription controller
 type PrescriptionController struct {
 	client *ent.Client
 	router gin.IRouter
@@ -33,13 +33,13 @@ type Prescription struct {
 	Issue   string
 }
 
-// CreatePrescription handles POST requests for adding Prescription entities
-// @Summary Create pre-scription
-// @Description Create pre-scription
-// @ID create-pre-scription
+// CreatePrescription handles POST requests for adding prescription entities
+// @Summary Create prescription
+// @Description Create prescription
+// @ID create-prescription
 // @Accept   json
 // @Produce  json
-// @Param prescription body ent.Prescription true "Prescription entity"
+// @Param prescription body Prescription true "Prescription entity"
 // @Success 200 {object} ent.Prescription
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -131,53 +131,47 @@ func (ctl *PrescriptionController) CreatePrescription(c *gin.Context) {
 	})
 }
 
-// GetPrescription handles GET requests to retrieve a Prescription entity
-// @Summary Get a Prescription entity by Patient PatientName
-// @Description get Prescription by Patient PatientName
-// @ID get-pre-scription
+// GetPrescription handles GET requests to retrieve a prescription entity
+// @Summary Get a prescription entity by ID
+// @Description get prescription by ID
+// @ID get-prescription
 // @Produce  json
-// @Param name path string true "Patient PatientName"
-// @Success 200 {array} ent.Prescription
+// @Param id path int true "Prescription ID"
+// @Success 200 {object} ent.Prescription
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
 // @Failure 500 {object} gin.H
-// @Router /prescriptions/{name} [get]
+// @Router /prescriptions/{id} [get]
 func (ctl *PrescriptionController) GetPrescription(c *gin.Context) {
-	PatientName := string(c.Param("name"))
-
-	da, err := ctl.client.Prescription.
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	b, err := ctl.client.Prescription.
 		Query().
-		Where(prescription.HasPatientWith(patient.PatientNameEQ(string(PatientName)))).
-		WithPatient().
 		WithDoctor().
-		WithNurse().
 		WithDrug().
-		All(context.Background())
+		WithNurse().
+		WithPatient().
+		Where(prescription.IDEQ(int(id))).
+		Only(context.Background())
+
 	if err != nil {
 		c.JSON(404, gin.H{
-			"error":  err.Error(),
-			"status": false,
+			"error": err.Error(),
 		})
 		return
 	}
-
-	if len(da) != 0 {
-		c.JSON(200, da)
-		return
-	} else {
-		c.JSON(404, gin.H{
-			"error":  "patient not found",
-			"status": false,
-		})
-		return
-	}
-
+	c.JSON(200, b)
 }
 
-// ListPrescription handles request to get a list of Prescription entities
-// @Summary List Prescription entities
-// @Description list Prescription entities
-// @ID list-pre-scription
+// ListPrescription handles request to get a list of prescription entities
+// @Summary List prescription entities
+// @Description list prescription entities
+// @ID list-prescription
 // @Produce json
 // @Param limit  query int false "Limit"
 // @Param offset query int false "Offset"
@@ -187,14 +181,13 @@ func (ctl *PrescriptionController) GetPrescription(c *gin.Context) {
 // @Router /prescriptions [get]
 func (ctl *PrescriptionController) ListPrescription(c *gin.Context) {
 	limitQuery := c.Query("limit")
-	limit := 20
+	limit := 10
 	if limitQuery != "" {
 		limit64, err := strconv.ParseInt(limitQuery, 10, 64)
 		if err == nil {
 			limit = int(limit64)
 		}
 	}
-
 	offsetQuery := c.Query("offset")
 	offset := 0
 	if offsetQuery != "" {
@@ -203,13 +196,12 @@ func (ctl *PrescriptionController) ListPrescription(c *gin.Context) {
 			offset = int(offset64)
 		}
 	}
-
-	Prescriptions, err := ctl.client.Prescription.
+	prescriptions, err := ctl.client.Prescription.
 		Query().
+		WithDoctor().
 		WithPatient().
 		WithNurse().
 		WithDrug().
-		WithDoctor().
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
@@ -217,14 +209,13 @@ func (ctl *PrescriptionController) ListPrescription(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(200, Prescriptions)
+	c.JSON(200, prescriptions)
 }
 
-// DeletePrescription handles DELETE requests to delete a Prescription entity
-// @Summary Delete a Prescription entity by ID
-// @Description get Prescription by ID
-// @ID delete-pre-scription
+// DeletePrescription handles DELETE requests to delete a prescription entity
+// @Summary Delete a prescription entity by ID
+// @Description get prescription by ID
+// @ID delete-prescription
 // @Produce  json
 // @Param id path int true "Prescription ID"
 // @Success 200 {object} gin.H
@@ -240,7 +231,6 @@ func (ctl *PrescriptionController) DeletePrescription(c *gin.Context) {
 		})
 		return
 	}
-
 	err = ctl.client.Prescription.
 		DeleteOneID(int(id)).
 		Exec(context.Background())
@@ -250,18 +240,17 @@ func (ctl *PrescriptionController) DeletePrescription(c *gin.Context) {
 		})
 		return
 	}
-
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
 // UpdatePrescription handles PUT requests to update a Prescription entity
-// @Summary Update a Prescription entity by ID
-// @Description update Prescription by ID
-// @ID update-pre-scription
+// @Summary Update a prescription entity by ID
+// @Description update prescription by ID
+// @ID update-prescription
 // @Accept   json
 // @Produce  json
 // @Param id path int true "Prescription ID"
-// @Param prescription body ent.Prescription true "Prescription entity"
+// @Param drugAllergy body ent.Prescription true "Prescription entity"
 // @Success 200 {object} ent.Prescription
 // @Failure 400 {object} gin.H
 // @Failure 500 {object} gin.H
@@ -274,27 +263,25 @@ func (ctl *PrescriptionController) UpdatePrescription(c *gin.Context) {
 		})
 		return
 	}
-
 	obj := ent.Prescription{}
 	if err := c.ShouldBind(&obj); err != nil {
 		c.JSON(400, gin.H{
-			"error": "prescription binding failed",
+			"error": "booking binding failed",
 		})
 		return
 	}
 	obj.ID = int(id)
-	u, err := ctl.client.Prescription.
+	b, err := ctl.client.Prescription.
 		UpdateOne(&obj).
 		Save(context.Background())
 	if err != nil {
 		c.JSON(400, gin.H{"error": "update failed"})
 		return
 	}
-
-	c.JSON(200, u)
+	c.JSON(200, b)
 }
 
-// NewPrescriptionController creates and registers handles for the Prescription controller
+// NewPrescriptionController creates and registers handles for the prescription controller
 func NewPrescriptionController(router gin.IRouter, client *ent.Client) *PrescriptionController {
 	da := &PrescriptionController{
 		client: client,
@@ -312,7 +299,7 @@ func (ctl *PrescriptionController) register() {
 
 	// CRUD
 	prescriptions.POST("", ctl.CreatePrescription)
-	prescriptions.GET(":name", ctl.GetPrescription)
+	prescriptions.GET(":id", ctl.GetPrescription)
 	prescriptions.PUT(":id", ctl.UpdatePrescription)
 	prescriptions.DELETE(":id", ctl.DeletePrescription)
 }
