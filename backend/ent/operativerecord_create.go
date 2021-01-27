@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -21,6 +22,12 @@ type OperativerecordCreate struct {
 	config
 	mutation *OperativerecordMutation
 	hooks    []Hook
+}
+
+// SetNurseNumber sets the Nurse_Number field.
+func (oc *OperativerecordCreate) SetNurseNumber(s string) *OperativerecordCreate {
+	oc.mutation.SetNurseNumber(s)
+	return oc
 }
 
 // SetOperativeTime sets the OperativeTime field.
@@ -120,6 +127,14 @@ func (oc *OperativerecordCreate) Mutation() *OperativerecordMutation {
 
 // Save creates the Operativerecord in the database.
 func (oc *OperativerecordCreate) Save(ctx context.Context) (*Operativerecord, error) {
+	if _, ok := oc.mutation.NurseNumber(); !ok {
+		return nil, &ValidationError{Name: "Nurse_Number", err: errors.New("ent: missing required field \"Nurse_Number\"")}
+	}
+	if v, ok := oc.mutation.NurseNumber(); ok {
+		if err := operativerecord.NurseNumberValidator(v); err != nil {
+			return nil, &ValidationError{Name: "Nurse_Number", err: fmt.Errorf("ent: validator failed for field \"Nurse_Number\": %w", err)}
+		}
+	}
 	if _, ok := oc.mutation.OperativeTime(); !ok {
 		v := operativerecord.DefaultOperativeTime()
 		oc.mutation.SetOperativeTime(v)
@@ -184,6 +199,14 @@ func (oc *OperativerecordCreate) createSpec() (*Operativerecord, *sqlgraph.Creat
 			},
 		}
 	)
+	if value, ok := oc.mutation.NurseNumber(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: operativerecord.FieldNurseNumber,
+		})
+		o.NurseNumber = value
+	}
 	if value, ok := oc.mutation.OperativeTime(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

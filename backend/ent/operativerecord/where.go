@@ -93,10 +93,128 @@ func IDLTE(id int) predicate.Operativerecord {
 	})
 }
 
+// NurseNumber applies equality check predicate on the "Nurse_Number" field. It's identical to NurseNumberEQ.
+func NurseNumber(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNurseNumber), v))
+	})
+}
+
 // OperativeTime applies equality check predicate on the "OperativeTime" field. It's identical to OperativeTimeEQ.
 func OperativeTime(v time.Time) predicate.Operativerecord {
 	return predicate.Operativerecord(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldOperativeTime), v))
+	})
+}
+
+// NurseNumberEQ applies the EQ predicate on the "Nurse_Number" field.
+func NurseNumberEQ(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberNEQ applies the NEQ predicate on the "Nurse_Number" field.
+func NurseNumberNEQ(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberIn applies the In predicate on the "Nurse_Number" field.
+func NurseNumberIn(vs ...string) predicate.Operativerecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldNurseNumber), v...))
+	})
+}
+
+// NurseNumberNotIn applies the NotIn predicate on the "Nurse_Number" field.
+func NurseNumberNotIn(vs ...string) predicate.Operativerecord {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldNurseNumber), v...))
+	})
+}
+
+// NurseNumberGT applies the GT predicate on the "Nurse_Number" field.
+func NurseNumberGT(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberGTE applies the GTE predicate on the "Nurse_Number" field.
+func NurseNumberGTE(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberLT applies the LT predicate on the "Nurse_Number" field.
+func NurseNumberLT(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberLTE applies the LTE predicate on the "Nurse_Number" field.
+func NurseNumberLTE(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberContains applies the Contains predicate on the "Nurse_Number" field.
+func NurseNumberContains(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberHasPrefix applies the HasPrefix predicate on the "Nurse_Number" field.
+func NurseNumberHasPrefix(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberHasSuffix applies the HasSuffix predicate on the "Nurse_Number" field.
+func NurseNumberHasSuffix(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberEqualFold applies the EqualFold predicate on the "Nurse_Number" field.
+func NurseNumberEqualFold(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldNurseNumber), v))
+	})
+}
+
+// NurseNumberContainsFold applies the ContainsFold predicate on the "Nurse_Number" field.
+func NurseNumberContainsFold(v string) predicate.Operativerecord {
+	return predicate.Operativerecord(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldNurseNumber), v))
 	})
 }
 

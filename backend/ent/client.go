@@ -611,22 +611,6 @@ func (c *CoveredPersonClient) QueryCertificate(cp *CoveredPerson) *CertificateQu
 	return query
 }
 
-// QueryMedical queries the Medical edge of a CoveredPerson.
-func (c *CoveredPersonClient) QueryMedical(cp *CoveredPerson) *MedicalQuery {
-	query := &MedicalQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := cp.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(coveredperson.Table, coveredperson.FieldID, id),
-			sqlgraph.To(medical.Table, medical.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, coveredperson.MedicalTable, coveredperson.MedicalColumn),
-		)
-		fromV = sqlgraph.Neighbors(cp.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
-}
-
 // Hooks returns the client hooks.
 func (c *CoveredPersonClient) Hooks() []Hook {
 	return c.hooks.CoveredPerson
@@ -1564,22 +1548,6 @@ func (c *MedicalClient) GetX(ctx context.Context, id int) *Medical {
 		panic(err)
 	}
 	return m
-}
-
-// QueryMedicalCoveredPerson queries the Medical_CoveredPerson edge of a Medical.
-func (c *MedicalClient) QueryMedicalCoveredPerson(m *Medical) *CoveredPersonQuery {
-	query := &CoveredPersonQuery{config: c.config}
-	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
-		id := m.ID
-		step := sqlgraph.NewStep(
-			sqlgraph.From(medical.Table, medical.FieldID, id),
-			sqlgraph.To(coveredperson.Table, coveredperson.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, medical.MedicalCoveredPersonTable, medical.MedicalCoveredPersonColumn),
-		)
-		fromV = sqlgraph.Neighbors(m.driver.Dialect(), step)
-		return fromV, nil
-	}
-	return query
 }
 
 // Hooks returns the client hooks.

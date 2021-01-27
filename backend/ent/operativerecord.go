@@ -20,6 +20,8 @@ type Operativerecord struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// NurseNumber holds the value of the "Nurse_Number" field.
+	NurseNumber string `json:"Nurse_Number,omitempty"`
 	// OperativeTime holds the value of the "OperativeTime" field.
 	OperativeTime time.Time `json:"OperativeTime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -105,8 +107,9 @@ func (e OperativerecordEdges) ToolOrErr() (*Tool, error) {
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Operativerecord) scanValues() []interface{} {
 	return []interface{}{
-		&sql.NullInt64{}, // id
-		&sql.NullTime{},  // OperativeTime
+		&sql.NullInt64{},  // id
+		&sql.NullString{}, // Nurse_Number
+		&sql.NullTime{},   // OperativeTime
 	}
 }
 
@@ -132,12 +135,17 @@ func (o *Operativerecord) assignValues(values ...interface{}) error {
 	}
 	o.ID = int(value.Int64)
 	values = values[1:]
-	if value, ok := values[0].(*sql.NullTime); !ok {
-		return fmt.Errorf("unexpected type %T for field OperativeTime", values[0])
+	if value, ok := values[0].(*sql.NullString); !ok {
+		return fmt.Errorf("unexpected type %T for field Nurse_Number", values[0])
+	} else if value.Valid {
+		o.NurseNumber = value.String
+	}
+	if value, ok := values[1].(*sql.NullTime); !ok {
+		return fmt.Errorf("unexpected type %T for field OperativeTime", values[1])
 	} else if value.Valid {
 		o.OperativeTime = value.Time
 	}
-	values = values[1:]
+	values = values[2:]
 	if len(values) == len(operativerecord.ForeignKeys) {
 		if value, ok := values[0].(*sql.NullInt64); !ok {
 			return fmt.Errorf("unexpected type %T for edge-field Examinationroom_id", value)
@@ -210,6 +218,8 @@ func (o *Operativerecord) String() string {
 	var builder strings.Builder
 	builder.WriteString("Operativerecord(")
 	builder.WriteString(fmt.Sprintf("id=%v", o.ID))
+	builder.WriteString(", Nurse_Number=")
+	builder.WriteString(o.NurseNumber)
 	builder.WriteString(", OperativeTime=")
 	builder.WriteString(o.OperativeTime.Format(time.ANSIC))
 	builder.WriteByte(')')
