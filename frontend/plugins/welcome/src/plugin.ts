@@ -11,6 +11,7 @@ import Prescription from './components/Prescription'
 import SearchPrescription from './components/SearchPrescription';
 import Diagnose from './components/Diagnose'
 import Operativerecord from './components/Operativerecord'
+import searchRent from './components/Rent_Roomsearch'
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -27,6 +28,7 @@ export const plugin = createPlugin({
     router.registerRoute('/searchpre', SearchPrescription);
     router.registerRoute('/dia', Diagnose);
     router.registerRoute('/opera', Operativerecord);
+    router.registerRoute('/rentsearch', searchRent);
     
   },
 });
