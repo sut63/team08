@@ -39,10 +39,28 @@ export interface ControllersDiagnose {
     doctor?: number;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersDiagnose
+     */
+    note?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersDiagnose
+     */
+    number?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersDiagnose
      */
     patient?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersDiagnose
+     */
+    symptoms?: string;
 }
 
 export function ControllersDiagnoseFromJSON(json: any): ControllersDiagnose {
@@ -58,7 +76,10 @@ export function ControllersDiagnoseFromJSONTyped(json: any, ignoreDiscriminator:
         'department': !exists(json, 'department') ? undefined : json['department'],
         'disease': !exists(json, 'disease') ? undefined : json['disease'],
         'doctor': !exists(json, 'doctor') ? undefined : json['doctor'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
+        'number': !exists(json, 'number') ? undefined : json['number'],
         'patient': !exists(json, 'patient') ? undefined : json['patient'],
+        'symptoms': !exists(json, 'symptoms') ? undefined : json['symptoms'],
     };
 }
 
@@ -74,7 +95,10 @@ export function ControllersDiagnoseToJSON(value?: ControllersDiagnose | null): a
         'department': value.department,
         'disease': value.disease,
         'doctor': value.doctor,
+        'note': value.note,
+        'number': value.number,
         'patient': value.patient,
+        'symptoms': value.symptoms,
     };
 }
 

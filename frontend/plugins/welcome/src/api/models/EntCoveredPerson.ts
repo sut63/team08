@@ -27,6 +27,24 @@ import {
  */
 export interface EntCoveredPerson {
     /**
+     * CoveredPersonNote holds the value of the "CoveredPerson_Note" field.
+     * @type {string}
+     * @memberof EntCoveredPerson
+     */
+    coveredPersonNote?: string;
+    /**
+     * CoveredPersonNumber holds the value of the "CoveredPerson_Number" field.
+     * @type {string}
+     * @memberof EntCoveredPerson
+     */
+    coveredPersonNumber?: string;
+    /**
+     * FundTitle holds the value of the "Fund_Title" field.
+     * @type {string}
+     * @memberof EntCoveredPerson
+     */
+    fundTitle?: string;
+    /**
      * 
      * @type {number}
      * @memberof EntCoveredPerson
@@ -74,6 +92,9 @@ export function EntCoveredPersonFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+        'coveredPersonNote': !exists(json, 'CoveredPerson_Note') ? undefined : json['CoveredPerson_Note'],
+        'coveredPersonNumber': !exists(json, 'CoveredPerson_Number') ? undefined : json['CoveredPerson_Number'],
+        'fundTitle': !exists(json, 'Fund_Title') ? undefined : json['Fund_Title'],
         'certificateId': !exists(json, 'certificate_id') ? undefined : json['certificate_id'],
         'edges': !exists(json, 'edges') ? undefined : EntCoveredPersonEdgesFromJSON(json['edges']),
         'fundId': !exists(json, 'fund_id') ? undefined : json['fund_id'],
@@ -92,6 +113,9 @@ export function EntCoveredPersonToJSON(value?: EntCoveredPerson | null): any {
     }
     return {
         
+        'CoveredPerson_Note': value.coveredPersonNote,
+        'CoveredPerson_Number': value.coveredPersonNumber,
+        'Fund_Title': value.fundTitle,
         'certificate_id': value.certificateId,
         'edges': EntCoveredPersonEdgesToJSON(value.edges),
         'fund_id': value.fundId,

@@ -1038,7 +1038,7 @@ paths:
       summary: Get a certificate entity by ID
   /coveredpersons:
     get:
-      description: list coveredperson entities
+      description: list Coveredperson entities
       operationId: list-coveredperson
       parameters:
       - description: Limit
@@ -1066,7 +1066,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List coveredperson entities
+      summary: List Coveredperson entities
     post:
       consumes:
       - application/json
@@ -1097,7 +1097,7 @@ paths:
       summary: Create coveredperson
   /coveredpersons/{id}:
     delete:
-      description: get coveredperson by ID
+      description: get Coveredperson by ID
       operationId: delete-coveredperson
       parameters:
       - description: CoveredPerson ID
@@ -1124,9 +1124,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Delete a coveredperson entity by ID
+      summary: Delete a Coveredperson entity by ID
     get:
-      description: get coveredperson by ID
+      description: get Coveredperson by ID
       operationId: get-coveredperson
       parameters:
       - description: CoveredPerson ID
@@ -1153,12 +1153,12 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Get a coveredperson entity by ID
+      summary: Get a Coveredperson entity by ID
     put:
       consumes:
       - application/json
-      description: update coveredperson by ID
-      operationId: update-coveredperson
+      description: update Coveredperson by ID
+      operationId: update-Coveredperson
       parameters:
       - description: CoveredPerson ID
         in: path
@@ -1186,7 +1186,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Update a coveredperson entity by ID
+      summary: Update a Coveredperson entity by ID
   /departments:
     get:
       description: list department entities

@@ -303,11 +303,11 @@ var doc = `{
         },
         "/coveredpersons": {
             "get": {
-                "description": "list coveredperson entities",
+                "description": "list Coveredperson entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List coveredperson entities",
+                "summary": "List Coveredperson entities",
                 "operationId": "list-coveredperson",
                 "parameters": [
                     {
@@ -392,11 +392,11 @@ var doc = `{
         },
         "/coveredpersons/{id}": {
             "get": {
-                "description": "get coveredperson by ID",
+                "description": "get Coveredperson by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a coveredperson entity by ID",
+                "summary": "Get a Coveredperson entity by ID",
                 "operationId": "get-coveredperson",
                 "parameters": [
                     {
@@ -435,15 +435,15 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "update coveredperson by ID",
+                "description": "update Coveredperson by ID",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Update a coveredperson entity by ID",
-                "operationId": "update-coveredperson",
+                "summary": "Update a Coveredperson entity by ID",
+                "operationId": "update-Coveredperson",
                 "parameters": [
                     {
                         "type": "integer",
@@ -484,11 +484,11 @@ var doc = `{
                 }
             },
             "delete": {
-                "description": "get coveredperson by ID",
+                "description": "get Coveredperson by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a coveredperson entity by ID",
+                "summary": "Delete a Coveredperson entity by ID",
                 "operationId": "delete-coveredperson",
                 "parameters": [
                     {

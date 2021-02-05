@@ -1,7 +1,8 @@
 import React, {  useState, useEffect } from 'react';
 import { ContentHeader, Content, Header, Page, pageTheme } from '@backstage/core';
-import { FormControl, Select, InputLabel, MenuItem, TextField, Button, InputAdornment, Grid } from '@material-ui/core';
+import { FormControl, TextField, Button,  Grid,Link } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Link as RouterLink } from 'react-router-dom';
 //api
 import { DefaultApi } from '../../api/apis';
 //table
@@ -12,16 +13,24 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import moment from 'moment';
 //entity
 import { EntCoveredPerson } from '../../api/models/EntCoveredPerson';
 //alert
 import Swal from 'sweetalert2'
 //icon
 import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
-import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
 import BackspaceTwoToneIcon from '@material-ui/icons/BackspaceTwoTone';
 import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
+
+// name
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Cookies } from 'react-cookie/cjs';//cookie
+import { useCookies } from 'react-cookie/cjs';//cookie
+const cookies = new Cookies();
+const Name = cookies.get('Name');
+const HeaderCustom = {
+  minHeight: '50px',
+};
 
 const useStyles = makeStyles((theme: Theme) =>
  createStyles({
@@ -110,13 +119,6 @@ export default function ComponentsTable() {
 
   };
 
-  const cleardata = () => {
-    setPatientname("");
-    setSearch(false);
-    setPatientnames(false);
-    setSearch(false);
-
-  }
   const deleteCoveredperson = async (id: number) => {
     const res = await http.deleteCoveredperson({ id: id });
     setLoading(true);
@@ -142,36 +144,36 @@ export default function ComponentsTable() {
     }
   };
 
+  // name
+function a11yProps(index: any) {
+  return {
+    id: `scrollable-force-tab-${index}`,
+    'aria-controls': `scrollable-force-tabpanel-${index}`,
+  };
+}
+const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+
+  function Logout() {
+    removeCookie('ID', { path: '/' })
+    removeCookie('Name', { path: '/' })
+    removeCookie('Email', { path: '/' })
+    window.location.href = "http://localhost:3000/";
+  }
+
   return (
     <Page theme={pageTheme.service}>
-      <Header  title="ระบบค้นหาข้อมูลสิทธิการรักษาพยาบาลผู้ป่วยใน" >
+      <Header style={HeaderCustom} title={`ระบบสิทธิการรักษาพยาบาล`}>
+      <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true"  fontSize="large" />
+        <div style={{ marginLeft: 10 }}> </div>
+        <div style={{ marginLeft: 1 }}>{Name}</div>
+        <div style={{ marginLeft: 10 }}>
+        <Link component={RouterLink} to="/">
+             Logout
+         </Link>
+         </div>
       </Header>
       <Content>
-        <ContentHeader title="ค้นหาข้อมูลสิทธิการรักษาพยาบาล">
-        <div>&nbsp;&nbsp;&nbsp;</div>
-          
-          <Button  
-          onClick={() => {
-            checkresearch();
-            setSearch(true);
-          }}
-          variant="contained" 
-          color="secondary" 
-          startIcon={<SearchTwoToneIcon/>}
-          > 
-          ค้นหาข้อมูล 
-          </Button>
-
-          <div>&nbsp;&nbsp;&nbsp;</div>
-          <Button  
-          onClick={() => {
-            cleardata();
-          }}
-          variant="contained"  
-          startIcon={<DeleteTwoToneIcon/>}
-          > 
-          เคลียร์ข้อมูล 
-          </Button>
+        <ContentHeader title="">
 
           <div>&nbsp;&nbsp;&nbsp;</div>
           <Button 
@@ -202,11 +204,12 @@ export default function ComponentsTable() {
             variant="outlined"
             size="small"
           >
-            <div className={classes.paper}><strong>กรอก " ชื่อผู้ป่วย " เพื่อทำการค้นหา</strong></div>
+           
             <TextField
             style={{ width: 250 ,marginLeft:7,marginRight:-7,marginTop:5}}
             className={classes.textField}
               id="patientname"
+              label="ค้นหาสิทธิการรักษา..."
               variant="outlined"
               color="primary"
               type="string"
@@ -215,9 +218,22 @@ export default function ComponentsTable() {
               onChange={patientnamehandlehange}
             />
             </FormControl>
-            </form>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <Button  
+              onClick={() => {
+                checkresearch();
+                setSearch(true);
+              }}
+              variant="contained" 
+              color="secondary" 
+              startIcon={<SearchTwoToneIcon/>}
+              
+              > 
+              ค้นหาข้อมูล 
+              </Button>
+              </form>
             </div>
-        
+          
         <Grid container justify="center">
           <Grid item xs={12} md={12}>
             <Paper>

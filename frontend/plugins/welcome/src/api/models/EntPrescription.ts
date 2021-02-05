@@ -33,11 +33,23 @@ export interface EntPrescription {
      */
     prescripDateTime?: string;
     /**
+     * PrescripIssue holds the value of the "Prescrip_Issue" field.
+     * @type {string}
+     * @memberof EntPrescription
+     */
+    prescripIssue?: string;
+    /**
      * PrescripNote holds the value of the "Prescrip_Note" field.
      * @type {string}
      * @memberof EntPrescription
      */
     prescripNote?: string;
+    /**
+     * PrescripNumber holds the value of the "Prescrip_Number" field.
+     * @type {string}
+     * @memberof EntPrescription
+     */
+    prescripNumber?: string;
     /**
      * 
      * @type {EntPrescriptionEdges}
@@ -63,7 +75,9 @@ export function EntPrescriptionFromJSONTyped(json: any, ignoreDiscriminator: boo
     return {
         
         'prescripDateTime': !exists(json, 'Prescrip_DateTime') ? undefined : json['Prescrip_DateTime'],
+        'prescripIssue': !exists(json, 'Prescrip_Issue') ? undefined : json['Prescrip_Issue'],
         'prescripNote': !exists(json, 'Prescrip_Note') ? undefined : json['Prescrip_Note'],
+        'prescripNumber': !exists(json, 'Prescrip_Number') ? undefined : json['Prescrip_Number'],
         'edges': !exists(json, 'edges') ? undefined : EntPrescriptionEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
     };
@@ -79,7 +93,9 @@ export function EntPrescriptionToJSON(value?: EntPrescription | null): any {
     return {
         
         'Prescrip_DateTime': value.prescripDateTime,
+        'Prescrip_Issue': value.prescripIssue,
         'Prescrip_Note': value.prescripNote,
+        'Prescrip_Number': value.prescripNumber,
         'edges': EntPrescriptionEdgesToJSON(value.edges),
         'id': value.id,
     };

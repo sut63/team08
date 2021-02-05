@@ -33,6 +33,24 @@ export interface ControllersCoveredPerson {
     fund?: number;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersCoveredPerson
+     */
+    fundTitle?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersCoveredPerson
+     */
+    note?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ControllersCoveredPerson
+     */
+    number?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersCoveredPerson
      */
@@ -57,6 +75,9 @@ export function ControllersCoveredPersonFromJSONTyped(json: any, ignoreDiscrimin
         
         'certificate': !exists(json, 'certificate') ? undefined : json['certificate'],
         'fund': !exists(json, 'fund') ? undefined : json['fund'],
+        'fundTitle': !exists(json, 'fundTitle') ? undefined : json['fundTitle'],
+        'note': !exists(json, 'note') ? undefined : json['note'],
+        'number': !exists(json, 'number') ? undefined : json['number'],
         'patient': !exists(json, 'patient') ? undefined : json['patient'],
         'schemeType': !exists(json, 'schemeType') ? undefined : json['schemeType'],
     };
@@ -73,6 +94,9 @@ export function ControllersCoveredPersonToJSON(value?: ControllersCoveredPerson 
         
         'certificate': value.certificate,
         'fund': value.fund,
+        'fundTitle': value.fundTitle,
+        'note': value.note,
+        'number': value.number,
         'patient': value.patient,
         'schemeType': value.schemeType,
     };

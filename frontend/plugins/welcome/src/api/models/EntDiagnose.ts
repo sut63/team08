@@ -27,6 +27,24 @@ import {
  */
 export interface EntDiagnose {
     /**
+     * DiagnoseID holds the value of the "Diagnose_ID" field.
+     * @type {string}
+     * @memberof EntDiagnose
+     */
+    diagnoseID?: string;
+    /**
+     * DiagnoseNote holds the value of the "Diagnose_Note" field.
+     * @type {string}
+     * @memberof EntDiagnose
+     */
+    diagnoseNote?: string;
+    /**
+     * DiagnoseSymptoms holds the value of the "Diagnose_Symptoms" field.
+     * @type {string}
+     * @memberof EntDiagnose
+     */
+    diagnoseSymptoms?: string;
+    /**
      * 
      * @type {EntDiagnoseEdges}
      * @memberof EntDiagnose
@@ -50,6 +68,9 @@ export function EntDiagnoseFromJSONTyped(json: any, ignoreDiscriminator: boolean
     }
     return {
         
+        'diagnoseID': !exists(json, 'Diagnose_ID') ? undefined : json['Diagnose_ID'],
+        'diagnoseNote': !exists(json, 'Diagnose_Note') ? undefined : json['Diagnose_Note'],
+        'diagnoseSymptoms': !exists(json, 'Diagnose_Symptoms') ? undefined : json['Diagnose_Symptoms'],
         'edges': !exists(json, 'edges') ? undefined : EntDiagnoseEdgesFromJSON(json['edges']),
         'id': !exists(json, 'id') ? undefined : json['id'],
     };
@@ -64,6 +85,9 @@ export function EntDiagnoseToJSON(value?: EntDiagnose | null): any {
     }
     return {
         
+        'Diagnose_ID': value.diagnoseID,
+        'Diagnose_Note': value.diagnoseNote,
+        'Diagnose_Symptoms': value.diagnoseSymptoms,
         'edges': EntDiagnoseEdgesToJSON(value.edges),
         'id': value.id,
     };

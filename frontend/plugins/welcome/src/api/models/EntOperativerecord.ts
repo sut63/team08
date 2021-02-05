@@ -27,6 +27,12 @@ import {
  */
 export interface EntOperativerecord {
     /**
+     * NurseNumber holds the value of the "Nurse_Number" field.
+     * @type {string}
+     * @memberof EntOperativerecord
+     */
+    nurseNumber?: string;
+    /**
      * OperativeTime holds the value of the "OperativeTime" field.
      * @type {string}
      * @memberof EntOperativerecord
@@ -80,6 +86,7 @@ export function EntOperativerecordFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
+        'nurseNumber': !exists(json, 'Nurse_Number') ? undefined : json['Nurse_Number'],
         'operativeTime': !exists(json, 'OperativeTime') ? undefined : json['OperativeTime'],
         'edges': !exists(json, 'edges') ? undefined : EntOperativerecordEdgesFromJSON(json['edges']),
         'examinationroomId': !exists(json, 'examinationroom_id') ? undefined : json['examinationroom_id'],
@@ -99,6 +106,7 @@ export function EntOperativerecordToJSON(value?: EntOperativerecord | null): any
     }
     return {
         
+        'Nurse_Number': value.nurseNumber,
         'OperativeTime': value.operativeTime,
         'edges': EntOperativerecordEdgesToJSON(value.edges),
         'examinationroom_id': value.examinationroomId,

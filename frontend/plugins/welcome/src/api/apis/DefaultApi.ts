@@ -199,10 +199,6 @@ export interface CreateToolRequest {
     tool: EntTool;
 }
 
-export interface DeleteCertificateRequest {
-    id: number;
-}
-
 export interface DeleteCoveredpersonRequest {
     id: number;
 }
@@ -227,14 +223,6 @@ export interface DeleteExaminationroomRequest {
     id: number;
 }
 
-export interface DeleteFundRequest {
-    id: number;
-}
-
-export interface DeleteMedicalRequest {
-    id: number;
-}
-
 export interface DeleteOperativeRequest {
     id: number;
 }
@@ -252,10 +240,6 @@ export interface DeletePrescriptionRequest {
 }
 
 export interface DeleteRentRequest {
-    id: number;
-}
-
-export interface DeleteSchemeTypeRequest {
     id: number;
 }
 
@@ -470,11 +454,6 @@ export interface ListToolRequest {
     offset?: number;
 }
 
-export interface UpdateCertificateRequest {
-    id: number;
-    certificate: EntCertificate;
-}
-
 export interface UpdateCoveredpersonRequest {
     id: number;
     coveredperson: EntCoveredPerson;
@@ -505,16 +484,6 @@ export interface UpdateExaminationroomRequest {
     examinationroom: EntExaminationroom;
 }
 
-export interface UpdateFundRequest {
-    id: number;
-    fund: EntFund;
-}
-
-export interface UpdateMedicalRequest {
-    id: number;
-    medical: EntMedical;
-}
-
 export interface UpdateOperativeRequest {
     id: number;
     operative: EntOperative;
@@ -538,11 +507,6 @@ export interface UpdatePrescriptionRequest {
 export interface UpdateRentRequest {
     id: number;
     rent: EntRent;
-}
-
-export interface UpdateSchemeTypeRequest {
-    id: number;
-    schemeType: EntSchemeType;
 }
 
 export interface UpdateToolRequest {
@@ -1361,40 +1325,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get certificate by ID
-     * Delete a certificate entity by ID
-     */
-    async deleteCertificateRaw(requestParameters: DeleteCertificateRequest): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteCertificate.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/certificates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * get certificate by ID
-     * Delete a certificate entity by ID
-     */
-    async deleteCertificate(requestParameters: DeleteCertificateRequest): Promise<object> {
-        const response = await this.deleteCertificateRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * get coveredperson by ID
-     * Delete a coveredperson entity by ID
+     * get Coveredperson by ID
+     * Delete a Coveredperson entity by ID
      */
     async deleteCoveredpersonRaw(requestParameters: DeleteCoveredpersonRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1416,8 +1348,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get coveredperson by ID
-     * Delete a coveredperson entity by ID
+     * get Coveredperson by ID
+     * Delete a Coveredperson entity by ID
      */
     async deleteCoveredperson(requestParameters: DeleteCoveredpersonRequest): Promise<object> {
         const response = await this.deleteCoveredpersonRaw(requestParameters);
@@ -1585,70 +1517,6 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get fund by ID
-     * Delete a fund entity by ID
-     */
-    async deleteFundRaw(requestParameters: DeleteFundRequest): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteFund.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/funds/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * get fund by ID
-     * Delete a fund entity by ID
-     */
-    async deleteFund(requestParameters: DeleteFundRequest): Promise<object> {
-        const response = await this.deleteFundRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * get medical by ID
-     * Delete a medical entity by ID
-     */
-    async deleteMedicalRaw(requestParameters: DeleteMedicalRequest): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteMedical.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/medicals/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * get medical by ID
-     * Delete a medical entity by ID
-     */
-    async deleteMedical(requestParameters: DeleteMedicalRequest): Promise<object> {
-        const response = await this.deleteMedicalRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
      * get operative by ID
      * Delete a operative entity by ID
      */
@@ -1809,38 +1677,6 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get schemeType by ID
-     * Delete a schemeType entity by ID
-     */
-    async deleteSchemeTypeRaw(requestParameters: DeleteSchemeTypeRequest): Promise<runtime.ApiResponse<object>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteSchemeType.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/schemeTypes/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse<any>(response);
-    }
-
-    /**
-     * get schemeType by ID
-     * Delete a schemeType entity by ID
-     */
-    async deleteSchemeType(requestParameters: DeleteSchemeTypeRequest): Promise<object> {
-        const response = await this.deleteSchemeTypeRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
      * get tool by ID
      * Delete a tool entity by ID
      */
@@ -1937,8 +1773,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get coveredperson by ID
-     * Get a coveredperson entity by ID
+     * get Coveredperson by ID
+     * Get a Coveredperson entity by ID
      */
     async getCoveredpersonRaw(requestParameters: GetCoveredpersonRequest): Promise<runtime.ApiResponse<EntCoveredPerson>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1960,8 +1796,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get coveredperson by ID
-     * Get a coveredperson entity by ID
+     * get Coveredperson by ID
+     * Get a Coveredperson entity by ID
      */
     async getCoveredperson(requestParameters: GetCoveredpersonRequest): Promise<EntCoveredPerson> {
         const response = await this.getCoveredpersonRaw(requestParameters);
@@ -2681,8 +2517,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list coveredperson entities
-     * List coveredperson entities
+     * list Coveredperson entities
+     * List Coveredperson entities
      */
     async listCoveredpersonRaw(requestParameters: ListCoveredpersonRequest): Promise<runtime.ApiResponse<Array<EntCoveredPerson>>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -2708,8 +2544,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list coveredperson entities
-     * List coveredperson entities
+     * list Coveredperson entities
+     * List Coveredperson entities
      */
     async listCoveredperson(requestParameters: ListCoveredpersonRequest): Promise<Array<EntCoveredPerson>> {
         const response = await this.listCoveredpersonRaw(requestParameters);
@@ -3437,47 +3273,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update certificate by ID
-     * Update a certificate entity by ID
-     */
-    async updateCertificateRaw(requestParameters: UpdateCertificateRequest): Promise<runtime.ApiResponse<EntCertificate>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateCertificate.');
-        }
-
-        if (requestParameters.certificate === null || requestParameters.certificate === undefined) {
-            throw new runtime.RequiredError('certificate','Required parameter requestParameters.certificate was null or undefined when calling updateCertificate.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/certificates/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: EntCertificateToJSON(requestParameters.certificate),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntCertificateFromJSON(jsonValue));
-    }
-
-    /**
-     * update certificate by ID
-     * Update a certificate entity by ID
-     */
-    async updateCertificate(requestParameters: UpdateCertificateRequest): Promise<EntCertificate> {
-        const response = await this.updateCertificateRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * update coveredperson by ID
-     * Update a coveredperson entity by ID
+     * update Coveredperson by ID
+     * Update a Coveredperson entity by ID
      */
     async updateCoveredpersonRaw(requestParameters: UpdateCoveredpersonRequest): Promise<runtime.ApiResponse<EntCoveredPerson>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -3506,8 +3303,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update coveredperson by ID
-     * Update a coveredperson entity by ID
+     * update Coveredperson by ID
+     * Update a Coveredperson entity by ID
      */
     async updateCoveredperson(requestParameters: UpdateCoveredpersonRequest): Promise<EntCoveredPerson> {
         const response = await this.updateCoveredpersonRaw(requestParameters);
@@ -3710,84 +3507,6 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update fund by ID
-     * Update a fund entity by ID
-     */
-    async updateFundRaw(requestParameters: UpdateFundRequest): Promise<runtime.ApiResponse<EntFund>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateFund.');
-        }
-
-        if (requestParameters.fund === null || requestParameters.fund === undefined) {
-            throw new runtime.RequiredError('fund','Required parameter requestParameters.fund was null or undefined when calling updateFund.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/funds/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: EntFundToJSON(requestParameters.fund),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntFundFromJSON(jsonValue));
-    }
-
-    /**
-     * update fund by ID
-     * Update a fund entity by ID
-     */
-    async updateFund(requestParameters: UpdateFundRequest): Promise<EntFund> {
-        const response = await this.updateFundRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * update medical by ID
-     * Update a medical entity by ID
-     */
-    async updateMedicalRaw(requestParameters: UpdateMedicalRequest): Promise<runtime.ApiResponse<EntMedical>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateMedical.');
-        }
-
-        if (requestParameters.medical === null || requestParameters.medical === undefined) {
-            throw new runtime.RequiredError('medical','Required parameter requestParameters.medical was null or undefined when calling updateMedical.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/medicals/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: EntMedicalToJSON(requestParameters.medical),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntMedicalFromJSON(jsonValue));
-    }
-
-    /**
-     * update medical by ID
-     * Update a medical entity by ID
-     */
-    async updateMedical(requestParameters: UpdateMedicalRequest): Promise<EntMedical> {
-        const response = await this.updateMedicalRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
      * update operative by ID
      * Update a operative entity by ID
      */
@@ -3979,45 +3698,6 @@ export class DefaultApi extends runtime.BaseAPI {
      */
     async updateRent(requestParameters: UpdateRentRequest): Promise<EntRent> {
         const response = await this.updateRentRaw(requestParameters);
-        return await response.value();
-    }
-
-    /**
-     * update schemeType by ID
-     * Update a schemeType entity by ID
-     */
-    async updateSchemeTypeRaw(requestParameters: UpdateSchemeTypeRequest): Promise<runtime.ApiResponse<EntSchemeType>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling updateSchemeType.');
-        }
-
-        if (requestParameters.schemeType === null || requestParameters.schemeType === undefined) {
-            throw new runtime.RequiredError('schemeType','Required parameter requestParameters.schemeType was null or undefined when calling updateSchemeType.');
-        }
-
-        const queryParameters: runtime.HTTPQuery = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const response = await this.request({
-            path: `/schemeTypes/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: EntSchemeTypeToJSON(requestParameters.schemeType),
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => EntSchemeTypeFromJSON(jsonValue));
-    }
-
-    /**
-     * update schemeType by ID
-     * Update a schemeType entity by ID
-     */
-    async updateSchemeType(requestParameters: UpdateSchemeTypeRequest): Promise<EntSchemeType> {
-        const response = await this.updateSchemeTypeRaw(requestParameters);
         return await response.value();
     }
 

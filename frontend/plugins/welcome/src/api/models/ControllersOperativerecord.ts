@@ -33,6 +33,12 @@ export interface ControllersOperativerecord {
     examinationroom?: number;
     /**
      * 
+     * @type {string}
+     * @memberof ControllersOperativerecord
+     */
+    number?: string;
+    /**
+     * 
      * @type {number}
      * @memberof ControllersOperativerecord
      */
@@ -63,6 +69,7 @@ export function ControllersOperativerecordFromJSONTyped(json: any, ignoreDiscrim
         
         'added': !exists(json, 'added') ? undefined : json['added'],
         'examinationroom': !exists(json, 'examinationroom') ? undefined : json['examinationroom'],
+        'number': !exists(json, 'number') ? undefined : json['number'],
         'nurse': !exists(json, 'nurse') ? undefined : json['nurse'],
         'operative': !exists(json, 'operative') ? undefined : json['operative'],
         'tool': !exists(json, 'tool') ? undefined : json['tool'],
@@ -80,6 +87,7 @@ export function ControllersOperativerecordToJSON(value?: ControllersOperativerec
         
         'added': value.added,
         'examinationroom': value.examinationroom,
+        'number': value.number,
         'nurse': value.nurse,
         'operative': value.operative,
         'tool': value.tool,
