@@ -123,25 +123,36 @@ func (ctl *DiagnoseController) CreateDiagnose(c *gin.Context) {
 // @Failure 500 {object} gin.H
 // @Router /diagnoses/{id} [get]
 func (ctl *DiagnoseController) GetDiagnose(c *gin.Context) {
-	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
-	if err != nil {
-		c.JSON(400, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
+	PatientName := string(c.Param("name"))
 	diag, err := ctl.client.Diagnose.
 		Query().
-		Where(diagnose.IDEQ(int(id))).
-		Only(context.Background())
-	if err != nil {
-		c.JSON(404, gin.H{
-			"error": err.Error(),
-		})
-		return
+		Where(diagnose.HasPatientWith(patient.PatientNameEQ(string(PatientName)))).
+		WithPatient().
+		WithDoctor().
+		WithDisease().
+		WithDepartment().
+		All(context.Background())
+		if err != nil {
+			c.JSON(404, gin.H{
+				"error":  err.Error(),
+				"status": false,
+			})
+			return
+		}
+	
+		if len(diag) != 0 {
+			c.JSON(200, diag)
+			return
+		} else {
+			c.JSON(404, gin.H{
+				"error":  "patient not found",
+				"status": false,
+			})
+			return
+		}
+	
 	}
-	c.JSON(200, diag)
-}
+	
  // ListDiagnose handles request to get a list of diagnose entities
 // @Summary List Diagnose entities
 // @Description list Diagnose entities
@@ -155,17 +166,21 @@ func (ctl *DiagnoseController) GetDiagnose(c *gin.Context) {
 // @Router /diagnoses [get]
 func (ctl *DiagnoseController) ListDiagnose(c *gin.Context) {
 	limitQuery := c.Query("limit")
-	limit := 10
+	limit := 20
 	if limitQuery != "" {
 		limit64, err := strconv.ParseInt(limitQuery, 10, 64)
-		if err == nil {limit = int(limit64)}
+		if err == nil {
+			limit = int(limit64)
+		}
 	}
-  
+
 	offsetQuery := c.Query("offset")
 	offset := 0
 	if offsetQuery != "" {
 		offset64, err := strconv.ParseInt(offsetQuery, 10, 64)
-		if err == nil {offset = int(offset64)}
+		if err == nil {
+			offset = int(offset64)
+		}
 	}
   
 	diagnoses, err := ctl.client.Diagnose.
