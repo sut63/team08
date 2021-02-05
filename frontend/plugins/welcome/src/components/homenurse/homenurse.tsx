@@ -137,7 +137,7 @@ export default function ScrollableTabsButtonForce() {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem component={RouterLink} to="/homemenurse"> Home </MenuItem>
+                <MenuItem component={RouterLink} to="/homemedical"> Home </MenuItem>
                 <MenuItem onClick={Logout}> Logout </MenuItem>
               </Menu>
             </div>
@@ -206,10 +206,11 @@ export default function ScrollableTabsButtonForce() {
                         textColor="primary"
                         aria-label="scrollable force tabs example"
                       >
-                        <Tab label="ระบบค้นหาข้อมูลการเข้ารักษาผู้ป่วยใน" icon={<AccessibilityIcon />} {...a11yProps(4)} component={RouterLink} to="/patientsearch" />
-                        <Tab label="ระบบค้นหาห้องพักผู้ป่วย" icon={<AirlineSeatFlatAngledIcon />} {...a11yProps(5)} component={RouterLink} to="/rentsearch"/>
-                        <Tab label="ระบบค้นหาข้อมูลการทำหัตถการให้ผู้ป่วย" icon={<LocalLibraryIcon />} {...a11yProps(6)} />
-                        <Tab label="ระบบค้นหาข้อมูลการสั่งยาห้ผู้ป่วยใน" icon={<ColorizeIcon />} {...a11yProps(7)} component={RouterLink} to="/searchpre" />
+                        <Tab label="ระบบค้นหาข้อมูลการเข้ารักษาผู้ป่วยใน" icon={<AccessibilityIcon />} {...a11yProps(4)} component={RouterLink} to="/" />
+                        <Tab label="ระบบค้นหาห้องพักผู้ป่วย" icon={<AirlineSeatFlatAngledIcon />} {...a11yProps(5)} />
+                        <Tab label="ระบบค้นหาข้อมูลการทำหัตถการให้ผู้ป่วย" icon={<LocalLibraryIcon />} {...a11yProps(6)} component={RouterLink} to="/operasearch" />
+                        <Tab label="ระบบค้นหาข้อมูลการสั่งยาห้ผู้ป่วยใน" icon={<ColorizeIcon />} {...a11yProps(7)} component={RouterLink} to="/" />
+         
                       </Tabs>
                     </AppBar>
                   </td>
