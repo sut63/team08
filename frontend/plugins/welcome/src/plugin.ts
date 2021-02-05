@@ -12,7 +12,7 @@ import SearchPrescription from './components/SearchPrescription';
 import Diagnose from './components/Diagnose'
 import Operativerecord from './components/Operativerecord'
 import searchRent from './components/Rent_Roomsearch'
-
+import searchPatient from './components/Patientsearch'
 export const plugin = createPlugin({
   id: 'welcome',
   register({ router }) {
@@ -29,6 +29,7 @@ export const plugin = createPlugin({
     router.registerRoute('/dia', Diagnose);
     router.registerRoute('/opera', Operativerecord);
     router.registerRoute('/rentsearch', searchRent);
+    router.registerRoute('/patientsearch', searchPatient);
     
   },
 });
