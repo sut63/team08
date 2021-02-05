@@ -145,6 +145,9 @@ func (ctl *RentController) GetRent(c *gin.Context) {
 
 	b, err := ctl.client.Rent.
 		Query().
+		WithPatient().
+		WithRoom().
+		WithNurse().
 		Where(rent.IDEQ(int(id))).
 		Only(context.Background())
 	if err != nil {
