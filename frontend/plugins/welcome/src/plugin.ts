@@ -10,6 +10,7 @@ import homemedical from './components/homemedical'
 import Prescription from './components/Prescription'
 import SearchPrescription from './components/SearchPrescription';
 import Diagnose from './components/Diagnose'
+import Diagnose_Search from './components/Diagnose_Search'
 import Operativerecord from './components/Operativerecord'
 import searchRent from './components/Rent_Roomsearch'
 import searchPatient from './components/Patientsearch'
@@ -27,6 +28,7 @@ export const plugin = createPlugin({
     router.registerRoute('/pre', Prescription);
     router.registerRoute('/searchpre', SearchPrescription);
     router.registerRoute('/dia', Diagnose);
+    router.registerRoute('/diag', Diagnose_Search);
     router.registerRoute('/opera', Operativerecord);
     router.registerRoute('/rentsearch', searchRent);
     router.registerRoute('/patientsearch', searchPatient);
