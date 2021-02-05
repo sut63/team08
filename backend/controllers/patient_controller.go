@@ -159,6 +159,9 @@ func (ctl *PatientController) GetPatient(c *gin.Context) {
 
 	b, err := ctl.client.Patient.
 		Query().
+		WithBloodtype().
+		WithGender().
+		WithPrefix().
 		Where(patient.IDEQ(int(id))).
 		Only(context.Background())
 	if err != nil {
