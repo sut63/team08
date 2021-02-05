@@ -8,9 +8,9 @@ import homedoctor from './components/homedoctor'
 import homenurse from './components/homenurse'
 import homemedical from './components/homemedical'
 import Prescription from './components/Prescription'
+import SearchPrescription from './components/SearchPrescription';
 import Diagnose from './components/Diagnose'
 import Operativerecord from './components/Operativerecord'
-
 
 export const plugin = createPlugin({
   id: 'welcome',
@@ -24,9 +24,9 @@ export const plugin = createPlugin({
     router.registerRoute('/covered', Covered);
     router.registerRoute('/coveredsearch', Coveredsearch);
     router.registerRoute('/pre', Prescription);
+    router.registerRoute('/searchpre', SearchPrescription);
     router.registerRoute('/dia', Diagnose);
     router.registerRoute('/opera', Operativerecord);
-    
     
   },
 });
