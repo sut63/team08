@@ -134,6 +134,10 @@ func (ctl *OperativerecordController) GetOperativerecord(c *gin.Context) {
 	}
 	b, err := ctl.client.Operativerecord.
 		Query().
+		WithExaminationroom().
+		WithNurse().
+		WithOperative().
+		WithTool().
 		Where(operativerecord.IDEQ(int(id))).
 		Only(context.Background())
 	if err != nil {
