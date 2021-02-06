@@ -279,8 +279,12 @@ func NewOperativerecordController(router gin.IRouter, client *ent.Client) *Opera
 func (ctl *OperativerecordController) register() {
 	operativerecords := ctl.router.Group("/operativerecords")
 
-	operativerecords.POST("", ctl.CreateOperativerecord)
 	operativerecords.GET("", ctl.ListOperativerecord)
+
+	//CRUD
+	operativerecords.POST("", ctl.CreateOperativerecord)
+	operativerecords.GET(":id", ctl.GetOperativerecord)
+	operativerecords.PUT(":id", ctl.UpdateOperativerecord)
 	operativerecords.DELETE(":id", ctl.DeleteOperativerecord)
 
 }
