@@ -237,6 +237,8 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
           ค้นหาข้อมูล 
           </Button>
 
+      
+
             </form>
             </div>
         
@@ -266,7 +268,7 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
                             <TableRow key={item.id}>
                              <TableCell align="center">{item.id}</TableCell>
                              <TableCell align="center">{item.edges?.nurse?.nurseName}</TableCell>
-                             <TableCell align="center">{item.number}</TableCell>
+                             <TableCell align="center">{item.nurseNumber}</TableCell>
                               <TableCell align="center">{item.edges?.operative?.operativeName}</TableCell>
                               <TableCell align="center">{item.edges?.tool?.toolName}</TableCell>
                               <TableCell align="center">{item.edges?.examinationroom?.examinationroomName}</TableCell>
@@ -314,7 +316,7 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
                          
                              <TableCell align="center">{item.id}</TableCell>
                              <TableCell align="center">{item.edges?.nurse?.nurseName}</TableCell>
-                             <TableCell align="center">{item.number}</TableCell>
+                             <TableCell align="center">{item.nurseNumber}</TableCell>
                               <TableCell align="center">{item.edges?.operative?.operativeName}</TableCell>
                               <TableCell align="center">{item.edges?.tool?.toolName}</TableCell>
                               <TableCell align="center">{item.edges?.examinationroom?.examinationroomName}</TableCell>
