@@ -12,12 +12,12 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists } from '../runtime';
 import {
     EntOperativerecordEdges,
     EntOperativerecordEdgesFromJSON,
-    EntOperativerecordEdgesFromJSONTyped,
-    EntOperativerecordEdgesToJSON,
+
+    EntOperativerecordEdgesToJSON
 } from './';
 
 /**
@@ -89,11 +89,11 @@ export function EntOperativerecordFromJSONTyped(json: any, ignoreDiscriminator: 
         'nurseNumber': !exists(json, 'Nurse_Number') ? undefined : json['Nurse_Number'],
         'operativeTime': !exists(json, 'OperativeTime') ? undefined : json['OperativeTime'],
         'edges': !exists(json, 'edges') ? undefined : EntOperativerecordEdgesFromJSON(json['edges']),
-        'examinationroomId': !exists(json, 'examinationroom_id') ? undefined : json['examinationroom_id'],
+        'examinationroomId': !exists(json, 'Examinationroom_id') ? undefined : json['Examinationroom_id'],
         'id': !exists(json, 'id') ? undefined : json['id'],
-        'nurseId': !exists(json, 'nurse_id') ? undefined : json['nurse_id'],
-        'operativeId': !exists(json, 'operative_id') ? undefined : json['operative_id'],
-        'toolId': !exists(json, 'tool_id') ? undefined : json['tool_id'],
+        'nurseId': !exists(json, 'Nurse_id') ? undefined : json['Nurse_id'],
+        'operativeId': !exists(json, 'Operative_id') ? undefined : json['Operative_id'],
+        'toolId': !exists(json, 'Tool_id') ? undefined : json['Tool_id'],
     };
 }
 
