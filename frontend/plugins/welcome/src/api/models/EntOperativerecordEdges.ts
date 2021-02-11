@@ -12,24 +12,24 @@
  * Do not edit the class manually.
  */
 
-import { exists, mapValues } from '../runtime';
+import { exists } from '../runtime';
 import {
     EntExaminationroom,
     EntExaminationroomFromJSON,
-    EntExaminationroomFromJSONTyped,
+
     EntExaminationroomToJSON,
     EntNurse,
     EntNurseFromJSON,
-    EntNurseFromJSONTyped,
+
     EntNurseToJSON,
     EntOperative,
     EntOperativeFromJSON,
-    EntOperativeFromJSONTyped,
+
     EntOperativeToJSON,
     EntTool,
     EntToolFromJSON,
-    EntToolFromJSONTyped,
-    EntToolToJSON,
+
+    EntToolToJSON
 } from './';
 
 /**
@@ -74,10 +74,10 @@ export function EntOperativerecordEdgesFromJSONTyped(json: any, ignoreDiscrimina
     }
     return {
         
-        'examinationroom': !exists(json, 'examinationroom') ? undefined : EntExaminationroomFromJSON(json['examinationroom']),
-        'nurse': !exists(json, 'nurse') ? undefined : EntNurseFromJSON(json['nurse']),
-        'operative': !exists(json, 'operative') ? undefined : EntOperativeFromJSON(json['operative']),
-        'tool': !exists(json, 'tool') ? undefined : EntToolFromJSON(json['tool']),
+        'examinationroom': !exists(json, 'Examinationroom') ? undefined : EntExaminationroomFromJSON(json['Examinationroom']),
+        'nurse': !exists(json, 'Nurse') ? undefined : EntNurseFromJSON(json['Nurse']),
+        'operative': !exists(json, 'Operative') ? undefined : EntOperativeFromJSON(json['Operative']),
+        'tool': !exists(json, 'Tool') ? undefined : EntToolFromJSON(json['Tool']),
     };
 }
 
