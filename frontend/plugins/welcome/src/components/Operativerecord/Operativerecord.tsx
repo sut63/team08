@@ -227,12 +227,15 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
 
   return (
     <Page theme={pageTheme.service}>
-      <Header style={HeaderCustom} title={`Operativerecord system`}>
+      <Header style={HeaderCustom} title={`ระบบบันทึกข้อมูลการทำหัตถการ`}>
         <AccountCircleIcon aria-controls="fade-menu" aria-haspopup="true" fontSize="large" />
         <div style={{ marginLeft: 10 }}> </div>
+        <div style={{ marginLeft: 1 }}>{Name}</div>
+        <div style={{ marginLeft: 10 }}>
         <Link component={RouterLink} to="/">
           Logout
          </Link>
+         </div>
       </Header>
       <Content>
         <Container maxWidth="sm">
@@ -373,6 +376,16 @@ const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
                   onClick={save}
                 >
                   SAVE
+              </Button>
+
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              variant="contained"
+              size="large"
+              startIcon={<NavigateBeforeIcon />}
+              component={RouterLink} to="/homenurse"
+            >
+              Back
               </Button>
               </Grid>
             </Grid>
