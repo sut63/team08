@@ -27,7 +27,8 @@ type Patient struct {
 	Age       string
 	Bloodtype int
 	Gender    int
-	Prefix    int
+	Prefix    int 
+	
 }
 
 // CreatePatient handles POST requests for adding patient entities
