@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ContentHeader, Content, Header, Page, pageTheme } from '@backstage/core';
-import { MenuItem, Select, InputLabel, Button, Grid, Link } from '@material-ui/core';
+import { MenuItem, Select, InputLabel, Button,TableContainer, Table, Grid, Link } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
 //api
@@ -267,6 +267,8 @@ export default function ComponentsTable() {
             <Paper>
               {search ? (
                 <div>
+                  <TableContainer component={Paper}>
+                      <Table className={classes.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">รหัสการจองห้องพัก</TableCell>
@@ -328,7 +330,8 @@ export default function ComponentsTable() {
                       <TableCell align="center" />
                     </TableRow>
                   </TableBody>
-
+                </Table>
+                </TableContainer>
                 </div>
               ) : null}
             </Paper>
