@@ -1038,7 +1038,7 @@ paths:
       summary: Get a certificate entity by ID
   /coveredpersons:
     get:
-      description: list Coveredperson entities
+      description: list coveredperson entities
       operationId: list-coveredperson
       parameters:
       - description: Limit
@@ -1066,7 +1066,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: List Coveredperson entities
+      summary: List coveredperson entities
     post:
       consumes:
       - application/json
@@ -1097,7 +1097,7 @@ paths:
       summary: Create coveredperson
   /coveredpersons/{id}:
     delete:
-      description: get Coveredperson by ID
+      description: get coveredperson by ID
       operationId: delete-coveredperson
       parameters:
       - description: CoveredPerson ID
@@ -1124,9 +1124,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Delete a Coveredperson entity by ID
+      summary: Delete a coveredperson entity by ID
     get:
-      description: get Coveredperson by ID
+      description: get coveredperson by ID
       operationId: get-coveredperson
       parameters:
       - description: CoveredPerson ID
@@ -1153,11 +1153,11 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Get a Coveredperson entity by ID
+      summary: Get a coveredperson entity by ID
     put:
       consumes:
       - application/json
-      description: update Coveredperson by ID
+      description: update coveredperson by ID
       operationId: update-Coveredperson
       parameters:
       - description: CoveredPerson ID
@@ -1186,7 +1186,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/gin.H'
-      summary: Update a Coveredperson entity by ID
+      summary: Update a coveredperson entity by ID
   /departments:
     get:
       description: list department entities
@@ -3664,7 +3664,6 @@ securityDefinitions:
     tokenUrl: https://example.com/oauth/token
     type: oauth2
   OAuth2Application:
-    authorizationUrl: ""
     flow: application
     scopes:
       admin: ' Grants read and write access to administrative information'
@@ -3679,7 +3678,6 @@ securityDefinitions:
       write: ' Grants write access'
     type: oauth2
   OAuth2Password:
-    authorizationUrl: ""
     flow: password
     scopes:
       admin: ' Grants read and write access to administrative information'

@@ -303,11 +303,11 @@ var doc = `{
         },
         "/coveredpersons": {
             "get": {
-                "description": "list Coveredperson entities",
+                "description": "list coveredperson entities",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "List Coveredperson entities",
+                "summary": "List coveredperson entities",
                 "operationId": "list-coveredperson",
                 "parameters": [
                     {
@@ -392,11 +392,11 @@ var doc = `{
         },
         "/coveredpersons/{id}": {
             "get": {
-                "description": "get Coveredperson by ID",
+                "description": "get coveredperson by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a Coveredperson entity by ID",
+                "summary": "Get a coveredperson entity by ID",
                 "operationId": "get-coveredperson",
                 "parameters": [
                     {
@@ -435,14 +435,14 @@ var doc = `{
                 }
             },
             "put": {
-                "description": "update Coveredperson by ID",
+                "description": "update coveredperson by ID",
                 "consumes": [
                     "application/json"
                 ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Update a Coveredperson entity by ID",
+                "summary": "Update a coveredperson entity by ID",
                 "operationId": "update-Coveredperson",
                 "parameters": [
                     {
@@ -484,11 +484,11 @@ var doc = `{
                 }
             },
             "delete": {
-                "description": "get Coveredperson by ID",
+                "description": "get coveredperson by ID",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete a Coveredperson entity by ID",
+                "summary": "Delete a coveredperson entity by ID",
                 "operationId": "delete-coveredperson",
                 "parameters": [
                     {
@@ -5354,7 +5354,6 @@ var doc = `{
         "OAuth2Application": {
             "type": "oauth2",
             "flow": "application",
-            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",
@@ -5373,7 +5372,6 @@ var doc = `{
         "OAuth2Password": {
             "type": "oauth2",
             "flow": "password",
-            "authorizationUrl": "",
             "tokenUrl": "https://example.com/oauth/token",
             "scopes": {
                 "admin": " Grants read and write access to administrative information",

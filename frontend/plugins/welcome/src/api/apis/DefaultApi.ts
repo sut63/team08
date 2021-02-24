@@ -1325,8 +1325,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Coveredperson by ID
-     * Delete a Coveredperson entity by ID
+     * get coveredperson by ID
+     * Delete a coveredperson entity by ID
      */
     async deleteCoveredpersonRaw(requestParameters: DeleteCoveredpersonRequest): Promise<runtime.ApiResponse<object>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1348,8 +1348,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Coveredperson by ID
-     * Delete a Coveredperson entity by ID
+     * get coveredperson by ID
+     * Delete a coveredperson entity by ID
      */
     async deleteCoveredperson(requestParameters: DeleteCoveredpersonRequest): Promise<object> {
         const response = await this.deleteCoveredpersonRaw(requestParameters);
@@ -1773,8 +1773,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Coveredperson by ID
-     * Get a Coveredperson entity by ID
+     * get coveredperson by ID
+     * Get a coveredperson entity by ID
      */
     async getCoveredpersonRaw(requestParameters: GetCoveredpersonRequest): Promise<runtime.ApiResponse<EntCoveredPerson>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -1796,8 +1796,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * get Coveredperson by ID
-     * Get a Coveredperson entity by ID
+     * get coveredperson by ID
+     * Get a coveredperson entity by ID
      */
     async getCoveredperson(requestParameters: GetCoveredpersonRequest): Promise<EntCoveredPerson> {
         const response = await this.getCoveredpersonRaw(requestParameters);
@@ -2517,8 +2517,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Coveredperson entities
-     * List Coveredperson entities
+     * list coveredperson entities
+     * List coveredperson entities
      */
     async listCoveredpersonRaw(requestParameters: ListCoveredpersonRequest): Promise<runtime.ApiResponse<Array<EntCoveredPerson>>> {
         const queryParameters: runtime.HTTPQuery = {};
@@ -2544,8 +2544,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * list Coveredperson entities
-     * List Coveredperson entities
+     * list coveredperson entities
+     * List coveredperson entities
      */
     async listCoveredperson(requestParameters: ListCoveredpersonRequest): Promise<Array<EntCoveredPerson>> {
         const response = await this.listCoveredpersonRaw(requestParameters);
@@ -3273,8 +3273,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Coveredperson by ID
-     * Update a Coveredperson entity by ID
+     * update coveredperson by ID
+     * Update a coveredperson entity by ID
      */
     async updateCoveredpersonRaw(requestParameters: UpdateCoveredpersonRequest): Promise<runtime.ApiResponse<EntCoveredPerson>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
@@ -3303,8 +3303,8 @@ export class DefaultApi extends runtime.BaseAPI {
     }
 
     /**
-     * update Coveredperson by ID
-     * Update a Coveredperson entity by ID
+     * update coveredperson by ID
+     * Update a coveredperson entity by ID
      */
     async updateCoveredperson(requestParameters: UpdateCoveredpersonRequest): Promise<EntCoveredPerson> {
         const response = await this.updateCoveredpersonRaw(requestParameters);
