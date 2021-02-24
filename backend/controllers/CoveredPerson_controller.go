@@ -31,7 +31,7 @@ type CoveredPerson struct {
 	FundTitle   string
 }
 
-// CreateCoveredPerson handles POST requests for adding Coveredperson entities
+// CreateCoveredPerson handles POST requests for adding coveredperson entities
 // @Summary Create coveredperson
 // @Description Create coveredperson
 // @ID create-coveredperson
@@ -115,9 +115,9 @@ func (ctl *CoveredPersonController) CreateCoveredPerson(c *gin.Context) {
 	})
 }
 
-// GetCoveredPerson handles GET requests to retrieve a CoveredPerson entity
-// @Summary Get a Coveredperson entity by ID
-// @Description get Coveredperson by ID
+// GetCoveredPerson handles GET requests to retrieve a coveredperson entity
+// @Summary Get a coveredperson entity by ID
+// @Description get coveredperson by ID
 // @ID get-coveredperson
 // @Produce  json
 // @Param id path int true "CoveredPerson ID"
@@ -136,6 +136,10 @@ func (ctl *CoveredPersonController) GetCoveredPerson(c *gin.Context) {
 	}
 	b, err := ctl.client.CoveredPerson.
 		Query().
+		WithPatient().
+		WithSchemeType().
+		WithFund().
+		WithCertificate().
 		Where(coveredperson.IDEQ(int(id))).
 		Only(context.Background())
 	if err != nil {
@@ -147,9 +151,9 @@ func (ctl *CoveredPersonController) GetCoveredPerson(c *gin.Context) {
 	c.JSON(200, b)
 }
 
-// ListCoveredPerson handles request to get a list of CoveredPerson entities
-// @Summary List Coveredperson entities
-// @Description list Coveredperson entities
+// ListCoveredPerson handles request to get a list of coveredperson entities
+// @Summary List coveredperson entities
+// @Description list coveredperson entities
 // @ID list-coveredperson
 // @Produce json
 // @Param limit  query int false "Limit"
@@ -196,9 +200,9 @@ func (ctl *CoveredPersonController) ListCoveredPerson(c *gin.Context) {
 
 }
 
-// DeleteCoveredPerson handles DELETE requests to delete a Coveredperson entity
-// @Summary Delete a Coveredperson entity by ID
-// @Description get Coveredperson by ID
+// DeleteCoveredPerson handles DELETE requests to delete a coveredperson entity
+// @Summary Delete a coveredperson entity by ID
+// @Description get coveredperson by ID
 // @ID delete-coveredperson
 // @Produce  json
 // @Param id path int true "CoveredPerson ID"
@@ -227,9 +231,9 @@ func (ctl *CoveredPersonController) DeleteCoveredPerson(c *gin.Context) {
 	c.JSON(200, gin.H{"result": fmt.Sprintf("ok deleted %v", id)})
 }
 
-// UpdateCoveredPerson handles PUT requests to update a Coveredperson entity
-// @Summary Update a Coveredperson entity by ID
-// @Description update Coveredperson by ID
+// UpdateCoveredPerson handles PUT requests to update a coveredperson entity
+// @Summary Update a coveredperson entity by ID
+// @Description update coveredperson by ID
 // @ID update-Coveredperson
 // @Accept   json
 // @Produce  json
@@ -286,7 +290,7 @@ func (ctl *CoveredPersonController) register() {
 
 	// CRUD
 	coveredpersons.POST("", ctl.CreateCoveredPerson)
-	coveredpersons.GET(":name", ctl.GetCoveredPerson)
+	coveredpersons.GET(":id", ctl.GetCoveredPerson)
 	coveredpersons.PUT(":id", ctl.UpdateCoveredPerson)
 	coveredpersons.DELETE(":id", ctl.DeleteCoveredPerson)
 }
