@@ -8,16 +8,18 @@
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">OK!</td></tr>
+<tr><td rowspan="1" colspan="3">OK !</td></tr>
 </thead>
 <tbody>
 <tr><td>open</td><td>http://localhost:3000/searchpre?<datalist><option>http://localhost:3000/searchpre?</option></datalist></td><td></td>
 </tr>
-<tr><td>click</td><td>id=prescriptionnumber<datalist><option>id=prescriptionnumber</option><option>//input[@id='prescriptionnumber']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#prescriptionnumber</option></datalist></td><td></td>
+<tr><td>click</td><td>id=number<datalist><option>id=number</option><option>name=number</option><option>//input[@id='number']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#number</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>id=prescriptionnumber<datalist><option>id=prescriptionnumber</option><option>//input[@id='prescriptionnumber']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#prescriptionnumber</option></datalist></td><td>P001</td>
+<tr><td>type</td><td>id=number<datalist><option>id=number</option><option>name=number</option><option>//input[@id='number']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#number</option></datalist></td><td>P001</td>
 </tr>
 <tr><td>click</td><td>//div[@id='root']/div/article/div[2]/form/button/span<datalist><option>//div[@id='root']/div/article/div[2]/form/button/span</option><option>//button/span</option><option>css=button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//h2</option><option>css=#swal2-title</option></datalist></td><td>ค้นหาข้อมูลสำเร็จ</td>
 </tr>
 </tbody></table>
 <table cellpadding="1" cellspacing="1" border="1">
@@ -27,11 +29,13 @@
 <tbody>
 <tr><td>open</td><td>http://localhost:3000/searchpre?<datalist><option>http://localhost:3000/searchpre?</option></datalist></td><td></td>
 </tr>
-<tr><td>click</td><td>id=prescriptionnumber<datalist><option>id=prescriptionnumber</option><option>//input[@id='prescriptionnumber']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#prescriptionnumber</option></datalist></td><td></td>
+<tr><td>click</td><td>id=number<datalist><option>id=number</option><option>name=number</option><option>//input[@id='number']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#number</option></datalist></td><td></td>
 </tr>
-<tr><td>type</td><td>id=prescriptionnumber<datalist><option>id=prescriptionnumber</option><option>//input[@id='prescriptionnumber']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#prescriptionnumber</option></datalist></td><td>P111</td>
+<tr><td>type</td><td>id=number<datalist><option>id=number</option><option>name=number</option><option>//input[@id='number']</option><option>//div[@id='root']/div/article/div[2]/form/div/div/div/input</option><option>//input</option><option>css=#number</option></datalist></td><td>P111</td>
 </tr>
 <tr><td>click</td><td>//div[@id='root']/div/article/div[2]/form/button/span<datalist><option>//div[@id='root']/div/article/div[2]/form/button/span</option><option>//button/span</option><option>css=button.MuiButtonBase-root.MuiButton-root.MuiButton-contained.MuiButton-containedSecondary &gt; span.MuiButton-label</option></datalist></td><td></td>
+</tr>
+<tr><td>assertText</td><td>id=swal2-title<datalist><option>id=swal2-title</option><option>//h2[@id='swal2-title']</option><option>//h2</option><option>css=#swal2-title</option></datalist></td><td>ค้นหาข้อมูลไม่สำเร็จ</td>
 </tr>
 </tbody></table>
 </body>
