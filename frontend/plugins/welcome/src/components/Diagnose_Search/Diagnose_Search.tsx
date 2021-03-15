@@ -95,7 +95,6 @@ export default function ComponentsTable() {
   const http = new DefaultApi();
   const auth = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const [diagnose, getDiagnose] = useState<EntDiagnose>();
   const [name, setName] = React.useState(String);
   const NamehandleChange = (event: any) => {
@@ -104,7 +103,6 @@ export default function ComponentsTable() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
   const [diagnoses, setDiagnoses] = React.useState<EntDiagnose[]>(Array);
-
   const getDiagnoses = async () => {
       const res = await http.listDiagnose({ limit: 10, offset: 0 });
       setDiagnoses(res);
@@ -161,17 +159,13 @@ const checkresearch = async () => {
     });
   }
 };
-  
   const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
-
   function Logout() {
     removeCookie('ID', { path: '/' })
     removeCookie('Name', { path: '/' })
     removeCookie('Email', { path: '/' })
     window.location.href = "http://localhost:3000/";
   }
-
-
   return (
     <Page theme={pageTheme.service}>
       <Header style={HeaderCustom} title={`ระบบค้นหาประวัติการวินิจฉัยโรคผู้ป่วยใน`} >
@@ -251,7 +245,6 @@ const checkresearch = async () => {
             <Paper>
               {search ? (
                 <div>
-                  
                    <TableContainer component={Paper}>
                       <Table className={classes.table} aria-label="simple table">
                         
@@ -267,7 +260,6 @@ const checkresearch = async () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-
                             <TableRow > 
                             <TableCell align="center">{diagnose?.diagnoseID}</TableCell>                          
                             <TableCell align="center">{diagnose?.edges?.doctor?.doctorName}</TableCell>
@@ -281,7 +273,6 @@ const checkresearch = async () => {
                         </TableBody>
                 </Table>
                     </TableContainer>
-
                 </div>
               ) : null}
             </Paper>
