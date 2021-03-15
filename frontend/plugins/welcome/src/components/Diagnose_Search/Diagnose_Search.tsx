@@ -159,7 +159,6 @@ const checkresearch = async () => {
     });
   }
 };
-  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
   function Logout() {
     removeCookie('ID', { path: '/' })
     removeCookie('Name', { path: '/' })
@@ -211,7 +210,6 @@ const checkresearch = async () => {
             variant="outlined"
             size="small"
           >
-           
             <TextField
             style={{ width: 250 ,marginLeft:7,marginRight:-7,marginTop:5}}
             className={classes.textField}
