@@ -1,35 +1,38 @@
 package controllers
- 
+
 import (
 	"context"
-	"strconv"
 	"fmt"
+	"strconv"
+
 	//"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sut63/team08/ent"
+	"github.com/sut63/team08/ent/department"
+	"github.com/sut63/team08/ent/diagnose"
+	"github.com/sut63/team08/ent/disease"
 	"github.com/sut63/team08/ent/doctor"
 	"github.com/sut63/team08/ent/patient"
-	"github.com/sut63/team08/ent/department"
-	"github.com/sut63/team08/ent/disease"
-	"github.com/sut63/team08/ent/diagnose"
 )
- 
+
 // DiagnoseController defines the struct for the diagnose controller
 type DiagnoseController struct {
 	client *ent.Client
 	router gin.IRouter
 }
 
+//Diagnose struct
 type Diagnose struct {
-	Doctor   	int
-	Patient     int
-	Department 	int
-	Disease     int
-	Symptoms 	string
-	Note		string
-	Number		string		
+	Doctor     int
+	Patient    int
+	Department int
+	Disease    int
+	Symptoms   string
+	Note       string
+	Number     string
 }
+
 // CreateDiagnose handles POST requests for adding diagnose entities
 // @Summary Create diagnose
 // @Description Create diagnose
@@ -111,10 +114,11 @@ func (ctl *DiagnoseController) CreateDiagnose(c *gin.Context) {
 		"data":   diag,
 	})
 }
- // GetDiagnose handles GET requests to retrieve a diagnose entity
+
+// GetDiagnose handles GET requests to retrieve a diagnose entity
 // @Summary Get a diagnose entity by ID
 // @Description get diagnose by ID
-// @ID get-drugAllergy
+// @ID get-diagnose
 // @Produce  json
 // @Param id path int true "Diagnose ID"
 // @Success 200 {object} ent.Diagnose
@@ -123,37 +127,32 @@ func (ctl *DiagnoseController) CreateDiagnose(c *gin.Context) {
 // @Failure 500 {object} gin.H
 // @Router /diagnoses/{id} [get]
 func (ctl *DiagnoseController) GetDiagnose(c *gin.Context) {
-	PatientName := string(c.Param("name"))
-	diag, err := ctl.client.Diagnose.
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	b, err := ctl.client.Diagnose.
 		Query().
-		Where(diagnose.HasPatientWith(patient.PatientNameEQ(string(PatientName)))).
 		WithPatient().
 		WithDoctor().
 		WithDisease().
 		WithDepartment().
-		All(context.Background())
-		if err != nil {
-			c.JSON(404, gin.H{
-				"error":  err.Error(),
-				"status": false,
-			})
-			return
-		}
-	
-		if len(diag) != 0 {
-			c.JSON(200, diag)
-			return
-		} else {
-			c.JSON(404, gin.H{
-				"error":  "patient not found",
-				"status": false,
-			})
-			return
-		}
-	
+		Where(diagnose.IDEQ(int(id))).
+		Only(context.Background())
+	if err != nil {
+		c.JSON(404, gin.H{
+			"error": err.Error(),
+		})
+		return
 	}
-	
- // ListDiagnose handles request to get a list of diagnose entities
+
+	c.JSON(200, b)
+}
+
+// ListDiagnose handles request to get a list of diagnose entities
 // @Summary List Diagnose entities
 // @Description list Diagnose entities
 // @ID list-diagnose
@@ -182,7 +181,7 @@ func (ctl *DiagnoseController) ListDiagnose(c *gin.Context) {
 			offset = int(offset64)
 		}
 	}
-  
+
 	diagnoses, err := ctl.client.Diagnose.
 		Query().
 		WithDoctor().
@@ -192,15 +191,15 @@ func (ctl *DiagnoseController) ListDiagnose(c *gin.Context) {
 		Limit(limit).
 		Offset(offset).
 		All(context.Background())
-		if err != nil {
-		c.JSON(400, gin.H{"error": err.Error(),})
+	if err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
-  
-	c.JSON(200, diagnoses)
- }
 
- // DeleteDiagnose handles DELETE requests to delete a diagnose entity
+	c.JSON(200, diagnoses)
+}
+
+// DeleteDiagnose handles DELETE requests to delete a diagnose entity
 // @Summary Delete a diagnose entity by ID
 // @Description get diagnose by ID
 // @ID delete-diagnose
@@ -267,9 +266,9 @@ func (ctl *DiagnoseController) UpdateDiagnose(c *gin.Context) {
 		return
 	}
 	c.JSON(200, diag)
-} 
- 
- // NewDiagnoseController creates and registers handles for the diagnose controller
+}
+
+// NewDiagnoseController creates and registers handles for the diagnose controller
 func NewDiagnoseController(router gin.IRouter, client *ent.Client) *DiagnoseController {
 	diag := &DiagnoseController{
 		client: client,
