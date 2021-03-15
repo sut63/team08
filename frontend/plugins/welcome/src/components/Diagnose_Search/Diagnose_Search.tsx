@@ -95,7 +95,6 @@ export default function ComponentsTable() {
   const http = new DefaultApi();
   const auth = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const [diagnose, getDiagnose] = useState<EntDiagnose>();
   const [name, setName] = React.useState(String);
   const NamehandleChange = (event: any) => {
@@ -104,7 +103,6 @@ export default function ComponentsTable() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
   const [diagnoses, setDiagnoses] = React.useState<EntDiagnose[]>(Array);
-
   const getDiagnoses = async () => {
       const res = await http.listDiagnose({ limit: 10, offset: 0 });
       setDiagnoses(res);
@@ -161,7 +159,6 @@ const checkresearch = async () => {
     });
   }
 };
-  
   const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
 
   function Logout() {
