@@ -15,8 +15,10 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import moment from 'moment';
 //entity
-import { EntDiagnose } from '../../api/models/EntDiagnose';
-//alert
+import {
+  EntDiagnose,
+  EntPatient
+} from '../../api/models/';//alert
 import Swal from 'sweetalert2'
 //icon
 import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
@@ -91,83 +93,84 @@ const Toast = Swal.mixin({
 export default function ComponentsTable() {
   const classes = useStyles();
   const http = new DefaultApi();
+  const auth = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const [diagnose, getDiagnose] = useState<EntDiagnose>();
+  const [name, setName] = React.useState(String);
+  const NamehandleChange = (event: any) => {
+    setName(event.target.value as string);
+  };
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
+  const [diagnoses, setDiagnoses] = React.useState<EntDiagnose[]>(Array);
 
-  const [checkpatientname, setPatientnames] = useState(false);
-  const [diagnose, setDiagnose] = useState<EntDiagnose[]>([])
-
-  const [patientname, setPatientname] = useState(String);
-  const alertMessage = (icon: any, title: any) => {
-    Toast.fire({
-      icon: icon,
-      title: title,
-    });
-    setSearch(false);
-  }
+  const getDiagnoses = async () => {
+      const res = await http.listDiagnose({ limit: 10, offset: 0 });
+      setDiagnoses(res);
+  };
+  const searchDiagnose = async () => {
+      const res = await http.getDiagnose({ id: diagnose_id })
+      if (res != undefined) {
+        getDiagnose(res);
+      }
+  };
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+      setAnchorEl(null);
+    };
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
 
   useEffect(() => {
-    const getDiagnoses = async () => {
-      const res = await http.listDiagnose({ offset: 0 });
-      setLoading(false);
-      setDiagnose(res);
-    };
     getDiagnoses();
   }, [loading]);
 
-  const patientnamehandlehange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setSearch(false);
-    setPatientnames(false);
-    setPatientname(event.target.value as string);
-
-  };
-
-  const cleardata = () => {
-    setPatientname("");
-    setSearch(false);
-    setPatientnames(false);
-    setSearch(false);
-  }
-
-  const deleteDiagnose = async (id: number) => {
-    const res = await http.deleteDiagnose({ id: id });
-    setLoading(true);
-  };
-
-  const checkresearch = async () => {
-    var check = false;
-    diagnose.map(item => {
-      if (patientname != "") {
-        if (item.edges?.patient?.patientName?.includes(patientname)) {
-          setPatientnames(true);
-          alertMessage("success", "ค้นหาประวัติการวินิจฉัยสำเร็จ");
-          check = true;
-        }
+var diagnose_id = 0
+var status = false
+const checkresearch = async () => {
+  console.log(diagnoses);
+  diagnoses.map(item => {
+      if (status === false) {
+          if (item.edges?.patient?.patientName == name) {
+              status = true
+              if (item.id != undefined) {
+                diagnose_id = item.id;
+                  console.log(diagnose_id);
+                  searchDiagnose();
+                  console.log(diagnose);
+              }
+          }
       }
-    })
-    if (!check) {
-      alertMessage("error", "ไม่พบประวัติการวินิจฉัย");
-    }
-    console.log(checkpatientname)
-    if (patientname == "") {
-      alertMessage("info", "แสดงข้อมูลการวินิจฉัยโรคผู้ป่วยในทั้งหมดในระบบ");
-    }
-  };
 
-  function a11yProps(index: any) {
-    return {
-      id: `scrollable-force-tab-${index}`,
-      'aria-controls': `scrollable-force-tabpanel-${index}`,
-    };
+  })
+  if (status === false) {
+    setSearch(false);
+    diagnose_id = 0;
+    Toast.fire({
+      icon: 'error',
+      title: 'ค้นหาข้อมูลไม่สำเร็จ',
+    });
+  } else {
+    setSearch(true);
+    Toast.fire({
+      icon: 'success',
+      title: 'ค้นหาข้อมูลสำเร็จ',
+
+    });
   }
-  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+};
   
-    function Logout() {
-      removeCookie('ID', { path: '/' })
-      removeCookie('Name', { path: '/' })
-      removeCookie('Email', { path: '/' })
-      window.location.href = "http://localhost:3000/";
-    }
+  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+
+  function Logout() {
+    removeCookie('ID', { path: '/' })
+    removeCookie('Name', { path: '/' })
+    removeCookie('Email', { path: '/' })
+    window.location.href = "http://localhost:3000/";
+  }
+
 
   return (
     <Page theme={pageTheme.service}>
@@ -218,14 +221,14 @@ export default function ComponentsTable() {
             <TextField
             style={{ width: 250 ,marginLeft:7,marginRight:-7,marginTop:5}}
             className={classes.textField}
-              id="patientname"
-              label = "ค้นหาชื่อผู้ป่วย..."
-              variant="outlined"
-              color="primary"
-              type="string"
-              size="small"
-              value={patientname}
-              onChange={patientnamehandlehange}
+            value={name}
+            id="number"
+            name="number"
+            variant="outlined"
+            onChange={NamehandleChange}
+            InputLabelProps={{
+                shrink: true,
+            }}
             />
             </FormControl>
             
@@ -233,7 +236,6 @@ export default function ComponentsTable() {
               <Button  
               onClick={() => {
                 checkresearch();
-                setSearch(true);
               }}
               variant="contained" 
               color="secondary" 
@@ -249,10 +251,11 @@ export default function ComponentsTable() {
             <Paper>
               {search ? (
                 <div>
-                  {  checkpatientname ? (
-                    <TableContainer component={Paper}>
+                  
+                   <TableContainer component={Paper}>
                       <Table className={classes.table} aria-label="simple table">
-                        <TableHead>
+                        
+                  <TableHead>
                           <TableRow>
                                 <TableCell align="center">รหัสการวินิจฉัย</TableCell>
                                 <TableCell align="center">แพทย์ที่รักษา</TableCell>
@@ -265,55 +268,20 @@ export default function ComponentsTable() {
                         </TableHead>
                         <TableBody>
 
-                          {diagnose.filter((filter: any) => filter.edges?.patient?.patientName.includes(patientname)).map((item: any) => (
-                            <TableRow key={item.id}>
-                            <TableCell align="center">{item.diagnoseID}</TableCell>                          
-                            <TableCell align="center">{item.edges?.doctor?.doctorName}</TableCell>
-                            <TableCell align="center">{item.edges?.patient?.patientName}</TableCell>
-                            <TableCell align="center">{item.edges?.disease?.diseaseName}</TableCell>
-                            <TableCell align="center">{item.diagnoseSymptoms}</TableCell>
-                            <TableCell align="center">{item.edges?.department?.departmentName}</TableCell>
-                            <TableCell align="center">{item.diagnoseNote}</TableCell>
+                            <TableRow > 
+                            <TableCell align="center">{diagnose?.diagnoseID}</TableCell>                          
+                            <TableCell align="center">{diagnose?.edges?.doctor?.doctorName}</TableCell>
+                            <TableCell align="center">{diagnose?.edges?.patient?.patientName}</TableCell>
+                            <TableCell align="center">{diagnose?.edges?.disease?.diseaseName}</TableCell>
+                            <TableCell align="center">{diagnose?.diagnoseSymptoms}</TableCell>
+                            <TableCell align="center">{diagnose?.edges?.department?.departmentName}</TableCell>
+                            <TableCell align="center">{diagnose?.diagnoseNote}</TableCell>
+                            <TableCell align="center"/>
                             </TableRow>
-                          ))}
                         </TableBody>
-                      </Table>
+                </Table>
                     </TableContainer>
-                  )
-                    : patientname == "" ? (
-                      <div>
-                        <TableContainer component={Paper}>
-                          <Table className={classes.table} aria-label="simple table">
-                            <TableHead>
-                              <TableRow>
-                                <TableCell align="center">รหัสการวินิจฉัย</TableCell>
-                                <TableCell align="center">แพทย์ที่รักษา</TableCell>
-                                <TableCell align="center">ชื่อผู้ป่วย</TableCell>
-                                <TableCell align="center">โรค</TableCell>
-                                <TableCell align="center">อาการเพิ่มเติม</TableCell>
-                                <TableCell align="center">แผนกการเข้ารักษา</TableCell>
-                                <TableCell align="center">หมายเหตุ</TableCell>
-                              </TableRow>
-                            </TableHead>
-                            <TableBody>
 
-                              {diagnose.map((item: any) => (
-                                <TableRow key={item.id}>
-                                <TableCell align="center">{item.diagnoseID}</TableCell>                          
-                                <TableCell align="center">{item.edges?.doctor?.doctorName}</TableCell>
-                                <TableCell align="center">{item.edges?.patient?.patientName}</TableCell>
-                                <TableCell align="center">{item.edges?.disease?.diseaseName}</TableCell>
-                                <TableCell align="center">{item.diagnoseSymptoms}</TableCell>
-                                <TableCell align="center">{item.edges?.department?.departmentName}</TableCell>
-                                <TableCell align="center">{item.diagnoseNote}</TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </TableContainer>
-
-                      </div>
-                    ) : null}
                 </div>
               ) : null}
             </Paper>
@@ -322,4 +290,4 @@ export default function ComponentsTable() {
       </Content>
     </Page>
   );
-}
+} 
