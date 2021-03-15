@@ -217,7 +217,6 @@ const checkresearch = async () => {
             variant="outlined"
             size="small"
           >
-           
             <TextField
             style={{ width: 250 ,marginLeft:7,marginRight:-7,marginTop:5}}
             className={classes.textField}
@@ -246,6 +245,7 @@ const checkresearch = async () => {
             </form>
             </div>
         
+
         <Grid container justify="center">
           <Grid item xs={12} md={12}>
             <Paper>
