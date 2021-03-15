@@ -251,7 +251,6 @@ const checkresearch = async () => {
             <Paper>
               {search ? (
                 <div>
-                  
                    <TableContainer component={Paper}>
                       <Table className={classes.table} aria-label="simple table">
                         
@@ -267,7 +266,6 @@ const checkresearch = async () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-
                             <TableRow > 
                             <TableCell align="center">{diagnose?.diagnoseID}</TableCell>                          
                             <TableCell align="center">{diagnose?.edges?.doctor?.doctorName}</TableCell>
