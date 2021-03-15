@@ -27,7 +27,7 @@ func (Diagnose) Fields() []ent.Field {
 		field.String("Diagnose_Note").NotEmpty(),
 	}
 }
-
+//Edges of the Diagnose.
 func (Diagnose) Edges() []ent.Edge {
 
 	return []ent.Edge{
