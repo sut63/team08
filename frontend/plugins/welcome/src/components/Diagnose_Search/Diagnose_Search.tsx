@@ -95,7 +95,6 @@ export default function ComponentsTable() {
   const http = new DefaultApi();
   const auth = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const [diagnose, getDiagnose] = useState<EntDiagnose>();
   const [name, setName] = React.useState(String);
   const NamehandleChange = (event: any) => {
