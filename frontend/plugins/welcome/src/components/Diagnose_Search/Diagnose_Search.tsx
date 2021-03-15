@@ -159,17 +159,12 @@ const checkresearch = async () => {
     });
   }
 };
-  
-  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
-
   function Logout() {
     removeCookie('ID', { path: '/' })
     removeCookie('Name', { path: '/' })
     removeCookie('Email', { path: '/' })
     window.location.href = "http://localhost:3000/";
   }
-
-
   return (
     <Page theme={pageTheme.service}>
       <Header style={HeaderCustom} title={`ระบบค้นหาประวัติการวินิจฉัยโรคผู้ป่วยใน`} >
@@ -248,7 +243,6 @@ const checkresearch = async () => {
             <Paper>
               {search ? (
                 <div>
-                  
                    <TableContainer component={Paper}>
                       <Table className={classes.table} aria-label="simple table">
                         
@@ -264,7 +258,6 @@ const checkresearch = async () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-
                             <TableRow > 
                             <TableCell align="center">{diagnose?.diagnoseID}</TableCell>                          
                             <TableCell align="center">{diagnose?.edges?.doctor?.doctorName}</TableCell>
