@@ -1,50 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   ContentHeader,
   Content,
   Header,
   Page,
   pageTheme,
-} from '@backstage/core';
-import { FormControl, TextField, Button, Grid, Link } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { Link as RouterLink } from 'react-router-dom';
+} from "@backstage/core";
+import {
+  TableContainer,
+  Table,
+  FormControl,
+  TextField,
+  Button,
+  Grid,
+  Link,
+} from "@material-ui/core";
+import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import { Link as RouterLink } from "react-router-dom";
 //api
-import { DefaultApi } from '../../api/apis';
-//table
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import moment from 'moment';
+import { DefaultApi } from "../../api/apis";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 //entity
-import { EntOperativerecord } from '../../api/models/EntOperativerecord';
+import { EntOperativerecord } from "../../api/models/";
 //alert
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 //icon
-import SearchTwoToneIcon from '@material-ui/icons/SearchTwoTone';
-import BackspaceTwoToneIcon from '@material-ui/icons/BackspaceTwoTone';
-import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
-
+import SearchTwoToneIcon from "@material-ui/icons/SearchTwoTone";
+import BackspaceTwoToneIcon from "@material-ui/icons/BackspaceTwoTone";
+import AddCircleOutlineTwoToneIcon from "@material-ui/icons/AddCircleOutlineTwoTone";
 // name
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { Cookies } from 'react-cookie/cjs'; //cookie
-import { useCookies } from 'react-cookie/cjs'; //cookie
+
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import { Cookies } from "react-cookie/cjs"; //cookie
+import { useCookies } from "react-cookie/cjs"; //cookie
+import moment from "moment";
 const cookies = new Cookies();
-const Name = cookies.get('Name');
+const Name = cookies.get("Name");
 const HeaderCustom = {
-  minHeight: '50px',
+  minHeight: "50px",
 };
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "center",
     },
     margin: {
       margin: theme.spacing(2),
@@ -53,13 +58,14 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1),
     },
     button: {
-      marginLeft: '40px',
+      marginLeft: "40px",
     },
     textField: {
       width: 500,
       marginLeft: 7,
       marginRight: -7,
     },
+
     select: {
       width: 500,
       marginLeft: 7,
@@ -76,93 +82,87 @@ const useStyles = makeStyles((theme: Theme) =>
     table: {
       minWidth: 650,
     },
-  }),
+  })
 );
 
 const Toast = Swal.mixin({
   toast: true,
-  position: 'top-end',
+  position: "top-end",
   showConfirmButton: false,
   timer: 3000,
   timerProgressBar: true,
-  didOpen: toast => {
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
 
 export default function ComponentsTable() {
   const classes = useStyles();
   const http = new DefaultApi();
+  const auth = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const [operativerecord, getOperativerecord] = useState<EntOperativerecord>();
+  const [name, setName] = React.useState(String);
+  const NamehandleChange = (event: any) => {
+    setName(event.target.value as string);
+  };
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState(false);
-
-  const [operativerecord, setOperativerecord] = useState<EntOperativerecord[]>(
-    [],
-  );
-  const [operativeRecordDisplay, setOperativeRecordDisplay] = useState<
+  const [operativerecords, setOperativerecords] = React.useState<
     EntOperativerecord[]
   >([]);
 
-  const [operativename, setOperativename] = useState(String);
-
+  const getOperativerecords = async () => {
+    const res = await http.listOperativerecord({ limit: 10, offset: 0 });
+    setOperativerecords(res);
+  };
+  const searchOperativerecord = async () => {
+    const res = await http.getOperativerecord({ id: operativerecord_id });
+    if (res != undefined) {
+      getOperativerecord(res);
+    }
+  };
+  const open = Boolean(anchorEl);
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
   useEffect(() => {
-    const getOperativerecords = async () => {
-      const res = await http.listOperativerecord({ offset: 0 });
-      setLoading(false);
-      setOperativerecord(res);
-      setOperativeRecordDisplay(res);
-    };
     getOperativerecords();
   }, [loading]);
 
-  const operativenamehandlehange = (
-    event: React.ChangeEvent<{ value: unknown }>,
-  ) => {
-    setOperativename(event.target.value as string);
-  };
-
-  const deleteOperativerecord = async (id: number) => {
-    const res = await http.deleteOperativerecord({ id: id });
-    setLoading(true);
-  };
-
-  const searchOperation = async () => {
-    const res = await http.getOperativerecord({ id: operativeRecordId });
-    if (res != undefined) {
-      setOperativeRecordDisplay([res]);
-    }
-  };
-
+  var operativerecord_id = 0;
   var status = false;
-  var operativeRecordId = 0;
   const checkresearch = async () => {
-    console.log(operativerecord);
-    console.log(operativeRecordDisplay);
-    console.log(operativeRecordId);
-    if (status == false) {
-      operativerecord.map(item => {
-        if (item.edges?.operative?.operativeName == operativename) {
+    console.log(operativerecords);
+    operativerecords.map((item) => {
+      if (status === false) {
+        if (item.edges?.operative?.operativeName == name) {
           status = true;
           if (item.id != undefined) {
-            operativeRecordId = item.id;
-            console.log(operativeRecordId);
-            searchOperation();
+            operativerecord_id = item.id;
+            console.log(operativerecord_id);
+            searchOperativerecord();
+            console.log(operativerecord);
           }
         }
-      });
-    }
-    if (status == false) {
+      }
+    });
+    if (status === false) {
       setSearch(false);
       Toast.fire({
-        icon: 'error',
-        title: 'ค้นหาข้อมูลไม่สำเร็จ',
+        icon: "error",
+        title: "ค้นหาข้อมูลไม่สำเร็จ",
       });
     } else {
       setSearch(true);
       Toast.fire({
-        icon: 'success',
-        title: 'ค้นหาข้อมูลสำเร็จ',
+        icon: "success",
+        title: "ค้นหาข้อมูลสำเร็จ",
       });
     }
   };
@@ -171,16 +171,16 @@ export default function ComponentsTable() {
   function a11yProps(index: any) {
     return {
       id: `scrollable-force-tab-${index}`,
-      'aria-controls': `scrollable-force-tabpanel-${index}`,
+      "aria-controls": `scrollable-force-tabpanel-${index}`,
     };
   }
-  const [cookies, setCookie, removeCookie] = useCookies(['cookiename']);
+  const [cookies, setCookie, removeCookie] = useCookies(["cookiename"]);
 
   function Logout() {
-    removeCookie('ID', { path: '/' });
-    removeCookie('Name', { path: '/' });
-    removeCookie('Email', { path: '/' });
-    window.location.href = 'http://localhost:3000/';
+    removeCookie("ID", { path: "/" });
+    removeCookie("Name", { path: "/" });
+    removeCookie("Email", { path: "/" });
+    window.location.href = "http://localhost:3000/";
   }
 
   return (
@@ -241,13 +241,14 @@ export default function ComponentsTable() {
                   marginTop: 5,
                 }}
                 className={classes.textField}
-                id="operative"
+                value={name}
+                id="number"
+                name="number"
                 variant="outlined"
-                color="primary"
-                type="string"
-                size="small"
-                value={operativename}
-                onChange={operativenamehandlehange}
+                onChange={NamehandleChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
             </FormControl>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -268,61 +269,55 @@ export default function ComponentsTable() {
           <Grid item xs={12} md={12}>
             <Paper>
               {search ? (
-                <TableContainer component={Paper}>
-                  <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell align="center">ลำดับที่</TableCell>
-                        <TableCell align="center">ชื่อพยาบาล</TableCell>
-                        <TableCell align="center">รหัสพยาบาล</TableCell>
-                        <TableCell align="center">รายการหัตถการ</TableCell>
-                        <TableCell align="center">เครื่องมือที่ใช้</TableCell>
-                        <TableCell align="center">ห้องตรวจที่ใช้</TableCell>
-                        <TableCell align="center">วันที่ทำหัตถการ</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {operativeRecordDisplay.map((item: any) => (
-                        <TableRow key={item.id}>
-                          <TableCell align="center">{item.id}</TableCell>
+                <div>
+                  <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="center">ลำดับที่</TableCell>
+                          <TableCell align="center">ชื่อพยาบาล</TableCell>
+                          <TableCell align="center">รหัสพยาบาล</TableCell>
+                          <TableCell align="center">รายการหัตถการ</TableCell>
+                          <TableCell align="center">เครื่องมือที่ใช้</TableCell>
+                          <TableCell align="center">ห้องตรวจที่ใช้</TableCell>
+                          <TableCell align="center">วันที่ทำหัตถการ</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
                           <TableCell align="center">
-                            {item.edges?.nurse?.nurseName}
+                            {operativerecord?.id}
                           </TableCell>
                           <TableCell align="center">
-                            {item.nurseNumber}
+                            {operativerecord?.edges?.nurse?.nurseName}
                           </TableCell>
                           <TableCell align="center">
-                            {item.edges?.operative?.operativeName}
+                            {operativerecord?.nurseNumber}
                           </TableCell>
                           <TableCell align="center">
-                            {item.edges?.tool?.toolName}
+                            {operativerecord?.edges?.operative?.operativeName}
                           </TableCell>
                           <TableCell align="center">
-                            {item.edges?.examinationroom?.examinationroomName}
+                            {operativerecord?.edges?.tool?.toolName}
                           </TableCell>
                           <TableCell align="center">
-                            {moment(item.operativeDateTime).format(
-                              'DD/MM/YYYY hh:mm',
+                            {
+                              operativerecord?.edges?.examinationroom
+                                ?.examinationroomName
+                            }
+                          </TableCell>
+                          <TableCell align="center">
+                            {moment(operativerecord?.operativeTime).format(
+                              "DD/MM/YYYY hh:mm"
                             )}
                           </TableCell>
-                          <Button
-                            onClick={() => {
-                              if (item.id === undefined) {
-                                return;
-                              }
-                              deleteOperativerecord(item.id);
-                            }}
-                            style={{ marginLeft: 10 }}
-                            variant="contained"
-                            color="secondary"
-                          >
-                            Delete
-                          </Button>
+
+                          <TableCell align="center" />
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </div>
               ) : null}
             </Paper>
           </Grid>
@@ -331,4 +326,3 @@ export default function ComponentsTable() {
     </Page>
   );
 }
-
